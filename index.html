@@ -34,7 +34,6 @@ textarea {
   margin: auto;
 }
 
-
 /* =========================
    HEADER
 ========================= */
@@ -80,7 +79,6 @@ textarea {
   background: #3986e8;
   color: white;
 }
-
 
 /* =========================
    MODE NAV
@@ -138,7 +136,6 @@ textarea {
   background: #f0edff;
 }
 
-
 /* =========================
    MAIN LAYOUT
 ========================= */
@@ -155,7 +152,6 @@ textarea {
   border-radius: 22px;
   box-shadow: 0 5px 22px rgba(45,60,90,.08);
 }
-
 
 /* =========================
    LEFT
@@ -209,7 +205,6 @@ textarea {
   border-radius: 999px;
 }
 
-
 /* =========================
    QUESTION
 ========================= */
@@ -250,17 +245,18 @@ textarea {
   line-height: 1.1;
   font-weight: 900;
   word-break: break-word;
+  text-align: center;
 }
 
 .question-sub {
   margin-top: 15px;
   font-size: 18px;
   color: #68748a;
+  text-align: center;
 }
 
-
 /* =========================
-   SPEAKER BUTTON
+   SPEAKER
 ========================= */
 
 .speaker-button {
@@ -287,7 +283,6 @@ textarea {
   font-size: 21px;
   cursor: pointer;
 }
-
 
 /* =========================
    ANSWER
@@ -332,7 +327,6 @@ textarea {
   margin-bottom: 14px;
 }
 
-
 /* =========================
    JUDGE
 ========================= */
@@ -363,7 +357,6 @@ textarea {
   color: #a72c49;
 }
 
-
 /* =========================
    BOTTOM NAV
 ========================= */
@@ -392,7 +385,6 @@ textarea {
   background: #3986e8;
   color: white;
 }
-
 
 /* =========================
    RIGHT INFO
@@ -520,7 +512,6 @@ textarea {
   cursor: pointer;
 }
 
-
 /* =========================
    MEMO
 ========================= */
@@ -563,12 +554,12 @@ textarea {
 }
 
 .empty-message {
-  padding: 60px 20px;
+  padding: 40px 20px;
   text-align: center;
   color: #7f8a9b;
-  font-size: 18px;
+  font-size: 17px;
+  line-height: 1.8;
 }
-
 
 /* =========================
    RESPONSIVE
@@ -635,13 +626,6 @@ textarea {
       100px 1fr auto;
   }
 
-  .speaker-button {
-    width: 48px;
-    height: 48px;
-    flex-basis: 48px;
-    font-size: 22px;
-  }
-
 }
 </style>
 </head>
@@ -658,7 +642,10 @@ textarea {
   </div>
 
   <nav class="main-nav">
-    <a href="index.html" class="active">
+
+    <a
+      href="index.html"
+      class="active">
       📖 学習
     </a>
 
@@ -669,6 +656,7 @@ textarea {
     <a href="admin.html">
       ⚙️ 管理
     </a>
+
   </nav>
 
 </header>
@@ -735,6 +723,7 @@ textarea {
 
       </div>
 
+
       <div class="progress-area">
 
         <div
@@ -744,10 +733,12 @@ textarea {
         </div>
 
         <div class="progress-bar">
+
           <div
             id="progressFill"
             class="progress-fill">
           </div>
+
         </div>
 
       </div>
@@ -755,91 +746,92 @@ textarea {
     </div>
 
 
-    <div id="studyContent">
+    <div class="question-box">
 
-      <div class="question-box">
+      <div
+        id="questionLabel"
+        class="question-label">
+      </div>
 
-        <div
-          id="questionLabel"
-          class="question-label">
-        </div>
 
-        <div class="question-word-row">
-
-          <div
-            id="questionMain"
-            class="question-main">
-          </div>
-
-          <button
-            id="questionSpeaker"
-            class="speaker-button"
-            onclick="speakQuestion()"
-            aria-label="発音を聞く">
-            🔊
-          </button>
-
-        </div>
+      <div class="question-word-row">
 
         <div
-          id="questionSub"
-          class="question-sub">
+          id="questionMain"
+          class="question-main">
         </div>
+
+        <button
+          id="questionSpeaker"
+          class="speaker-button"
+          onclick="speakQuestion()">
+          🔊
+        </button>
 
       </div>
 
 
       <div
-        id="answerArea"
-        class="answer-box">
-
-        <span class="answer-hidden">
-          ？？？
-        </span>
-
+        id="questionSub"
+        class="question-sub">
       </div>
 
+    </div>
+
+
+    <div
+      id="answerArea"
+      class="answer-box">
+
+      <span class="answer-hidden">
+        ？？？
+      </span>
+
+    </div>
+
+
+    <button
+      id="mainAction"
+      class="main-action"
+      onclick="mainAction()">
+      👁 答えを見る
+    </button>
+
+
+    <div
+      id="judgeButtons"
+      class="judge-buttons">
 
       <button
-        id="mainAction"
-        class="main-action"
-        onclick="mainAction()">
-        👁 答えを見る
+        class="judge-button remember"
+        onclick="markRemembered()">
+        ✓ 覚えた
       </button>
 
+      <button
+        class="judge-button unsure"
+        onclick="markWeak()">
+        ？ まだ不安
+      </button>
 
-      <div class="judge-buttons">
-
-        <button
-          class="judge-button remember"
-          onclick="markRemembered()">
-          ✓ 覚えた
-        </button>
-
-        <button
-          class="judge-button unsure"
-          onclick="markWeak()">
-          ？ まだ不安
-        </button>
-
-      </div>
+    </div>
 
 
-      <div class="bottom-nav">
+    <div
+      id="bottomNav"
+      class="bottom-nav">
 
-        <button
-          class="previous"
-          onclick="previousWord()">
-          ← 前の問題
-        </button>
+      <button
+        class="previous"
+        onclick="previousWord()">
+        ← 前の問題
+      </button>
 
-        <button
-          class="next"
-          onclick="nextWord()">
-          次の問題 →
-        </button>
-
-      </div>
+      <button
+        class="next"
+        onclick="nextWord()">
+        次の問題 →
+      </button>
 
     </div>
 
@@ -863,47 +855,62 @@ textarea {
 
 <script>
 
-/* =========================================
+/* =========================
    DATA
-========================================= */
+========================= */
 
 let words =
   JSON.parse(
-    localStorage.getItem("words")
+    localStorage.getItem(
+      "words"
+    )
   ) || [];
+
 
 let weakWords =
   JSON.parse(
-    localStorage.getItem("weakWords")
+    localStorage.getItem(
+      "weakWords"
+    )
   ) || [];
+
 
 let memos =
   JSON.parse(
-    localStorage.getItem("wordMemos")
+    localStorage.getItem(
+      "wordMemos"
+    )
   ) || {};
 
 
-/* 古いデータもそのまま使用 */
-words = words.map(function(word) {
+/* 古いデータにも対応 */
 
-  if (!word.forms) {
+words =
+  words.map(
+    function(word) {
 
-    word.forms = {
-      base: word.english || ""
-    };
+      if (!word.forms) {
 
-  }
+        word.forms = {
+          base:
+            word.english || ""
+        };
 
-  if (!word.partOfSpeech) {
+      }
 
-    word.partOfSpeech =
-      "other";
+      if (
+        !word.partOfSpeech
+      ) {
 
-  }
+        word.partOfSpeech =
+          "other";
 
-  return word;
+      }
 
-});
+      return word;
+
+    }
+  );
 
 
 let currentMode =
@@ -919,16 +926,22 @@ let answerVisible =
   false;
 
 
-/* =========================================
-   SOUND
-========================================= */
+/* =========================
+   AUDIO
+========================= */
 
-function speakEnglish(text) {
+function speakEnglish(
+  text
+) {
 
   if (!text) return;
 
+
   if (
-    !("speechSynthesis" in window)
+    !(
+      "speechSynthesis"
+      in window
+    )
   ) {
 
     alert(
@@ -940,9 +953,7 @@ function speakEnglish(text) {
   }
 
 
-  window
-    .speechSynthesis
-    .cancel();
+  speechSynthesis.cancel();
 
 
   const speech =
@@ -954,10 +965,6 @@ function speakEnglish(text) {
   speech.lang =
     "en-US";
 
-  /*
-    少しゆっくりめ。
-    1.0が通常速度。
-  */
   speech.rate =
     0.8;
 
@@ -965,56 +972,56 @@ function speakEnglish(text) {
     1;
 
 
-  /*
-    可能なら英語音声を選択
-  */
   const voices =
-    window
-      .speechSynthesis
+    speechSynthesis
       .getVoices();
 
 
-  const englishVoice =
+  const voice =
     voices.find(
-      function(voice) {
+      function(v) {
 
         return (
-          voice.lang &&
-          voice.lang
+          v.lang
+          &&
+          v.lang
             .toLowerCase()
-            .startsWith("en-us")
+            .startsWith(
+              "en-us"
+            )
         );
 
       }
     )
     ||
     voices.find(
-      function(voice) {
+      function(v) {
 
         return (
-          voice.lang &&
-          voice.lang
+          v.lang
+          &&
+          v.lang
             .toLowerCase()
-            .startsWith("en")
+            .startsWith(
+              "en"
+            )
         );
 
       }
     );
 
 
-  if (englishVoice) {
+  if (voice) {
 
     speech.voice =
-      englishVoice;
+      voice;
 
   }
 
 
-  window
-    .speechSynthesis
-    .speak(
-      speech
-    );
+  speechSynthesis.speak(
+    speech
+  );
 
 }
 
@@ -1022,7 +1029,8 @@ function speakEnglish(text) {
 function speakQuestion() {
 
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
     return;
   }
@@ -1032,16 +1040,11 @@ function speakQuestion() {
     studyItems[current];
 
 
-  /*
-    問題が英語のときだけ読む
-  */
-
   if (
-    currentMode === "jaen"
+    currentMode ===
+    "jaen"
   ) {
-
     return;
-
   }
 
 
@@ -1055,7 +1058,8 @@ function speakQuestion() {
 function speakAnswer() {
 
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
     return;
   }
@@ -1065,18 +1069,14 @@ function speakAnswer() {
     studyItems[current];
 
 
-  /*
-    答えが英語のモードだけ読む
-  */
-
   if (
-    currentMode === "basic"
+    currentMode ===
+      "basic"
     ||
-    currentMode === "weak"
+    currentMode ===
+      "weak"
   ) {
-
     return;
-
   }
 
 
@@ -1087,9 +1087,9 @@ function speakAnswer() {
 }
 
 
-/* =========================================
+/* =========================
    MODE
-========================================= */
+========================= */
 
 function setMode(
   mode,
@@ -1133,9 +1133,9 @@ function setMode(
 }
 
 
-/* =========================================
-   QUESTIONS
-========================================= */
+/* =========================
+   BUILD
+========================= */
 
 function buildStudyItems() {
 
@@ -1143,9 +1143,11 @@ function buildStudyItems() {
 
 
   if (
-    currentMode === "basic"
+    currentMode ===
+      "basic"
     ||
-    currentMode === "jaen"
+    currentMode ===
+      "jaen"
   ) {
 
     studyItems =
@@ -1157,14 +1159,14 @@ function buildStudyItems() {
             word: word,
 
             question:
-              currentMode ===
-              "basic"
+              currentMode
+              === "basic"
                 ? word.english
                 : word.japanese,
 
             answer:
-              currentMode ===
-              "basic"
+              currentMode
+              === "basic"
                 ? word.japanese
                 : word.english
 
@@ -1177,7 +1179,8 @@ function buildStudyItems() {
 
 
   else if (
-    currentMode === "weak"
+    currentMode ===
+    "weak"
   ) {
 
     studyItems =
@@ -1185,10 +1188,12 @@ function buildStudyItems() {
         .filter(
           function(word) {
 
-            return weakWords
-              .includes(
-                word.english
-              );
+            return (
+              weakWords
+                .includes(
+                  word.english
+                )
+            );
 
           }
         )
@@ -1214,7 +1219,8 @@ function buildStudyItems() {
 
 
   else if (
-    currentMode === "verb"
+    currentMode ===
+    "verb"
   ) {
 
     words
@@ -1223,8 +1229,7 @@ function buildStudyItems() {
 
           return (
             word.partOfSpeech
-            ===
-            "verb"
+            === "verb"
           );
 
         }
@@ -1235,6 +1240,10 @@ function buildStudyItems() {
           const f =
             word.forms || {};
 
+          const base =
+            f.base ||
+            word.english;
+
 
           if (f.past) {
 
@@ -1243,8 +1252,7 @@ function buildStudyItems() {
               word: word,
 
               question:
-                f.base ||
-                word.english,
+                base,
 
               sub:
                 "過去形は？",
@@ -1266,8 +1274,7 @@ function buildStudyItems() {
               word: word,
 
               question:
-                f.base ||
-                word.english,
+                base,
 
               sub:
                 "過去分詞は？",
@@ -1287,8 +1294,7 @@ function buildStudyItems() {
               word: word,
 
               question:
-                f.base ||
-                word.english,
+                base,
 
               sub:
                 "ing形は？",
@@ -1310,8 +1316,7 @@ function buildStudyItems() {
               word: word,
 
               question:
-                f.base ||
-                word.english,
+                base,
 
               sub:
                 "三人称単数現在は？",
@@ -1352,6 +1357,10 @@ function buildStudyItems() {
           const f =
             word.forms || {};
 
+          const base =
+            f.base ||
+            word.english;
+
 
           if (
             f.comparative
@@ -1362,8 +1371,7 @@ function buildStudyItems() {
               word: word,
 
               question:
-                f.base ||
-                word.english,
+                base,
 
               sub:
                 "比較級は？",
@@ -1385,8 +1393,7 @@ function buildStudyItems() {
               word: word,
 
               question:
-                f.base ||
-                word.english,
+                base,
 
               sub:
                 "最上級は？",
@@ -1404,14 +1411,26 @@ function buildStudyItems() {
   }
 
 
+  /* バグ対策 */
+  if (
+    current >=
+    studyItems.length
+  ) {
+
+    current =
+      0;
+
+  }
+
+
   showCurrentItem();
 
 }
 
 
-/* =========================================
-   SHOW ITEM
-========================================= */
+/* =========================
+   SHOW
+========================= */
 
 function showCurrentItem() {
 
@@ -1422,28 +1441,136 @@ function showCurrentItem() {
   updateModeText();
 
 
+  /* -----------------------
+     0件の場合
+  ----------------------- */
+
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
 
     document
       .getElementById(
-        "studyContent"
+        "questionLabel"
+      )
+      .textContent =
+        "";
+
+
+    document
+      .getElementById(
+        "questionMain"
+      )
+      .textContent =
+        "学習する単語がありません";
+
+
+    let message = "";
+
+
+    if (
+      currentMode ===
+      "verb"
+    ) {
+
+      message =
+        "管理画面で動詞と変化形を登録すると、ここで練習できます。";
+
+    }
+
+    else if (
+      currentMode ===
+      "adjective"
+    ) {
+
+      message =
+        "管理画面で形容詞と比較級・最上級を登録すると、ここで練習できます。";
+
+    }
+
+    else if (
+      currentMode ===
+      "weak"
+    ) {
+
+      message =
+        "苦手単語はありません 🎉";
+
+    }
+
+    else {
+
+      message =
+        "管理画面から単語を登録してください。";
+
+    }
+
+
+    document
+      .getElementById(
+        "questionSub"
+      )
+      .textContent =
+        message;
+
+
+    document
+      .getElementById(
+        "questionSpeaker"
+      )
+      .style.display =
+        "none";
+
+
+    document
+      .getElementById(
+        "answerArea"
       )
       .innerHTML = `
 
-        <div class="empty-message">
-          このモードで学習できる単語がまだありません。
-        </div>
+        <span class="answer-hidden">
+          －
+        </span>
 
       `;
 
 
     document
       .getElementById(
+        "mainAction"
+      )
+      .style.display =
+        "none";
+
+
+    document
+      .getElementById(
+        "judgeButtons"
+      )
+      .style.display =
+        "none";
+
+
+    document
+      .getElementById(
+        "bottomNav"
+      )
+      .style.display =
+        "none";
+
+
+    document
+      .getElementById(
         "infoContent"
       )
-      .innerHTML = "";
+      .innerHTML = `
+
+        <div class="empty-message">
+          ${message}
+        </div>
+
+      `;
 
 
     updateProgress();
@@ -1451,6 +1578,34 @@ function showCurrentItem() {
     return;
 
   }
+
+
+  /* -----------------------
+     通常表示へ戻す
+  ----------------------- */
+
+  document
+    .getElementById(
+      "mainAction"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "judgeButtons"
+    )
+    .style.display =
+      "grid";
+
+
+  document
+    .getElementById(
+      "bottomNav"
+    )
+    .style.display =
+      "grid";
 
 
   const item =
@@ -1483,17 +1638,13 @@ function showCurrentItem() {
       item.sub || "";
 
 
-  /*
-    日本語 → 英語モードでは
-    問題側の音声ボタンを隠す
-  */
-
   document
     .getElementById(
       "questionSpeaker"
     )
     .style.display =
-      currentMode === "jaen"
+      currentMode ===
+      "jaen"
         ? "none"
         : "block";
 
@@ -1509,18 +1660,20 @@ function showCurrentItem() {
 }
 
 
-/* =========================================
+/* =========================
    MODE TEXT
-========================================= */
+========================= */
 
 function updateModeText() {
 
   let title = "";
+
   let description = "";
 
 
   if (
-    currentMode === "basic"
+    currentMode ===
+    "basic"
   ) {
 
     title =
@@ -1533,7 +1686,8 @@ function updateModeText() {
 
 
   else if (
-    currentMode === "jaen"
+    currentMode ===
+    "jaen"
   ) {
 
     title =
@@ -1546,7 +1700,8 @@ function updateModeText() {
 
 
   else if (
-    currentMode === "verb"
+    currentMode ===
+    "verb"
   ) {
 
     title =
@@ -1601,16 +1756,17 @@ function updateModeText() {
 }
 
 
-/* =========================================
+/* =========================
    LABEL
-========================================= */
+========================= */
 
 function getQuestionLabel(
   item
 ) {
 
   if (
-    currentMode === "basic"
+    currentMode ===
+    "basic"
   ) {
 
     return (
@@ -1621,7 +1777,8 @@ function getQuestionLabel(
 
 
   if (
-    currentMode === "jaen"
+    currentMode ===
+    "jaen"
   ) {
 
     return (
@@ -1632,7 +1789,8 @@ function getQuestionLabel(
 
 
   if (
-    currentMode === "weak"
+    currentMode ===
+    "weak"
   ) {
 
     return (
@@ -1642,19 +1800,22 @@ function getQuestionLabel(
   }
 
 
-  return item.sub || "";
+  return (
+    item.sub || ""
+  );
 
 }
 
 
-/* =========================================
+/* =========================
    ANSWER
-========================================= */
+========================= */
 
 function renderAnswerArea() {
 
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
     return;
   }
@@ -1667,7 +1828,9 @@ function renderAnswerArea() {
       );
 
 
-  if (!answerVisible) {
+  if (
+    !answerVisible
+  ) {
 
     area.innerHTML = `
 
@@ -1695,9 +1858,11 @@ function renderAnswerArea() {
 
     const answerIsEnglish =
       (
-        currentMode === "jaen"
+        currentMode ===
+          "jaen"
         ||
-        currentMode === "verb"
+        currentMode ===
+          "verb"
         ||
         currentMode ===
           "adjective"
@@ -1720,8 +1885,7 @@ function renderAnswerArea() {
 
           <button
             class="small-speaker"
-            onclick="speakAnswer()"
-            aria-label="答えの発音を聞く">
+            onclick="speakAnswer()">
             🔊
           </button>
 
@@ -1754,7 +1918,8 @@ function renderAnswerArea() {
 function mainAction() {
 
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
     return;
   }
@@ -1769,14 +1934,15 @@ function mainAction() {
 }
 
 
-/* =========================================
+/* =========================
    WEAK
-========================================= */
+========================= */
 
 function markWeak() {
 
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
     return;
   }
@@ -1789,9 +1955,10 @@ function markWeak() {
 
 
   if (
-    !weakWords.includes(
-      english
-    )
+    !weakWords
+      .includes(
+        english
+      )
   ) {
 
     weakWords.push(
@@ -1811,7 +1978,8 @@ function markWeak() {
 function markRemembered() {
 
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
     return;
   }
@@ -1828,7 +1996,8 @@ function markRemembered() {
       function(item) {
 
         return (
-          item !== english
+          item !==
+          english
         );
 
       }
@@ -1839,7 +2008,8 @@ function markRemembered() {
 
 
   if (
-    currentMode === "weak"
+    currentMode ===
+    "weak"
   ) {
 
     buildStudyItems();
@@ -1867,14 +2037,15 @@ function saveWeakWords() {
 }
 
 
-/* =========================================
+/* =========================
    NAV
-========================================= */
+========================= */
 
 function nextWord() {
 
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
     return;
   }
@@ -1902,7 +2073,8 @@ function nextWord() {
 function previousWord() {
 
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
     return;
   }
@@ -1926,9 +2098,9 @@ function previousWord() {
 }
 
 
-/* =========================================
+/* =========================
    PROGRESS
-========================================= */
+========================= */
 
 function updateProgress() {
 
@@ -1947,19 +2119,20 @@ function updateProgress() {
       "progressNumber"
     )
     .textContent =
-      number +
-      " / " +
-      total;
+      number
+      + " / "
+      + total;
 
 
   const percent =
     total === 0
       ? 0
-      : (
+      :
+        (
           number /
           total
-        ) *
-        100;
+        )
+        * 100;
 
 
   document
@@ -1972,9 +2145,9 @@ function updateProgress() {
 }
 
 
-/* =========================================
+/* =========================
    INFO
-========================================= */
+========================= */
 
 function renderInfo(
   word
@@ -1994,8 +2167,7 @@ function renderInfo(
     };
 
 
-  const rows =
-    [];
+  const rows = [];
 
 
   if (
@@ -2004,66 +2176,43 @@ function renderInfo(
   ) {
 
     if (f.base) {
-
       rows.push(
-        [
-          "原形",
-          f.base
-        ]
+        ["原形", f.base]
       );
-
     }
-
 
     if (f.past) {
-
       rows.push(
-        [
-          "過去形",
-          f.past
-        ]
+        ["過去形", f.past]
       );
-
     }
-
 
     if (
       f.pastParticiple
     ) {
-
       rows.push(
         [
           "過去分詞",
           f.pastParticiple
         ]
       );
-
     }
-
 
     if (f.ing) {
-
       rows.push(
-        [
-          "ing形",
-          f.ing
-        ]
+        ["ing形", f.ing]
       );
-
     }
-
 
     if (
       f.thirdPerson
     ) {
-
       rows.push(
         [
           "三単現",
           f.thirdPerson
         ]
       );
-
     }
 
   }
@@ -2075,42 +2224,31 @@ function renderInfo(
   ) {
 
     if (f.base) {
-
       rows.push(
-        [
-          "原級",
-          f.base
-        ]
+        ["原級", f.base]
       );
-
     }
-
 
     if (
       f.comparative
     ) {
-
       rows.push(
         [
           "比較級",
           f.comparative
         ]
       );
-
     }
-
 
     if (
       f.superlative
     ) {
-
       rows.push(
         [
           "最上級",
           f.superlative
         ]
       );
-
     }
 
   }
@@ -2164,8 +2302,7 @@ function renderInfo(
           <div class="form-sound">
 
             <button
-              onclick='speakEnglish(${JSON.stringify(row[1])})'
-              aria-label="発音を聞く">
+              onclick='speakEnglish(${JSON.stringify(row[1])})'>
               🔊
             </button>
 
@@ -2188,13 +2325,10 @@ function renderInfo(
   `;
 
 
-  const memoKey =
-    word.english;
-
-
   const memo =
-    memos[memoKey]
-    || "";
+    memos[
+      word.english
+    ] || "";
 
 
   info.innerHTML = `
@@ -2211,8 +2345,7 @@ function renderInfo(
 
         <button
           class="small-speaker"
-          onclick='speakEnglish(${JSON.stringify(word.english)})'
-          aria-label="単語の発音を聞く">
+          onclick='speakEnglish(${JSON.stringify(word.english)})'>
           🔊
         </button>
 
@@ -2268,14 +2401,15 @@ function renderInfo(
 }
 
 
-/* =========================================
+/* =========================
    MEMO
-========================================= */
+========================= */
 
 function saveMemo() {
 
   if (
-    studyItems.length === 0
+    studyItems.length
+    === 0
   ) {
     return;
   }
@@ -2286,18 +2420,22 @@ function saveMemo() {
       .word;
 
 
-  const value =
+  const input =
     document
       .getElementById(
         "memoInput"
-      )
-      .value;
+      );
+
+
+  if (!input) {
+    return;
+  }
 
 
   memos[
     word.english
   ] =
-    value;
+    input.value;
 
 
   localStorage.setItem(
@@ -2310,9 +2448,9 @@ function saveMemo() {
 }
 
 
-/* =========================================
+/* =========================
    BADGE
-========================================= */
+========================= */
 
 function getBadge(
   part
@@ -2323,11 +2461,9 @@ function getBadge(
   ) {
 
     return `
-
       <span class="badge badge-verb">
         動詞
       </span>
-
     `;
 
   }
@@ -2338,45 +2474,40 @@ function getBadge(
   ) {
 
     return `
-
       <span class="badge badge-noun">
         名詞
       </span>
-
     `;
 
   }
 
 
   if (
-    part === "adjective"
+    part ===
+    "adjective"
   ) {
 
     return `
-
       <span class="badge badge-adjective">
         形容詞
       </span>
-
     `;
 
   }
 
 
   return `
-
     <span class="badge badge-other">
       その他
     </span>
-
   `;
 
 }
 
 
-/* =========================================
+/* =========================
    ESCAPE
-========================================= */
+========================= */
 
 function escapeHTML(
   text
@@ -2395,23 +2526,16 @@ function escapeHTML(
 }
 
 
-/* =========================================
+/* =========================
    START
-========================================= */
-
-/*
- iOSでは音声一覧の取得が
- 少し遅れることがあるため
- 一度読み込ませます。
-*/
+========================= */
 
 if (
   "speechSynthesis"
   in window
 ) {
 
-  window
-    .speechSynthesis
+  speechSynthesis
     .getVoices();
 
 }
