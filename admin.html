@@ -326,28 +326,8 @@ textarea:focus {
 }
 
 .toolbar {
-  display: grid;
-
-  grid-template-columns:
-    minmax(0,1fr)
-    auto;
-
-  gap: 10px;
-
+  display: block;
   margin-bottom: 12px;
-}
-
-.backup-button {
-  padding: 12px 15px;
-
-  border: 0;
-  border-radius: 12px;
-
-  background: #edf3fb;
-  color: #315983;
-
-  font-size: 14px;
-  font-weight: 900;
 }
 
 .filters {
@@ -1122,15 +1102,6 @@ textarea:focus {
       type="text"
       placeholder="日本語または英単語で検索"
       oninput="showWords()">
-
-
-    <button
-      class="backup-button"
-      onclick="downloadBackup()">
-
-      ↓ バックアップ
-
-    </button>
 
 
   </div>
