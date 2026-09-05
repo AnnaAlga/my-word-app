@@ -212,6 +212,13 @@ button {
   border-color: #3986e8;
 }
 
+.range-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.range-select label { display: block; margin-bottom: 7px; color: #65738a; font-size: 13px; font-weight: 800; }
+.range-select select { width: 100%; padding: 13px; border: 2px solid #e0e6ef; border-radius: 13px; background: #f9fbfe; color: #31405a; font-size: 15px; font-weight: 800; }
+#testLessonField { display: none; }
+
+@media (max-width: 640px) { .range-grid { grid-template-columns: 1fr; } }
+
 .start-button {
   width: 100%;
 
@@ -1264,6 +1271,25 @@ button {
 
 
   <div class="setup-section">
+    <div class="setup-label">単語の範囲</div>
+    <div class="range-grid">
+      <div class="range-select">
+        <label for="testPresetRange">範囲</label>
+        <select id="testPresetRange" onchange="changeTestPresetRange()">
+          <option value="all">すべて</option>
+          <option value="elementary-300">小学校英語300語</option>
+          <option value="eiken4-100">英検4級100語</option>
+        </select>
+      </div>
+      <div id="testLessonField" class="range-select">
+        <label for="testPresetLesson">セット</label>
+        <select id="testPresetLesson" onchange="changeTestPresetLesson()"></select>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="setup-section">
 
     <div class="setup-label">
       テストの種類
@@ -1841,6 +1867,7 @@ button {
 
 
 
+<script src="presets.js?v=1"></script>
 <script>
 
 /* =========================================================
@@ -1869,6 +1896,10 @@ let memos =
       "wordMemos"
     )
   ) || {};
+
+const availablePresets = Array.isArray(window.MY_WORD_PRESETS) ? window.MY_WORD_PRESETS : [];
+let selectedPreset = "all";
+let selectedLesson = "all";
 
 
 
@@ -1969,6 +2000,65 @@ let fullCanvasHasStroke =
 
 
 /* =========================================================
+   RANGE
+========================================================= */
+
+function getPresetDefinition(presetId) {
+  return availablePresets.find(function(preset) { return preset.id === presetId; });
+}
+
+function getScopedWords() {
+  if (selectedPreset === "all") return words;
+  return words.filter(function(word) {
+    const memberships = word.presetMemberships || {};
+    if (!memberships[selectedPreset]) return false;
+    return selectedLesson === "all" || String(memberships[selectedPreset]) === String(selectedLesson);
+  });
+}
+
+function getDisplayEnglish(word) {
+  return word.displayEnglish || word.english;
+}
+
+function changeTestPresetRange() {
+  selectedPreset = document.getElementById("testPresetRange").value;
+  selectedLesson = "all";
+  const field = document.getElementById("testLessonField");
+  const select = document.getElementById("testPresetLesson");
+  const preset = getPresetDefinition(selectedPreset);
+  if (preset) {
+    select.innerHTML = '<option value="all">全セット</option>' + preset.lessonNames.map(function(name, index) {
+      return '<option value="' + (index + 1) + '">セット' + (index + 1) + '：' + name + '</option>';
+    }).join("");
+    field.style.display = "block";
+  } else {
+    field.style.display = "none";
+  }
+  updateSetupNote();
+}
+
+function changeTestPresetLesson() {
+  selectedLesson = document.getElementById("testPresetLesson").value;
+  updateSetupNote();
+}
+
+function initializeTestPresetRange() {
+  const params = new URLSearchParams(window.location.search);
+  const requestedPreset = params.get("preset");
+  const requestedLesson = params.get("lesson");
+  if (getPresetDefinition(requestedPreset)) {
+    document.getElementById("testPresetRange").value = requestedPreset;
+    selectedPreset = requestedPreset;
+    changeTestPresetRange();
+    const preset = getPresetDefinition(requestedPreset);
+    if (requestedLesson && Number(requestedLesson) >= 1 && Number(requestedLesson) <= preset.lessonNames.length) {
+      document.getElementById("testPresetLesson").value = requestedLesson;
+      selectedLesson = requestedLesson;
+    }
+  }
+}
+
+/* =========================================================
    SETTINGS
 ========================================================= */
 
@@ -2053,7 +2143,7 @@ function updateSetupNote() {
   ) {
 
     const count =
-      words
+      getScopedWords()
         .filter(
           function(word) {
 
@@ -2090,9 +2180,9 @@ function updateSetupNote() {
         "setupNote"
       )
       .textContent =
-        "現在の登録単語："
+        "選択範囲の単語："
         +
-        words.length
+        getScopedWords().length
         +
         "個";
 
@@ -2113,6 +2203,8 @@ function buildItems(
   const items =
     [];
 
+  const sourceWords = getScopedWords();
+
 
   /* 日本語 → 英語 */
 
@@ -2121,7 +2213,7 @@ function buildItems(
     "jaen"
   ) {
 
-    words.forEach(
+    sourceWords.forEach(
       function(word) {
 
         items.push({
@@ -2135,7 +2227,7 @@ function buildItems(
             word.japanese,
 
           answer:
-            word.english,
+            getDisplayEnglish(word),
 
           questionIsEnglish:
             false,
@@ -2159,7 +2251,7 @@ function buildItems(
     "enja"
   ) {
 
-    words.forEach(
+    sourceWords.forEach(
       function(word) {
 
         items.push({
@@ -2170,7 +2262,7 @@ function buildItems(
             "日本語の意味を入力してください",
 
           question:
-            word.english,
+            getDisplayEnglish(word),
 
           answer:
             word.japanese,
@@ -2197,7 +2289,7 @@ function buildItems(
     "weak"
   ) {
 
-    words
+    sourceWords
       .filter(
         function(word) {
 
@@ -2248,7 +2340,7 @@ function buildItems(
     "verb"
   ) {
 
-    words
+    sourceWords
       .filter(
         function(word) {
 
@@ -2399,7 +2491,7 @@ function buildItems(
     "adjective"
   ) {
 
-    words
+    sourceWords
       .filter(
         function(word) {
 
@@ -4490,7 +4582,7 @@ function renderInfo(
         <div class="info-word">
 
           ${escapeHTML(
-            word.english
+            getDisplayEnglish(word)
           )}
 
         </div>
@@ -4498,7 +4590,7 @@ function renderInfo(
 
         <button
           class="small-speaker"
-          onclick='speakEnglish(${JSON.stringify(word.english)})'>
+          onclick='speakEnglish(${JSON.stringify(getDisplayEnglish(word))})'>
 
           🔊
 
@@ -4951,6 +5043,7 @@ if (
 }
 
 
+initializeTestPresetRange();
 updateSetupNote();
 
 </script>

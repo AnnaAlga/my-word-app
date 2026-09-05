@@ -486,6 +486,72 @@ textarea:focus {
   color: #8792a2;
 }
 
+.word-pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.word-pager button {
+  min-width: 96px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 11px;
+  background: #e8f1ff;
+  color: #286ab0;
+  font-weight: 900;
+}
+
+.word-pager button:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+.page-status {
+  min-width: 110px;
+  color: #65738a;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   PRESETS
+========================================================= */
+
+.preset-section {
+  grid-column: 1 / -1;
+  padding: 24px;
+}
+
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.preset-card {
+  padding: 20px;
+  border: 2px solid #e6edf6;
+  border-radius: 18px;
+  background: #f9fbfe;
+}
+
+.preset-card h3 { margin: 0; font-size: 19px; line-height: 1.5; }
+.preset-card p { margin: 8px 0 0; color: #718096; font-size: 13px; line-height: 1.7; }
+.preset-card select { width: 100%; margin-top: 14px; padding: 11px; border: 1px solid #d8e1ed; border-radius: 11px; background: white; font-weight: 700; }
+.preset-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
+.preset-actions button, .preset-actions a { padding: 10px 12px; border: 0; border-radius: 11px; text-decoration: none; font-size: 13px; font-weight: 900; cursor: pointer; }
+.preset-preview-button { background: #e8f1ff; color: #286ab0; }
+.preset-add-button { background: #3986e8; color: white; }
+.preset-link { background: #e8f7ee; color: #277b49; }
+.preset-details { display: none; max-height: 260px; overflow: auto; margin-top: 14px; padding: 12px; border-radius: 12px; background: white; color: #536177; font-size: 13px; line-height: 1.8; }
+.preset-details.open { display: block; }
+.preset-lesson-title { margin-top: 8px; color: #243149; font-weight: 900; }
+
 
 /* =========================================================
    BACKUP CARD
@@ -636,6 +702,8 @@ textarea:focus {
     grid-template-columns:
       1fr;
   }
+
+  .preset-grid { grid-template-columns: 1fr; }
 
   .backup-card {
     grid-column: auto;
@@ -1101,7 +1169,7 @@ textarea:focus {
       id="search"
       type="text"
       placeholder="日本語または英単語で検索"
-      oninput="showWords()">
+      oninput="resetWordPage()">
 
 
   </div>
@@ -1172,6 +1240,29 @@ textarea:focus {
     class="table-wrap">
   </div>
 
+  <div id="wordPager" class="word-pager">
+    <button id="previousPageButton" onclick="changeWordPage(-1)">← 前へ</button>
+    <div id="pageStatus" class="page-status">1 / 1ページ</div>
+    <button id="nextPageButton" onclick="changeWordPage(1)">次へ →</button>
+  </div>
+
+
+</section>
+
+
+
+<!-- ======================================================
+     PRESETS
+====================================================== -->
+
+<section class="card preset-section">
+
+  <div class="section-title">📚 プリセットから追加</div>
+  <div class="section-subtitle">
+    20語ずつ内容を確認できます。すでに登録済みの単語は上書きせず、プリセット情報だけを追加します。
+  </div>
+
+  <div id="presetGrid" class="preset-grid"></div>
 
 </section>
 
@@ -1325,6 +1416,7 @@ textarea:focus {
 
 
 
+<script src="presets.js?v=1"></script>
 <script>
 
 /* =========================================================
@@ -1353,6 +1445,12 @@ let memos =
       "wordMemos"
     )
   ) || {};
+
+
+const availablePresets =
+  Array.isArray(window.MY_WORD_PRESETS)
+    ? window.MY_WORD_PRESETS
+    : [];
 
 
 
@@ -1400,6 +1498,18 @@ words =
       }
 
 
+      if (
+        word.presetMemberships
+        &&
+        typeof word.presetMemberships !== "object"
+      ) {
+
+        delete word.presetMemberships;
+        dataChanged = true;
+
+      }
+
+
       return word;
 
     }
@@ -1426,6 +1536,14 @@ let editingIndex =
 
 let currentFilter =
   "all";
+
+
+let currentWordPage =
+  1;
+
+
+const wordsPerPage =
+  20;
 
 
 
@@ -1803,6 +1921,21 @@ function saveWord() {
   };
 
 
+  if (editingIndex !== null) {
+
+    const previousWord = words[editingIndex];
+
+    if (previousWord.presetMemberships) {
+      newWord.presetMemberships = previousWord.presetMemberships;
+    }
+
+    if (previousWord.displayEnglish) {
+      newWord.displayEnglish = previousWord.displayEnglish;
+    }
+
+  }
+
+
 
   if (
     editingIndex ===
@@ -2080,20 +2213,22 @@ function showWords() {
   }
 
 
-  document
-    .getElementById(
-      "count"
-    )
-    .textContent =
-      "表示 "
-      +
-      filtered.length
-      +
-      " 件 / 全 "
-      +
-      words.length
-      +
-      " 件";
+  const filteredCount = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(filteredCount / wordsPerPage));
+  currentWordPage = Math.min(Math.max(1, currentWordPage), totalPages);
+  const pageStart = (currentWordPage - 1) * wordsPerPage;
+  const pageEnd = Math.min(pageStart + wordsPerPage, filteredCount);
+  const pageItems = filtered.slice(pageStart, pageEnd);
+
+  document.getElementById("count").textContent =
+    filteredCount === 0
+      ? "表示 0件 / 全 " + words.length + "件"
+      : "表示 " + (pageStart + 1) + "〜" + pageEnd + "件 / 絞り込み " + filteredCount + "件 / 全 " + words.length + "件";
+
+  document.getElementById("wordPager").style.display = filteredCount === 0 ? "none" : "flex";
+  document.getElementById("pageStatus").textContent = currentWordPage + " / " + totalPages + "ページ";
+  document.getElementById("previousPageButton").disabled = currentWordPage <= 1;
+  document.getElementById("nextPageButton").disabled = currentWordPage >= totalPages;
 
 
   const list =
@@ -2104,7 +2239,7 @@ function showWords() {
 
 
   if (
-    filtered.length ===
+    filteredCount ===
     0
   ) {
 
@@ -2156,7 +2291,7 @@ function showWords() {
   `;
 
 
-  filtered.forEach(
+  pageItems.forEach(
     function(item) {
 
       const word =
@@ -2181,7 +2316,7 @@ function showWords() {
             <div class="word-english">
 
               ${escapeHTML(
-                word.english
+                word.displayEnglish || word.english
               )}
 
             </div>
@@ -2413,6 +2548,8 @@ function setFilter(
   currentFilter =
     filter;
 
+  currentWordPage = 1;
+
 
   document
     .querySelectorAll(
@@ -2439,6 +2576,19 @@ function setFilter(
 
   showWords();
 
+}
+
+
+function resetWordPage() {
+  currentWordPage = 1;
+  showWords();
+}
+
+
+function changeWordPage(direction) {
+  currentWordPage += direction;
+  showWords();
+  document.getElementById("wordList").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 
@@ -2853,6 +3003,113 @@ function cancelEdit() {
 
 
 /* =========================================================
+   PRESETS
+========================================================= */
+
+function getPreset(presetId) {
+  return availablePresets.find(function(preset) {
+    return preset.id === presetId;
+  });
+}
+
+function getPresetImportSummary(preset) {
+  let newCount = 0;
+  let existingCount = 0;
+  preset.words.forEach(function(presetWord) {
+    const key = normalizeEnglish(presetWord.english);
+    const found = words.some(function(word) {
+      return normalizeEnglish(word.english) === key;
+    });
+    if (found) existingCount += 1;
+    else newCount += 1;
+  });
+  return { newCount: newCount, existingCount: existingCount };
+}
+
+function importPreset(presetId) {
+  const preset = getPreset(presetId);
+  if (!preset) return;
+  const summary = getPresetImportSummary(preset);
+  const message = preset.name + "を追加します。\n\n" +
+    "・新しく追加：" + summary.newCount + "語\n" +
+    "・登録済みを利用：" + summary.existingCount + "語\n\n" +
+    "登録済み単語の意味・品詞・変化形・自分メモ・苦手登録は変更しません。";
+  if (!confirm(message)) return;
+
+  preset.words.forEach(function(presetWord) {
+    const key = normalizeEnglish(presetWord.english);
+    const existing = words.find(function(word) {
+      return normalizeEnglish(word.english) === key;
+    });
+    const lesson = presetWord.presetMemberships[preset.id];
+    if (existing) {
+      if (!existing.presetMemberships || typeof existing.presetMemberships !== "object") {
+        existing.presetMemberships = {};
+      }
+      existing.presetMemberships[preset.id] = lesson;
+    } else {
+      words.push(JSON.parse(JSON.stringify(presetWord)));
+    }
+  });
+
+  saveWords();
+  showWords();
+  updateBackupStats();
+  renderPresets();
+  showToast(summary.newCount + "語を追加し、" + summary.existingCount + "語を利用しました");
+}
+
+function selectedPresetLesson(presetId) {
+  const select = document.getElementById("presetLesson-" + presetId);
+  return select ? select.value : "1";
+}
+
+function openPresetPage(page, presetId) {
+  const lesson = selectedPresetLesson(presetId);
+  window.location.href = page + "?preset=" + encodeURIComponent(presetId) + "&lesson=" + encodeURIComponent(lesson);
+}
+
+function togglePresetDetails(presetId) {
+  const details = document.getElementById("presetDetails-" + presetId);
+  if (details) details.classList.toggle("open");
+}
+
+function renderPresets() {
+  const grid = document.getElementById("presetGrid");
+  if (!grid) return;
+  if (availablePresets.length === 0) {
+    grid.innerHTML = '<div class="empty">プリセットを読み込めませんでした。手入力など従来の機能はそのまま利用できます。</div>';
+    return;
+  }
+
+  grid.innerHTML = availablePresets.map(function(preset) {
+    const summary = getPresetImportSummary(preset);
+    const options = preset.lessonNames.map(function(name, index) {
+      return '<option value="' + (index + 1) + '">セット' + (index + 1) + '：' + escapeHTML(name) + '（20語）</option>';
+    }).join("");
+    const details = preset.lessonNames.map(function(name, index) {
+      const lesson = index + 1;
+      const names = preset.words.filter(function(word) {
+        return word.presetMemberships[preset.id] === lesson;
+      }).map(function(word) {
+        return escapeHTML(word.displayEnglish || word.english) + '（' + escapeHTML(word.japanese) + '）';
+      }).join('、');
+      return '<div class="preset-lesson-title">セット' + lesson + '：' + escapeHTML(name) + '</div><div>' + names + '</div>';
+    }).join("");
+    return '<article class="preset-card"><h3>' + escapeHTML(preset.name) + '</h3>' +
+      '<p>' + escapeHTML(preset.sourceNote) + '</p>' +
+      '<p><strong>追加予定：</strong>新規 ' + summary.newCount + '語 ／ 登録済み利用 ' + summary.existingCount + '語</p>' +
+      '<select id="presetLesson-' + preset.id + '">' + options + '</select>' +
+      '<div class="preset-actions">' +
+        '<button class="preset-preview-button" onclick="togglePresetDetails(\'' + preset.id + '\')">内容を見る</button>' +
+        '<button class="preset-add-button" onclick="importPreset(\'' + preset.id + '\')">単語帳に追加</button>' +
+        '<button class="preset-link" onclick="openPresetPage(\'index.html\',\'' + preset.id + '\')">セットを学習</button>' +
+        '<button class="preset-link" onclick="openPresetPage(\'test.html\',\'' + preset.id + '\')">セットでテスト</button>' +
+      '</div><div id="presetDetails-' + preset.id + '" class="preset-details">' + details + '</div></article>';
+  }).join("");
+}
+
+/* =========================================================
    BACKUP DOWNLOAD
 ========================================================= */
 
@@ -2870,7 +3127,7 @@ function downloadBackup() {
       "MY WORDS",
 
     version:
-      1,
+      2,
 
     exportedAt:
       new Date()
@@ -3081,6 +3338,8 @@ function restoreBackup(
           !Array.isArray(
             backup.data.words
           )
+          ||
+          ![1, 2].includes(Number(backup.version || 1))
         ) {
 
           alert(
@@ -3093,7 +3352,16 @@ function restoreBackup(
 
 
         const restoredWords =
-          backup.data.words;
+          backup.data.words.map(function(word) {
+            const restored = Object.assign({}, word);
+            restored.english = normalizeEnglish(restored.english);
+            restored.partOfSpeech = restored.partOfSpeech || "other";
+            restored.forms = restored.forms || { base: restored.english };
+            if (restored.presetMemberships && typeof restored.presetMemberships !== "object") {
+              delete restored.presetMemberships;
+            }
+            return restored;
+          });
 
 
         const restoredWeakWords =
@@ -3517,6 +3785,9 @@ function escapeHTML(
 ========================================================= */
 
 changePartOfSpeech();
+
+
+renderPresets();
 
 
 showWords();

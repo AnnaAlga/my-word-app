@@ -136,6 +136,28 @@ textarea {
   background: #f0edff;
 }
 
+.range-panel {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 4px 18px rgba(45,60,90,.06);
+}
+
+.range-field { flex: 1; }
+.range-field label { display: block; margin-bottom: 6px; color: #65738a; font-size: 13px; font-weight: 800; }
+.range-field select { width: 100%; padding: 11px 12px; border: 1px solid #d9e2ee; border-radius: 11px; background: #f9fbfe; color: #31405a; font-size: 15px; font-weight: 800; }
+#lessonField { display: none; }
+.range-count { min-width: 95px; padding-bottom: 11px; color: #64748b; text-align: right; font-weight: 800; }
+
+@media (max-width: 640px) {
+  .range-panel { align-items: stretch; flex-direction: column; }
+  .range-count { padding: 0; text-align: left; }
+}
+
 /* =========================
    MAIN LAYOUT
 ========================= */
@@ -704,6 +726,23 @@ textarea {
 </div>
 
 
+<div class="range-panel">
+  <div class="range-field">
+    <label for="presetRange">単語の範囲</label>
+    <select id="presetRange" onchange="changePresetRange()">
+      <option value="all">すべて</option>
+      <option value="elementary-300">小学校英語300語</option>
+      <option value="eiken4-100">英検4級100語</option>
+    </select>
+  </div>
+  <div id="lessonField" class="range-field">
+    <label for="presetLesson">セット</label>
+    <select id="presetLesson" onchange="changePresetLesson()"></select>
+  </div>
+  <div id="rangeCount" class="range-count">0語</div>
+</div>
+
+
 <div class="study-layout">
 
   <section class="card study-card">
@@ -855,6 +894,7 @@ textarea {
 </div>
 
 
+<script src="presets.js?v=1"></script>
 <script>
 
 /* =========================
@@ -883,6 +923,10 @@ let memos =
       "wordMemos"
     )
   ) || {};
+
+const availablePresets = Array.isArray(window.MY_WORD_PRESETS) ? window.MY_WORD_PRESETS : [];
+let selectedPreset = "all";
+let selectedLesson = "all";
 
 
 /* 古いデータにも対応 */
@@ -1136,12 +1180,77 @@ function setMode(
 
 
 /* =========================
+   RANGE
+========================= */
+
+function getPresetDefinition(presetId) {
+  return availablePresets.find(function(preset) { return preset.id === presetId; });
+}
+
+function getScopedWords() {
+  if (selectedPreset === "all") return words;
+  return words.filter(function(word) {
+    const memberships = word.presetMemberships || {};
+    if (!memberships[selectedPreset]) return false;
+    return selectedLesson === "all" || String(memberships[selectedPreset]) === String(selectedLesson);
+  });
+}
+
+function getDisplayEnglish(word) {
+  return word.displayEnglish || word.english;
+}
+
+function changePresetRange() {
+  selectedPreset = document.getElementById("presetRange").value;
+  selectedLesson = "all";
+  const field = document.getElementById("lessonField");
+  const select = document.getElementById("presetLesson");
+  const preset = getPresetDefinition(selectedPreset);
+  if (preset) {
+    select.innerHTML = '<option value="all">全セット</option>' + preset.lessonNames.map(function(name, index) {
+      return '<option value="' + (index + 1) + '">セット' + (index + 1) + '：' + name + '</option>';
+    }).join("");
+    field.style.display = "block";
+  } else {
+    field.style.display = "none";
+  }
+  current = 0;
+  buildStudyItems();
+}
+
+function changePresetLesson() {
+  selectedLesson = document.getElementById("presetLesson").value;
+  current = 0;
+  buildStudyItems();
+}
+
+function initializePresetRange() {
+  const params = new URLSearchParams(window.location.search);
+  const requestedPreset = params.get("preset");
+  const requestedLesson = params.get("lesson");
+  if (getPresetDefinition(requestedPreset)) {
+    document.getElementById("presetRange").value = requestedPreset;
+    selectedPreset = requestedPreset;
+    changePresetRange();
+    const preset = getPresetDefinition(requestedPreset);
+    if (requestedLesson && Number(requestedLesson) >= 1 && Number(requestedLesson) <= preset.lessonNames.length) {
+      document.getElementById("presetLesson").value = requestedLesson;
+      selectedLesson = requestedLesson;
+    }
+  }
+}
+
+/* =========================
    BUILD
 ========================= */
 
 function buildStudyItems() {
 
   studyItems = [];
+
+  const scopedWords = getScopedWords();
+
+  document.getElementById("rangeCount").textContent = scopedWords.length + "語";
 
 
   if (
@@ -1153,7 +1262,7 @@ function buildStudyItems() {
   ) {
 
     studyItems =
-      words.map(
+      scopedWords.map(
         function(word) {
 
           return {
@@ -1163,14 +1272,14 @@ function buildStudyItems() {
             question:
               currentMode
               === "basic"
-                ? word.english
+                ? getDisplayEnglish(word)
                 : word.japanese,
 
             answer:
               currentMode
               === "basic"
                 ? word.japanese
-                : word.english
+                : getDisplayEnglish(word)
 
           };
 
@@ -1186,7 +1295,7 @@ function buildStudyItems() {
   ) {
 
     studyItems =
-      words
+      scopedWords
         .filter(
           function(word) {
 
@@ -1207,7 +1316,7 @@ function buildStudyItems() {
               word: word,
 
               question:
-                word.english,
+                getDisplayEnglish(word),
 
               answer:
                 word.japanese
@@ -1225,7 +1334,7 @@ function buildStudyItems() {
     "verb"
   ) {
 
-    words
+    scopedWords
       .filter(
         function(word) {
 
@@ -1341,7 +1450,7 @@ function buildStudyItems() {
     "adjective"
   ) {
 
-    words
+    scopedWords
       .filter(
         function(word) {
 
@@ -2341,13 +2450,13 @@ function renderInfo(
 
         <div class="info-word">
           ${escapeHTML(
-            word.english
+            getDisplayEnglish(word)
           )}
         </div>
 
         <button
           class="small-speaker"
-          onclick='speakEnglish(${JSON.stringify(word.english)})'>
+          onclick='speakEnglish(${JSON.stringify(getDisplayEnglish(word))})'>
           🔊
         </button>
 
@@ -2543,6 +2652,7 @@ if (
 }
 
 
+initializePresetRange();
 buildStudyItems();
 
 </script>
