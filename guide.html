@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>MY WORDS 使い方</title>
+
+
+<style>
+
+/* =========================================================
+   BASIC
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 22px;
+
+  background: #f4f8fc;
+  color: #243149;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  max-width: 1400px;
+  margin: auto;
+}
+
+a {
+  color: inherit;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+
+  margin-bottom: 18px;
+}
+
+.logo {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  margin-left: 10px;
+
+  color: #76839a;
+
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.main-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.main-nav a {
+  min-width: 120px;
+
+  padding: 13px 18px;
+
+  text-decoration: none;
+  text-align: center;
+
+  color: #243149;
+  background: #eaf1fa;
+
+  border-radius: 14px;
+
+  font-weight: 800;
+}
+
+.main-nav a.active {
+  background: #3986e8;
+  color: white;
+}
+
+
+/* =========================================================
+   COMMON
+========================================================= */
+
+.card {
+  background: white;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 5px 22px
+    rgba(45,60,90,.08);
+}
+
+.section {
+  margin-top: 20px;
+}
+
+.section-title {
+  margin-bottom: 7px;
+
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.section-subtitle {
+  margin-bottom: 18px;
+
+  color: #778599;
+
+  line-height: 1.7;
+}
+
+.highlight {
+  color: #3986e8;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  padding: 40px;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eaf4ff,
+      #fff5f8
+    );
+}
+
+.hero-icon {
+  font-size: 64px;
+}
+
+.hero-title {
+  margin-top: 10px;
+
+  font-size: clamp(
+    36px,
+    6vw,
+    62px
+  );
+
+  font-weight: 900;
+}
+
+.hero-text {
+  max-width: 750px;
+
+  margin:
+    15px
+    auto
+    0;
+
+  color: #65738a;
+
+  font-size: 19px;
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   3 STEPS
+========================================================= */
+
+.steps {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 16px;
+
+  margin-top: 20px;
+}
+
+.step-card {
+  padding: 25px;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.step-number {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #3986e8;
+  color: white;
+
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.step-icon {
+  margin-top: 18px;
+
+  font-size: 42px;
+}
+
+.step-title {
+  margin-top: 12px;
+
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.step-text {
+  margin-top: 8px;
+
+  color: #69778b;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   FEATURE CARDS
+========================================================= */
+
+.feature-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 18px;
+}
+
+.feature-card {
+  padding: 26px;
+}
+
+.feature-head {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 17px;
+}
+
+.feature-icon {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  font-size: 28px;
+}
+
+.feature-learning {
+  background: #e6f2ff;
+}
+
+.feature-test {
+  background: #fff0f3;
+}
+
+.feature-admin {
+  background: #eef9f1;
+}
+
+.feature-backup {
+  background: #fff5da;
+}
+
+.feature-title {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.feature-text {
+  color: #68768a;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   MODE LIST
+========================================================= */
+
+.mode-list {
+  display: grid;
+
+  gap: 10px;
+
+  margin-top: 16px;
+}
+
+.mode-row {
+  display: grid;
+
+  grid-template-columns:
+    180px 1fr;
+
+  gap: 14px;
+
+  align-items: center;
+
+  padding: 13px 15px;
+
+  border-radius: 13px;
+
+  background: #f5f8fb;
+}
+
+.mode-name {
+  font-weight: 900;
+}
+
+.mode-description {
+  color: #6f7c8f;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   TEST FLOW
+========================================================= */
+
+.test-flow {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+
+  margin-top: 18px;
+}
+
+.flow-card {
+  position: relative;
+
+  min-height: 170px;
+
+  padding: 20px;
+
+  text-align: center;
+
+  border-radius: 17px;
+
+  background: #f7f9fc;
+}
+
+.flow-icon {
+  font-size: 38px;
+}
+
+.flow-title {
+  margin-top: 10px;
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.flow-text {
+  margin-top: 7px;
+
+  color: #748196;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   EXAMPLE WORD
+========================================================= */
+
+.example-card {
+  padding: 25px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff7f9,
+      #f0f8ff
+    );
+}
+
+.example-label {
+  color: #7b8799;
+
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.example-japanese {
+  margin-top: 8px;
+
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.example-type {
+  display: inline-block;
+
+  margin-top: 10px;
+
+  padding: 7px 11px;
+
+  border-radius: 10px;
+
+  background: #ffe0e6;
+  color: #bd3f58;
+
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.example-table {
+  width: 100%;
+
+  margin-top: 18px;
+
+  border-collapse: collapse;
+}
+
+.example-table td {
+  padding: 11px 13px;
+
+  border-bottom:
+    1px solid
+    rgba(100,120,150,.15);
+}
+
+.example-table td:first-child {
+  width: 180px;
+
+  font-weight: 900;
+
+  color: #577099;
+}
+
+
+/* =========================================================
+   TIP
+========================================================= */
+
+.tip-box {
+  padding: 22px;
+
+  border-radius: 18px;
+
+  background: #fff7da;
+
+  border:
+    2px solid
+    #f4df91;
+}
+
+.tip-title {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.tip-text {
+  margin-top: 8px;
+
+  color: #6e6033;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   HOME SCREEN GUIDE
+========================================================= */
+
+.ipad-guide {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 18px;
+}
+
+.ipad-card {
+  padding: 25px;
+}
+
+.ipad-number {
+  display: inline-flex;
+
+  width: 38px;
+  height: 38px;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
+
+  background: #3986e8;
+  color: white;
+
+  font-weight: 900;
+}
+
+.ipad-title {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.ipad-text {
+  margin-top: 12px;
+
+  color: #6f7d90;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   BACKUP
+========================================================= */
+
+.backup-flow {
+  margin-top: 16px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+}
+
+.backup-pill {
+  padding: 12px 17px;
+
+  border-radius: 14px;
+
+  background: #eef4fb;
+
+  font-weight: 900;
+}
+
+.arrow {
+  color: #7b8798;
+
+  font-size: 22px;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta {
+  margin-top: 22px;
+
+  padding: 38px;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eaf4ff,
+      #effbf3
+    );
+}
+
+.cta-title {
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.cta-text {
+  margin-top: 10px;
+
+  color: #66758a;
+
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.cta-buttons {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+
+  margin-top: 22px;
+}
+
+.cta-button {
+  min-width: 210px;
+
+  padding: 15px 20px;
+
+  border-radius: 15px;
+
+  text-decoration: none;
+
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.cta-primary {
+  background: #3986e8;
+  color: white;
+}
+
+.cta-secondary {
+  background: white;
+  color: #2f659d;
+
+  border:
+    2px solid
+    #cfe3fa;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+  padding: 35px 20px 20px;
+
+  text-align: center;
+
+  color: #8a96a6;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (
+  max-width: 1000px
+) {
+
+  .steps {
+    grid-template-columns:
+      1fr;
+  }
+
+  .feature-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .test-flow {
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .ipad-guide {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+@media (
+  max-width: 700px
+) {
+
+  body {
+    padding: 13px;
+  }
+
+  .header {
+    display: block;
+  }
+
+  .main-nav {
+    margin-top: 12px;
+
+    display: grid;
+
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .main-nav a {
+    min-width: 0;
+
+    padding: 11px 7px;
+  }
+
+  .hero {
+    padding: 28px 18px;
+  }
+
+  .test-flow {
+    grid-template-columns:
+      1fr;
+  }
+
+  .mode-row {
+    grid-template-columns:
+      1fr;
+  }
+
+  .example-table td:first-child {
+    width: 110px;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<!-- ======================================================
+     HEADER
+====================================================== -->
+
+<header class="header">
+
+  <div class="logo">
+
+    MY WORDS
+
+    <span>
+      使い方
+    </span>
+
+  </div>
+
+
+  <nav class="main-nav">
+
+    <a href="index.html">
+      📖 学習
+    </a>
+
+    <a href="test.html">
+      ✏️ テスト
+    </a>
+
+    <a href="admin.html">
+      ⚙️ 管理
+    </a>
+
+    <a
+      href="guide.html"
+      class="active">
+      ❓ 使い方
+    </a>
+
+  </nav>
+
+</header>
+
+
+
+<!-- ======================================================
+     HERO
+====================================================== -->
+
+<section class="card hero">
+
+  <div class="hero-icon">
+    📚
+  </div>
+
+  <div class="hero-title">
+    MY WORDS の使い方
+  </div>
+
+  <div class="hero-text">
+
+    自分で英単語を登録して、
+    覚えて、テストして、
+    苦手な単語をくり返し練習できる
+    <strong>自分だけの英単語帳</strong>です。
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     3 STEPS
+====================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    まずはこの
+    <span class="highlight">
+      3ステップ
+    </span>
+  </div>
+
+  <div class="section-subtitle">
+
+    はじめて使うときは、
+    この順番でやってみましょう。
+
+  </div>
+
+
+  <div class="steps">
+
+
+    <div class="card step-card">
+
+      <div class="step-number">
+        1
+      </div>
+
+      <div class="step-icon">
+        ⚙️
+      </div>
+
+      <div class="step-title">
+        単語を登録する
+      </div>
+
+      <div class="step-text">
+
+        「管理」から、
+        今日習った単語や
+        覚えたい単語を登録します。
+
+      </div>
+
+    </div>
+
+
+
+    <div class="card step-card">
+
+      <div class="step-number">
+        2
+      </div>
+
+      <div class="step-icon">
+        📖
+      </div>
+
+      <div class="step-title">
+        学習する
+      </div>
+
+      <div class="step-text">
+
+        意味や変化形を見ながら覚えます。
+        分からない単語は
+        「まだ不安」にしておきましょう。
+
+      </div>
+
+    </div>
+
+
+
+    <div class="card step-card">
+
+      <div class="step-number">
+        3
+      </div>
+
+      <div class="step-icon">
+        ✏️
+      </div>
+
+      <div class="step-title">
+        テストする
+      </div>
+
+      <div class="step-text">
+
+        覚えたらテスト！
+        間違えた単語は自動で
+        「苦手」に追加されます。
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     LEARNING
+====================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    📖 学習画面
+  </div>
+
+  <div class="section-subtitle">
+
+    覚え方に合わせて、
+    いろいろな練習ができます。
+
+  </div>
+
+
+  <div class="feature-grid">
+
+
+    <div class="card feature-card">
+
+
+      <div class="feature-head">
+
+        <div class="feature-icon feature-learning">
+          📖
+        </div>
+
+        <div class="feature-title">
+          学習モード
+        </div>
+
+      </div>
+
+
+      <div class="feature-text">
+
+        「答えを見る」を押すまでは、
+        答えは表示されません。
+
+        🔊 を押すと、
+        英語の発音も聞けます。
+
+      </div>
+
+
+      <div class="mode-list">
+
+
+        <div class="mode-row">
+
+          <div class="mode-name">
+            📖 基本単語
+          </div>
+
+          <div class="mode-description">
+            英語を見て、日本語の意味を考える
+          </div>
+
+        </div>
+
+
+        <div class="mode-row">
+
+          <div class="mode-name">
+            ✏️ 日本語から英単語
+          </div>
+
+          <div class="mode-description">
+            日本語を見て、英単語を考える
+          </div>
+
+        </div>
+
+
+        <div class="mode-row">
+
+          <div class="mode-name">
+            🔁 動詞の変化
+          </div>
+
+          <div class="mode-description">
+            go → went → gone などを覚える
+          </div>
+
+        </div>
+
+
+        <div class="mode-row">
+
+          <div class="mode-name">
+            👑 形容詞の変化
+          </div>
+
+          <div class="mode-description">
+            big → bigger → biggest などを覚える
+          </div>
+
+        </div>
+
+
+        <div class="mode-row">
+
+          <div class="mode-name">
+            ★ 苦手練習
+          </div>
+
+          <div class="mode-description">
+            苦手に登録した単語だけを練習
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+
+    <div class="card feature-card">
+
+
+      <div class="feature-head">
+
+        <div class="feature-icon feature-learning">
+          📝
+        </div>
+
+        <div class="feature-title">
+          自分メモ
+        </div>
+
+      </div>
+
+
+      <div class="feature-text">
+
+        単語ごとに、
+        自分だけのメモを残せます。
+
+        たとえば、
+
+        <br><br>
+
+        「スペルをよく間違える」
+
+        <br>
+
+        「went は goed ではない」
+
+        <br>
+
+        「学校のテストに出る」
+
+        <br><br>
+
+        など、
+        自分が覚えやすい内容を書いてみましょう。
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     TEST
+====================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    ✏️ テスト画面
+  </div>
+
+  <div class="section-subtitle">
+
+    覚えた単語を、
+    実際に入力して確認できます。
+
+  </div>
+
+
+  <div class="card feature-card">
+
+
+    <div class="test-flow">
+
+
+      <div class="flow-card">
+
+        <div class="flow-icon">
+          🎯
+        </div>
+
+        <div class="flow-title">
+          テストを選ぶ
+        </div>
+
+        <div class="flow-text">
+
+          日本語→英語、
+          動詞変化、
+          苦手だけなどから選択。
+
+        </div>
+
+      </div>
+
+
+
+      <div class="flow-card">
+
+        <div class="flow-icon">
+          🔢
+        </div>
+
+        <div class="flow-title">
+          問題数を選ぶ
+        </div>
+
+        <div class="flow-text">
+
+          5問・10問・20問・全部
+          から選べます。
+
+        </div>
+
+      </div>
+
+
+
+      <div class="flow-card">
+
+        <div class="flow-icon">
+          ✍️
+        </div>
+
+        <div class="flow-title">
+          間違えたら3回
+        </div>
+
+        <div class="flow-text">
+
+          iPadの大きな画面で、
+          正しい英語を3回書いて練習。
+
+        </div>
+
+      </div>
+
+
+
+      <div class="flow-card">
+
+        <div class="flow-icon">
+          🔁
+        </div>
+
+        <div class="flow-title">
+          もう一度
+        </div>
+
+        <div class="flow-text">
+
+          間違えた問題だけを
+          もう一度テストできます。
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <div
+      class="tip-box"
+      style="margin-top:20px;">
+
+
+      <div class="tip-title">
+        💡 間違えても大丈夫！
+      </div>
+
+      <div class="tip-text">
+
+        間違えた単語は
+        自動で「苦手単語」に入ります。
+
+        正しいスペルを3回書いて、
+        自分メモを書いてから、
+        次の問題へ進みましょう。
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     ADMIN
+====================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    ⚙️ 自分の単語帳を作ろう
+  </div>
+
+  <div class="section-subtitle">
+
+    MY WORDS は、
+    自分で登録した単語が
+    そのまま自分の教材になります。
+
+  </div>
+
+
+  <div class="feature-grid">
+
+
+    <div class="card feature-card">
+
+
+      <div class="feature-head">
+
+        <div class="feature-icon feature-admin">
+          ➕
+        </div>
+
+        <div class="feature-title">
+          単語を登録
+        </div>
+
+      </div>
+
+
+      <div class="feature-text">
+
+        日本語と英単語を登録します。
+
+        品詞を選ぶと、
+        動詞や形容詞の変化も
+        登録できます。
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="card example-card">
+
+
+      <div class="example-label">
+        登録例
+      </div>
+
+      <div class="example-japanese">
+        行く
+      </div>
+
+      <div class="example-type">
+        動詞
+      </div>
+
+
+      <table class="example-table">
+
+        <tr>
+          <td>
+            原形
+          </td>
+          <td>
+            go
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            過去形
+          </td>
+          <td>
+            went
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            過去分詞
+          </td>
+          <td>
+            gone
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            ing形
+          </td>
+          <td>
+            going
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            三単現
+          </td>
+          <td>
+            goes
+          </td>
+        </tr>
+
+      </table>
+
+
+    </div>
+
+
+  </div>
+
+
+  <div
+    class="tip-box"
+    style="margin-top:18px;">
+
+
+    <div class="tip-title">
+      🌱 全部入力しなくてもOK
+    </div>
+
+    <div class="tip-text">
+
+      まだ習っていない変化形は、
+      空欄のままで大丈夫です。
+
+      今習っている内容から
+      少しずつ増やしていきましょう。
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     BACKUP
+====================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    💾 バックアップをしよう
+  </div>
+
+  <div class="section-subtitle">
+
+    MY WORDS のデータは、
+    今使っているiPadやブラウザに保存されます。
+
+    大切な単語帳なので、
+    ときどきバックアップしておくと安心です。
+
+  </div>
+
+
+  <div class="card feature-card">
+
+
+    <div class="backup-flow">
+
+      <div class="backup-pill">
+        ⚙️ 管理
+      </div>
+
+      <div class="arrow">
+        →
+      </div>
+
+      <div class="backup-pill">
+        💾 バックアップを保存
+      </div>
+
+      <div class="arrow">
+        →
+      </div>
+
+      <div class="backup-pill">
+        JSONファイルを保管
+      </div>
+
+    </div>
+
+
+    <div
+      class="tip-box"
+      style="margin-top:20px;">
+
+
+      <div class="tip-title">
+        📱 新しいiPadにも移せます
+      </div>
+
+      <div class="tip-text">
+
+        新しいiPadでMY WORDSを開いて、
+
+        「管理」
+        →
+        「バックアップを読み込む」
+
+        を選び、
+        保存しておいたファイルを読み込めば、
+        単語・苦手・メモを戻せます。
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     HOME SCREEN
+====================================================== -->
+
+<section class="section">
+
+  <div class="section-title">
+    📱 iPadのホーム画面に追加
+  </div>
+
+  <div class="section-subtitle">
+
+    ホーム画面に追加すると、
+    普通のアプリのように
+    MY WORDSを開けます。
+
+  </div>
+
+
+  <div class="ipad-guide">
+
+
+    <div class="card ipad-card">
+
+
+      <div class="ipad-title">
+
+        <span class="ipad-number">
+          1
+        </span>
+
+        SafariでMY WORDSを開く
+
+      </div>
+
+
+      <div class="ipad-text">
+
+        まず、
+        SafariでMY WORDSのページを開きます。
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="card ipad-card">
+
+
+      <div class="ipad-title">
+
+        <span class="ipad-number">
+          2
+        </span>
+
+        共有ボタンを押す
+
+      </div>
+
+
+      <div class="ipad-text">
+
+        Safariの
+        「□↑」のような共有ボタンを押します。
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="card ipad-card">
+
+
+      <div class="ipad-title">
+
+        <span class="ipad-number">
+          3
+        </span>
+
+        ホーム画面に追加
+
+      </div>
+
+
+      <div class="ipad-text">
+
+        メニューの中から
+        「ホーム画面に追加」を選びます。
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="card ipad-card">
+
+
+      <div class="ipad-title">
+
+        <span class="ipad-number">
+          4
+        </span>
+
+        MY WORDSからスタート
+
+      </div>
+
+
+      <div class="ipad-text">
+
+        ホーム画面にできた
+        MY WORDSのアイコンを押せば、
+        すぐ学習できます。
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     DATA
+====================================================== -->
+
+<section class="section">
+
+  <div class="card feature-card">
+
+
+    <div class="feature-head">
+
+      <div class="feature-icon feature-backup">
+        🔐
+      </div>
+
+      <div class="feature-title">
+        自分の単語データについて
+      </div>
+
+    </div>
+
+
+    <div class="feature-text">
+
+      同じMY WORDSのURLを
+      友達が使っても、
+      登録した単語が混ざることはありません。
+
+      <br><br>
+
+      それぞれのiPad・ブラウザに
+      自分の単語が保存されます。
+
+      <br><br>
+
+      ただし、
+      SafariのWebサイトデータを削除した場合などは、
+      保存した単語が消えることがあります。
+
+      そのため、
+      定期的なバックアップがおすすめです。
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     CTA
+====================================================== -->
+
+<section class="card cta">
+
+
+  <div class="cta-title">
+
+    さあ、
+    自分だけの単語帳を作ってみよう！
+
+  </div>
+
+
+  <div class="cta-text">
+
+    まずは今日習った単語を
+    <strong>5個</strong>
+    登録して、
+
+    <br>
+
+    5問テストに挑戦してみましょう 🎉
+
+  </div>
+
+
+  <div class="cta-buttons">
+
+
+    <a
+      href="admin.html"
+      class="cta-button cta-primary">
+
+      ⚙️ 単語を登録する
+
+    </a>
+
+
+    <a
+      href="index.html"
+      class="cta-button cta-secondary">
+
+      📖 学習を始める
+
+    </a>
+
+
+  </div>
+
+
+</section>
+
+
+
+<footer class="footer">
+
+  MY WORDS
+  ─ 自分で作る英単語帳 ─
+
+</footer>
+
+
+</div>
+
+</body>
+
+</html>
