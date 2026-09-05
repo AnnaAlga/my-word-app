@@ -94,7 +94,7 @@ textarea {
 
 
 /* ==============================
-   SETUP SCREEN
+   SETUP
 ============================== */
 
 .setup-card {
@@ -181,7 +181,7 @@ textarea {
 
 
 /* ==============================
-   TEST SCREEN
+   TEST
 ============================== */
 
 #testScreen {
@@ -247,6 +247,7 @@ textarea {
 
 .info-card {
   padding: 24px;
+  min-height: 620px;
 }
 
 
@@ -458,7 +459,7 @@ textarea {
 
 
 /* ==============================
-   INFO PANEL
+   LOCKED INFO
 ============================== */
 
 .info-title {
@@ -466,6 +467,44 @@ textarea {
   font-weight: 900;
   margin-bottom: 18px;
 }
+
+.info-locked {
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.lock-box {
+  width: 100%;
+  padding: 38px 24px;
+  background: #f4f7fb;
+  border-radius: 18px;
+  color: #6f7d92;
+}
+
+.lock-icon {
+  font-size: 52px;
+  margin-bottom: 14px;
+}
+
+.lock-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: #41506a;
+  margin-bottom: 9px;
+}
+
+.lock-text {
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+
+/* ==============================
+   INFO AFTER ANSWER
+============================== */
 
 .info-word-row {
   display: flex;
@@ -780,7 +819,7 @@ textarea {
 
 
 <!-- =========================
-     設定画面
+     SETUP
 ========================= -->
 
 <section id="setupScreen" class="card setup-card">
@@ -894,7 +933,7 @@ textarea {
 
 
 <!-- =========================
-     テスト画面
+     TEST SCREEN
 ========================= -->
 
 <section id="testScreen">
@@ -956,8 +995,6 @@ textarea {
 
 
   <div class="test-layout">
-
-    <!-- 左 -->
 
     <section class="card test-card">
 
@@ -1027,26 +1064,17 @@ textarea {
 
           <div class="canvas-wrap">
             <div class="canvas-number">1</div>
-            <canvas
-              id="canvas1"
-              class="write-canvas">
-            </canvas>
+            <canvas id="canvas1" class="write-canvas"></canvas>
           </div>
 
           <div class="canvas-wrap">
             <div class="canvas-number">2</div>
-            <canvas
-              id="canvas2"
-              class="write-canvas">
-            </canvas>
+            <canvas id="canvas2" class="write-canvas"></canvas>
           </div>
 
           <div class="canvas-wrap">
             <div class="canvas-number">3</div>
-            <canvas
-              id="canvas3"
-              class="write-canvas">
-            </canvas>
+            <canvas id="canvas3" class="write-canvas"></canvas>
           </div>
 
         </div>
@@ -1082,8 +1110,6 @@ textarea {
     </section>
 
 
-    <!-- 右 -->
-
     <aside class="card info-card">
 
       <div class="info-title">
@@ -1100,7 +1126,7 @@ textarea {
 
 
 <!-- =========================
-     結果画面
+     FINAL
 ========================= -->
 
 <section
@@ -1182,31 +1208,29 @@ textarea {
 ============================= */
 
 let words =
-  JSON.parse(
-    localStorage.getItem("words")
-  ) || [];
+  JSON.parse(localStorage.getItem("words")) || [];
 
 let weakWords =
-  JSON.parse(
-    localStorage.getItem("weakWords")
-  ) || [];
+  JSON.parse(localStorage.getItem("weakWords")) || [];
 
 let memos =
-  JSON.parse(
-    localStorage.getItem("wordMemos")
-  ) || {};
+  JSON.parse(localStorage.getItem("wordMemos")) || {};
 
 
 words = words.map(function(word) {
 
   if (!word.forms) {
+
     word.forms = {
       base: word.english || ""
     };
+
   }
 
   if (!word.partOfSpeech) {
+
     word.partOfSpeech = "other";
+
   }
 
   return word;
@@ -1265,11 +1289,9 @@ function selectCount(count, button) {
 
 function updateSetupNote() {
 
-  let count = 0;
-
   if (selectedType === "weak") {
 
-    count =
+    const count =
       words.filter(function(word) {
         return weakWords.includes(word.english);
       }).length;
@@ -1613,9 +1635,7 @@ function showQuestion() {
 
 
   const input =
-    document.getElementById(
-      "answerInput"
-    );
+    document.getElementById("answerInput");
 
 
   input.value = "";
@@ -1634,9 +1654,7 @@ function showQuestion() {
 
 
   const result =
-    document.getElementById(
-      "resultBox"
-    );
+    document.getElementById("resultBox");
 
   result.className =
     "result-box";
@@ -1645,9 +1663,11 @@ function showQuestion() {
     "";
 
 
-  renderInfo(
-    item.word
-  );
+  /*
+    重要：
+    問題表示中は右側を完全に隠す
+  */
+  renderLockedInfo();
 
 
   updateStatus();
@@ -1656,6 +1676,45 @@ function showQuestion() {
   setTimeout(function() {
     input.focus();
   }, 100);
+
+}
+
+
+/* =============================
+   LOCKED INFO
+============================= */
+
+function renderLockedInfo() {
+
+  const info =
+    document.getElementById("infoContent");
+
+
+  info.innerHTML = `
+
+    <div class="info-locked">
+
+      <div class="lock-box">
+
+        <div class="lock-icon">
+          🔒
+        </div>
+
+        <div class="lock-title">
+          テスト中
+        </div>
+
+        <div class="lock-text">
+          答え合わせをすると<br>
+          単語の意味・変化形・メモなどの<br>
+          詳しい情報が表示されます。
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
 
 }
 
@@ -1675,9 +1734,7 @@ function checkAnswer() {
 
   let userAnswer =
     document
-      .getElementById(
-        "answerInput"
-      )
+      .getElementById("answerInput")
       .value
       .trim();
 
@@ -1717,9 +1774,7 @@ function checkAnswer() {
 
 
   const result =
-    document.getElementById(
-      "resultBox"
-    );
+    document.getElementById("resultBox");
 
 
   if (
@@ -1738,21 +1793,27 @@ function checkAnswer() {
         🎉 正解！
       </div>
 
-      ${
-        item.answerIsEnglish
-        ?
-        `
-        <div class="result-detail">
+      <div class="result-detail">
+
+        正解：
+        <strong>
           ${escapeHTML(item.answer)}
+        </strong>
+
+        ${
+          item.answerIsEnglish
+          ?
+          `
           <button
             class="answer-sound"
             onclick='speakEnglish(${JSON.stringify(item.answer)})'>
             🔊
           </button>
-        </div>
-        `
-        : ""
-      }
+          `
+          : ""
+        }
+
+      </div>
 
     `;
 
@@ -1832,9 +1893,7 @@ function checkAnswer() {
     if (item.answerIsEnglish) {
 
       document
-        .getElementById(
-          "handwritingSub"
-        )
+        .getElementById("handwritingSub")
         .textContent =
           "「" +
           item.answer +
@@ -1842,12 +1901,8 @@ function checkAnswer() {
 
 
       document
-        .getElementById(
-          "handwriting"
-        )
-        .classList.add(
-          "show"
-        );
+        .getElementById("handwriting")
+        .classList.add("show");
 
 
       setTimeout(
@@ -1860,9 +1915,7 @@ function checkAnswer() {
     else {
 
       document
-        .getElementById(
-          "nextButton"
-        )
+        .getElementById("nextButton")
         .style.display =
           "block";
 
@@ -1872,19 +1925,23 @@ function checkAnswer() {
 
 
   document
-    .getElementById(
-      "answerInput"
-    )
+    .getElementById("answerInput")
     .disabled =
       true;
 
 
   document
-    .getElementById(
-      "checkButton"
-    )
+    .getElementById("checkButton")
     .style.display =
       "none";
+
+
+  /*
+    ここで初めて右側を開く
+  */
+  renderInfo(
+    item.word
+  );
 
 
   updateStatus();
@@ -1925,9 +1982,7 @@ function nextQuestion() {
 function updateStatus() {
 
   document
-    .getElementById(
-      "questionProgress"
-    )
+    .getElementById("questionProgress")
     .textContent =
       (current + 1)
       + " / "
@@ -1935,9 +1990,7 @@ function updateStatus() {
 
 
   document
-    .getElementById(
-      "correctCount"
-    )
+    .getElementById("correctCount")
     .textContent =
       correctCount;
 
@@ -1953,17 +2006,13 @@ function updateStatus() {
 
 
   document
-    .getElementById(
-      "accuracy"
-    )
+    .getElementById("accuracy")
     .textContent =
       rate + "%";
 
 
   document
-    .getElementById(
-      "progressFill"
-    )
+    .getElementById("progressFill")
     .style.width =
       (
         (current + 1) /
@@ -1982,17 +2031,13 @@ function updateStatus() {
 function showFinal() {
 
   document
-    .getElementById(
-      "testScreen"
-    )
+    .getElementById("testScreen")
     .style.display =
       "none";
 
 
   document
-    .getElementById(
-      "finalScreen"
-    )
+    .getElementById("finalScreen")
     .style.display =
       "block";
 
@@ -2006,9 +2051,7 @@ function showFinal() {
 
 
   document
-    .getElementById(
-      "finalScore"
-    )
+    .getElementById("finalScore")
     .textContent =
       correctCount
       + " / "
@@ -2016,9 +2059,7 @@ function showFinal() {
 
 
   document
-    .getElementById(
-      "finalRate"
-    )
+    .getElementById("finalRate")
     .textContent =
       "正答率 "
       + rate
@@ -2058,17 +2099,13 @@ function showFinal() {
 
 
   document
-    .getElementById(
-      "finalMessage"
-    )
+    .getElementById("finalMessage")
     .textContent =
       message;
 
 
   const list =
-    document.getElementById(
-      "wrongList"
-    );
+    document.getElementById("wrongList");
 
 
   if (
@@ -2089,9 +2126,7 @@ function showFinal() {
 
 
     document
-      .getElementById(
-        "retryWrongButton"
-      )
+      .getElementById("retryWrongButton")
       .style.display =
         "none";
 
@@ -2100,9 +2135,7 @@ function showFinal() {
   else {
 
     document
-      .getElementById(
-        "retryWrongButton"
-      )
+      .getElementById("retryWrongButton")
       .style.display =
         "block";
 
@@ -2334,7 +2367,7 @@ function speakQuestion() {
 
 
 /* =============================
-   INFO
+   INFO AFTER ANSWER
 ============================= */
 
 function renderInfo(
@@ -2994,7 +3027,7 @@ function escapeHTML(
 
 
 /* =============================
-   ENTER KEY
+   ENTER
 ============================= */
 
 document
