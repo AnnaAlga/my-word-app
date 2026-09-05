@@ -1,258 +1,721 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>MY WORDS 管理画面</title>
+<title>MY WORDS 管理画面</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f7f7fb;
-      margin: 0;
-      padding: 20px;
-      color: #222;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    .app {
-      max-width: 600px;
-      margin: auto;
-    }
+body {
+  margin: 0;
+  padding: 24px;
+  background: #f5f7fb;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: #263247;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 6px;
-    }
+.app {
+  max-width: 1250px;
+  margin: auto;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #777;
-      margin-top: 0;
-    }
+/* ------------------
+   HEADER
+------------------- */
 
-    .nav {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin: 20px 0;
-    }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 22px;
+}
 
-    .nav a {
-      flex: 1;
-      max-width: 180px;
-      text-align: center;
-      text-decoration: none;
-      background: #333;
-      color: white;
-      padding: 12px 16px;
-      border-radius: 14px;
-      font-weight: bold;
-    }
+.logo {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
 
-    .card {
-      background: white;
-      padding: 24px;
-      margin-bottom: 20px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
+.logo span {
+  color: #778398;
+  font-size: 22px;
+  margin-left: 8px;
+}
 
-    label {
-      display: block;
-      text-align: left;
-      font-weight: bold;
-      margin-top: 16px;
-      margin-bottom: 6px;
-    }
+.nav {
+  display: flex;
+  gap: 10px;
+}
 
-    .hint {
-      font-size: 13px;
-      color: #777;
-      margin: 4px 0 8px;
-    }
+.nav a {
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: white;
+  color: #263247;
+  font-weight: bold;
+  box-shadow: 0 2px 9px rgba(0,0,0,.06);
+}
 
-    input {
-      width: 100%;
-      padding: 13px;
-      font-size: 17px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      outline: none;
-    }
+.nav .active {
+  background: #ffdce4;
+}
 
-    input:focus {
-      border-color: #777;
-    }
+/* ------------------
+   2カラム
+------------------- */
 
-    .english-preview {
-      min-height: 22px;
-      margin-top: 6px;
-      font-size: 14px;
-      color: #666;
-    }
+.main {
+  display: grid;
+  grid-template-columns:
+    minmax(360px, 42%)
+    minmax(500px, 58%);
+  gap: 22px;
+  align-items: start;
+}
 
-    .error {
-      color: #d33;
-      font-weight: bold;
-    }
+.card {
+  background: white;
+  border-radius: 22px;
+  padding: 26px;
+  box-shadow:
+    0 5px 22px rgba(45,60,90,.08);
+}
 
-    button {
-      padding: 11px 16px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 15px;
-    }
+h2 {
+  margin-top: 0;
+}
 
-    .add {
-      width: 100%;
-      margin-top: 20px;
-      background: #333;
-      color: white;
-      font-weight: bold;
-      font-size: 16px;
-    }
+.section-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
 
-    .cancel {
-      width: 100%;
-      margin-top: 10px;
-      background: #ddd;
-      display: none;
-    }
+/* ------------------
+   INPUT
+------------------- */
 
-    .word-count {
-      color: #777;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
+label {
+  display: block;
+  font-weight: bold;
+  margin: 16px 0 7px;
+}
 
-    .word-item {
-      padding: 16px 0;
-      border-bottom: 1px solid #eee;
-    }
+input,
+select {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1px solid #ccd3df;
+  font-size: 17px;
+  background: white;
+}
 
-    .word-item:last-child {
-      border-bottom: none;
-    }
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #4285e5;
+  box-shadow: 0 0 0 3px rgba(66,133,229,.12);
+}
 
-    .word-title {
-      font-size: 20px;
-      font-weight: bold;
-      word-break: break-word;
-    }
+.hint {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #7b8494;
+}
 
-    .word-japanese {
-      margin-top: 5px;
-      color: #555;
-      font-size: 17px;
-    }
+/* ------------------
+   品詞ごとのBOX
+------------------- */
 
-    .word-buttons {
-      margin-top: 12px;
-      display: flex;
-      gap: 8px;
-    }
+.forms-box {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 18px;
+}
 
-    .edit {
-      background: #e7e7ff;
-    }
+.verb-box {
+  background: #fff0f3;
+}
 
-    .delete {
-      background: #ffdede;
-    }
+.adjective-box {
+  background: #edfaf1;
+}
 
-    .empty {
-      text-align: center;
-      color: #888;
-      padding: 20px 0;
-    }
-  </style>
+.normal-box {
+  background: #eef6ff;
+}
+
+.forms-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+}
+
+.form-field label {
+  font-size: 14px;
+  margin: 6px 0;
+}
+
+.optional {
+  color: #8a94a5;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+/* ------------------
+   BUTTON
+------------------- */
+
+.register-button {
+  width: 100%;
+  margin-top: 22px;
+  padding: 16px;
+  border: 0;
+  border-radius: 14px;
+  background: #357ee8;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-button {
+  display: none;
+  width: 100%;
+  margin-top: 9px;
+  padding: 13px;
+  border: 0;
+  border-radius: 14px;
+  background: #e7e9ee;
+  font-size: 16px;
+}
+
+/* ------------------
+   一覧
+------------------- */
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.toolbar input {
+  flex: 1;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.filter-button {
+  border: 0;
+  background: #edf0f5;
+  padding: 9px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.filter-button.active {
+  background: #357ee8;
+  color: white;
+}
+
+.count {
+  font-size: 14px;
+  color: #788294;
+  margin-bottom: 12px;
+}
+
+.word-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.word-table th {
+  text-align: left;
+  padding: 12px;
+  background: #f4f6f9;
+  font-size: 14px;
+}
+
+.word-table td {
+  padding: 13px 12px;
+  border-bottom: 1px solid #e8ebf0;
+  vertical-align: middle;
+}
+
+.english {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.subforms {
+  margin-top: 4px;
+  color: #727d8e;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.badge-verb {
+  background: #ffe2e8;
+  color: #d54762;
+}
+
+.badge-noun {
+  background: #e3f2ff;
+  color: #2475be;
+}
+
+.badge-adjective {
+  background: #dff6e7;
+  color: #278449;
+}
+
+.badge-other {
+  background: #eeeef2;
+  color: #697283;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.edit-button,
+.delete-button {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.edit-button {
+  background: #e7efff;
+}
+
+.delete-button {
+  background: #ffe5e8;
+}
+
+.empty {
+  text-align: center;
+  color: #8490a0;
+  padding: 40px;
+}
+
+/* ------------------
+   iPad縦 / スマホ
+------------------- */
+
+@media (max-width: 900px) {
+
+  body {
+    padding: 16px;
+  }
+
+  .header {
+    display: block;
+  }
+
+  .nav {
+    margin-top: 15px;
+  }
+
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .word-table th:nth-child(3),
+  .word-table td:nth-child(3) {
+    display: none;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <h1>MY WORDS</h1>
-  <p class="subtitle">単語管理</p>
+  <div class="header">
 
-  <div class="nav">
-    <a href="index.html">📖 学習画面</a>
-    <a href="admin.html">⚙️ 管理画面</a>
-  </div>
-
-  <div class="card">
-
-    <h2 id="formTitle">単語を追加</h2>
-
-    <label for="english">英単語</label>
-
-    <p class="hint">
-      全角英字で入力しても、自動で半角英字に直します。
-    </p>
-
-    <input
-      id="english"
-      type="text"
-      lang="en"
-      inputmode="text"
-      autocapitalize="none"
-      autocorrect="off"
-      autocomplete="off"
-      spellcheck="false"
-      placeholder="例：beautiful"
-    >
-
-    <div
-      id="englishPreview"
-      class="english-preview">
+    <div class="logo">
+      MY WORDS
+      <span>管理画面</span>
     </div>
 
+    <div class="nav">
+      <a href="index.html">
+        📖 学習
+      </a>
 
-    <label for="japanese">日本語</label>
+      <a href="test.html">
+        ✏️ テスト
+      </a>
 
-    <input
-      id="japanese"
-      type="text"
-      lang="ja"
-      inputmode="text"
-      autocomplete="off"
-      placeholder="例：美しい"
-    >
-
-
-    <button
-      class="add"
-      id="saveButton"
-      onclick="saveWord()">
-      登録する
-    </button>
-
-    <button
-      class="cancel"
-      id="cancelButton"
-      onclick="cancelEdit()">
-      編集をキャンセル
-    </button>
+      <a
+        href="admin.html"
+        class="active">
+        ⚙️ 管理
+      </a>
+    </div>
 
   </div>
 
 
-  <div class="card">
+  <div class="main">
 
-    <h2>登録済み単語</h2>
+    <!-- ==================================
+         左：単語登録
+    =================================== -->
 
-    <div
-      class="word-count"
-      id="wordCount">
+    <div class="card">
+
+      <div
+        id="formTitle"
+        class="section-title">
+        ＋ 新しい単語を追加
+      </div>
+
+
+      <label>
+        日本語（意味）
+      </label>
+
+      <input
+        id="japanese"
+        type="text"
+        lang="ja"
+        placeholder="例：行く">
+
+
+      <label>
+        品詞
+      </label>
+
+      <select
+        id="partOfSpeech"
+        onchange="changePartOfSpeech()">
+
+        <option value="noun">
+          名詞
+        </option>
+
+        <option value="verb">
+          動詞
+        </option>
+
+        <option value="adjective">
+          形容詞
+        </option>
+
+        <option value="other">
+          その他・未分類
+        </option>
+
+      </select>
+
+
+      <!-- 名詞・その他 -->
+
+      <div
+        id="normalForms"
+        class="forms-box normal-box">
+
+        <div class="forms-title">
+          英単語
+        </div>
+
+        <label>
+          基本の形
+        </label>
+
+        <input
+          id="normalBase"
+          lang="en"
+          autocapitalize="none"
+          autocorrect="off"
+          spellcheck="false"
+          placeholder="例：apple">
+
+      </div>
+
+
+      <!-- 動詞 -->
+
+      <div
+        id="verbForms"
+        class="forms-box verb-box"
+        style="display:none;">
+
+        <div class="forms-title">
+          動詞の変化
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-field">
+
+            <label>
+              原形
+            </label>
+
+            <input
+              id="verbBase"
+              placeholder="go">
+
+          </div>
+
+          <div class="form-field">
+
+            <label>
+              過去形
+              <span class="optional">
+                任意
+              </span>
+            </label>
+
+            <input
+              id="verbPast"
+              placeholder="went">
+
+          </div>
+
+          <div class="form-field">
+
+            <label>
+              過去分詞
+              <span class="optional">
+                任意
+              </span>
+            </label>
+
+            <input
+              id="verbPastParticiple"
+              placeholder="gone">
+
+          </div>
+
+          <div class="form-field">
+
+            <label>
+              ing形
+              <span class="optional">
+                任意
+              </span>
+            </label>
+
+            <input
+              id="verbIng"
+              placeholder="going">
+
+          </div>
+
+          <div class="form-field">
+
+            <label>
+              三人称単数現在
+              <span class="optional">
+                任意
+              </span>
+            </label>
+
+            <input
+              id="verbThirdPerson"
+              placeholder="goes">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- 形容詞 -->
+
+      <div
+        id="adjectiveForms"
+        class="forms-box adjective-box"
+        style="display:none;">
+
+        <div class="forms-title">
+          形容詞の変化
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-field">
+
+            <label>
+              原級
+            </label>
+
+            <input
+              id="adjectiveBase"
+              placeholder="big">
+
+          </div>
+
+          <div class="form-field">
+
+            <label>
+              比較級
+              <span class="optional">
+                任意
+              </span>
+            </label>
+
+            <input
+              id="comparative"
+              placeholder="bigger">
+
+          </div>
+
+          <div class="form-field">
+
+            <label>
+              最上級
+              <span class="optional">
+                任意
+              </span>
+            </label>
+
+            <input
+              id="superlative"
+              placeholder="biggest">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="saveButton"
+        class="register-button"
+        onclick="saveWord()">
+        ＋ この単語を登録する
+      </button>
+
+      <button
+        id="cancelButton"
+        class="cancel-button"
+        onclick="cancelEdit()">
+        編集をキャンセル
+      </button>
+
     </div>
 
-    <div id="wordList"></div>
+
+    <!-- ==================================
+         右：一覧
+    =================================== -->
+
+    <div class="card">
+
+      <div class="section-title">
+        登録済みの単語
+      </div>
+
+      <div class="toolbar">
+
+        <input
+          id="search"
+          placeholder="日本語または英単語で検索"
+          oninput="showWords()">
+
+      </div>
+
+      <div class="filters">
+
+        <button
+          class="filter-button active"
+          data-filter="all"
+          onclick="setFilter('all',this)">
+          すべて
+        </button>
+
+        <button
+          class="filter-button"
+          data-filter="noun"
+          onclick="setFilter('noun',this)">
+          名詞
+        </button>
+
+        <button
+          class="filter-button"
+          data-filter="verb"
+          onclick="setFilter('verb',this)">
+          動詞
+        </button>
+
+        <button
+          class="filter-button"
+          data-filter="adjective"
+          onclick="setFilter('adjective',this)">
+          形容詞
+        </button>
+
+        <button
+          class="filter-button"
+          data-filter="other"
+          onclick="setFilter('other',this)">
+          その他
+        </button>
+
+      </div>
+
+      <div
+        id="count"
+        class="count">
+      </div>
+
+      <div id="wordList"></div>
+
+    </div>
 
   </div>
 
@@ -261,21 +724,89 @@
 
 <script>
 
+/* ==================================================
+   既存データを読み込む
+================================================== */
+
 let words =
-  JSON.parse(localStorage.getItem("words"))
-  ||
-  [
-    {english:"apple", japanese:"りんご"},
-    {english:"dog", japanese:"犬"},
-    {english:"beautiful", japanese:"美しい"}
-  ];
+  JSON.parse(
+    localStorage.getItem("words")
+  ) || [];
+
+
+/* ==================================================
+   古いデータを新形式に自動変換
+
+   古い：
+   {
+     english:"apple",
+     japanese:"りんご"
+   }
+
+   ↓
+
+   新形式：
+   {
+     english:"apple",
+     japanese:"りんご",
+     partOfSpeech:"other",
+     forms:{
+       base:"apple"
+     }
+   }
+
+   english は残すので
+   既存の学習・テスト画面も動きます。
+================================================== */
+
+let dataChanged = false;
+
+words = words.map(function(word) {
+
+  if (!word.partOfSpeech) {
+
+    word.partOfSpeech =
+      "other";
+
+    dataChanged = true;
+
+  }
+
+  if (!word.forms) {
+
+    word.forms = {
+      base:
+        word.english || ""
+    };
+
+    dataChanged = true;
+
+  }
+
+  return word;
+
+});
+
+
+if (dataChanged) {
+
+  saveData();
+
+}
+
+
+/* ==================================================
+   状態
+================================================== */
 
 let editingIndex = null;
 
+let currentFilter = "all";
 
-/* ------------------------
-   データ保存
-------------------------- */
+
+/* ==================================================
+   保存
+================================================== */
 
 function saveData() {
 
@@ -287,151 +818,110 @@ function saveData() {
 }
 
 
-/* ------------------------
-   英単語を整える
-------------------------- */
+/* ==================================================
+   英語を整える
+================================================== */
 
 function normalizeEnglish(text) {
 
-  return text
+  return (text || "")
 
-    // 全角英数字を半角へ
-    .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(character) {
+    .replace(
+      /[Ａ-Ｚａ-ｚ０-９]/g,
+      function(character) {
 
-      return String.fromCharCode(
-        character.charCodeAt(0) - 0xFEE0
-      );
+        return String.fromCharCode(
+          character.charCodeAt(0)
+          - 0xFEE0
+        );
 
-    })
+      }
+    )
 
-    // 全角スペースを半角へ
-    .replace(/　/g, " ")
+    .replace(/　/g," ")
 
-    // 前後の空白削除
     .trim()
 
-    // 小文字へ
     .toLowerCase();
 
 }
 
 
-/* ------------------------
-   英語として問題ないか確認
-------------------------- */
+/* ==================================================
+   品詞変更
+================================================== */
 
-function isValidEnglish(text) {
+function changePartOfSpeech() {
 
-  // 英字、数字、スペース、ハイフン、
-  // アポストロフィのみ許可
-
-  const englishPattern =
-    /^[a-z0-9\s\-']+$/i;
-
-  return englishPattern.test(text);
-
-}
+  const part =
+    document
+      .getElementById(
+        "partOfSpeech"
+      )
+      .value;
 
 
-/* ------------------------
-   入力中に自動変換
-------------------------- */
-
-const englishInput =
-  document.getElementById("english");
-
-englishInput.addEventListener(
-  "input",
-  function() {
-
-    const original =
-      englishInput.value;
-
-    const normalized =
-      normalizeEnglish(original);
-
-    englishInput.value =
-      normalized;
-
-    updateEnglishMessage();
-
-  }
-);
+  document
+    .getElementById(
+      "normalForms"
+    )
+    .style.display =
+      (
+        part === "noun"
+        ||
+        part === "other"
+      )
+      ? "block"
+      : "none";
 
 
-/* ------------------------
-   英語入力メッセージ
-------------------------- */
-
-function updateEnglishMessage() {
-
-  const value =
-    englishInput.value.trim();
-
-  const preview =
-    document.getElementById(
-      "englishPreview"
-    );
-
-  if (!value) {
-
-    preview.textContent = "";
-    preview.className =
-      "english-preview";
-
-    return;
-
-  }
+  document
+    .getElementById(
+      "verbForms"
+    )
+    .style.display =
+      part === "verb"
+      ? "block"
+      : "none";
 
 
-  if (!isValidEnglish(value)) {
-
-    preview.textContent =
-      "⚠️ 英単語欄に日本語などが含まれています";
-
-    preview.className =
-      "english-preview error";
-
-    return;
-
-  }
-
-
-  preview.textContent =
-    "✓ " + value;
-
-  preview.className =
-    "english-preview";
+  document
+    .getElementById(
+      "adjectiveForms"
+    )
+    .style.display =
+      part === "adjective"
+      ? "block"
+      : "none";
 
 }
 
 
-/* ------------------------
-   登録・更新
-------------------------- */
+/* ==================================================
+   登録
+================================================== */
 
 function saveWord() {
 
-  let english =
-    document
-      .getElementById("english")
-      .value;
-
-  let japanese =
+  const japanese =
     document
       .getElementById("japanese")
       .value
       .trim();
 
 
-  english =
-    normalizeEnglish(english);
+  const part =
+    document
+      .getElementById(
+        "partOfSpeech"
+      )
+      .value;
 
 
-  if (!english || !japanese) {
+  if (!japanese) {
 
     alert(
-      "英単語と日本語を入力してください"
+      "日本語を入力してください"
     );
 
     return;
@@ -439,36 +929,208 @@ function saveWord() {
   }
 
 
-  if (!isValidEnglish(english)) {
+  let english = "";
 
-    alert(
-      "英単語欄に日本語や使用できない文字が入っています。"
-    );
+  let forms = {};
 
-    englishInput.focus();
 
-    return;
+  /* ----------
+     動詞
+  ---------- */
+
+  if (part === "verb") {
+
+    const base =
+      normalizeEnglish(
+        document
+          .getElementById(
+            "verbBase"
+          )
+          .value
+      );
+
+
+    if (!base) {
+
+      alert(
+        "動詞の原形を入力してください"
+      );
+
+      return;
+
+    }
+
+
+    forms = {
+
+      base: base,
+
+      past:
+        normalizeEnglish(
+          document
+            .getElementById(
+              "verbPast"
+            )
+            .value
+        ),
+
+      pastParticiple:
+        normalizeEnglish(
+          document
+            .getElementById(
+              "verbPastParticiple"
+            )
+            .value
+        ),
+
+      ing:
+        normalizeEnglish(
+          document
+            .getElementById(
+              "verbIng"
+            )
+            .value
+        ),
+
+      thirdPerson:
+        normalizeEnglish(
+          document
+            .getElementById(
+              "verbThirdPerson"
+            )
+            .value
+        )
+
+    };
+
+
+    english = base;
 
   }
 
 
-  if (editingIndex === null) {
+  /* ----------
+     形容詞
+  ---------- */
 
-    words.push({
+  else if (
+    part === "adjective"
+  ) {
 
-      english: english,
-      japanese: japanese
+    const base =
+      normalizeEnglish(
+        document
+          .getElementById(
+            "adjectiveBase"
+          )
+          .value
+      );
 
-    });
+
+    if (!base) {
+
+      alert(
+        "形容詞の原級を入力してください"
+      );
+
+      return;
+
+    }
+
+
+    forms = {
+
+      base: base,
+
+      comparative:
+        normalizeEnglish(
+          document
+            .getElementById(
+              "comparative"
+            )
+            .value
+        ),
+
+      superlative:
+        normalizeEnglish(
+          document
+            .getElementById(
+              "superlative"
+            )
+            .value
+        )
+
+    };
+
+
+    english = base;
+
+  }
+
+
+  /* ----------
+     名詞・その他
+  ---------- */
+
+  else {
+
+    const base =
+      normalizeEnglish(
+        document
+          .getElementById(
+            "normalBase"
+          )
+          .value
+      );
+
+
+    if (!base) {
+
+      alert(
+        "英単語を入力してください"
+      );
+
+      return;
+
+    }
+
+
+    forms = {
+      base: base
+    };
+
+
+    english = base;
+
+  }
+
+
+  const newWord = {
+
+    english: english,
+
+    japanese: japanese,
+
+    partOfSpeech: part,
+
+    forms: forms
+
+  };
+
+
+  if (
+    editingIndex === null
+  ) {
+
+    words.push(
+      newWord
+    );
 
   } else {
 
-    words[editingIndex] = {
-
-      english: english,
-      japanese: japanese
-
-    };
+    words[
+      editingIndex
+    ] = newWord;
 
   }
 
@@ -482,9 +1144,9 @@ function saveWord() {
 }
 
 
-/* ------------------------
-   一覧表示
-------------------------- */
+/* ==================================================
+   一覧
+================================================== */
 
 function showWords() {
 
@@ -493,213 +1155,627 @@ function showWords() {
       "wordList"
     );
 
-  const count =
+
+  const search =
     document.getElementById(
-      "wordCount"
-    );
-
-  list.innerHTML = "";
-
-  count.textContent =
-    "登録数：" +
-    words.length +
-    "単語";
+      "search"
+    )
+    .value
+    .toLowerCase()
+    .trim();
 
 
-  if (words.length === 0) {
+  let filtered =
+    words
+      .map(function(word,index) {
+
+        return {
+          word: word,
+          originalIndex: index
+        };
+
+      });
+
+
+  /* 品詞 */
+
+  if (
+    currentFilter !== "all"
+  ) {
+
+    filtered =
+      filtered.filter(
+        function(item) {
+
+          return (
+            item.word
+              .partOfSpeech
+            ===
+            currentFilter
+          );
+
+        }
+      );
+
+  }
+
+
+  /* 検索 */
+
+  if (search) {
+
+    filtered =
+      filtered.filter(
+        function(item) {
+
+          const word =
+            item.word;
+
+
+          const allForms =
+            Object
+              .values(
+                word.forms || {}
+              )
+              .join(" ")
+              .toLowerCase();
+
+
+          return (
+            (
+              word.japanese || ""
+            )
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            (
+              word.english || ""
+            )
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            allForms.includes(
+              search
+            )
+          );
+
+        }
+      );
+
+  }
+
+
+  document
+    .getElementById("count")
+    .textContent =
+      "全 " +
+      filtered.length +
+      " 件";
+
+
+  if (
+    filtered.length === 0
+  ) {
 
     list.innerHTML =
-      '<div class="empty">' +
-      'まだ単語が登録されていません。' +
-      '</div>';
+      '<div class="empty">該当する単語がありません</div>';
 
     return;
 
   }
 
 
-  words.forEach(
-    function(word, index) {
+  let html = `
 
-      const item =
-        document.createElement(
-          "div"
-        );
+    <table class="word-table">
 
-      item.className =
-        "word-item";
+      <thead>
 
+        <tr>
+          <th>日本語</th>
+          <th>英単語</th>
+          <th>品詞</th>
+          <th>操作</th>
+        </tr>
 
-      const title =
-        document.createElement(
-          "div"
-        );
+      </thead>
 
-      title.className =
-        "word-title";
+      <tbody>
 
-      title.textContent =
-        word.english;
+  `;
 
 
-      const japanese =
-        document.createElement(
-          "div"
-        );
+  filtered.forEach(
+    function(item) {
 
-      japanese.className =
-        "word-japanese";
-
-      japanese.textContent =
-        word.japanese;
+      const word =
+        item.word;
 
 
-      const buttons =
-        document.createElement(
-          "div"
-        );
-
-      buttons.className =
-        "word-buttons";
+      const index =
+        item.originalIndex;
 
 
-      const editButton =
-        document.createElement(
-          "button"
-        );
+      html += `
 
-      editButton.className =
-        "edit";
+        <tr>
 
-      editButton.textContent =
-        "編集";
+          <td>
+            ${escapeHTML(
+              word.japanese
+            )}
+          </td>
 
-      editButton.onclick =
-        function() {
+          <td>
 
-          editWord(index);
+            <div class="english">
+              ${escapeHTML(
+                word.english
+              )}
+            </div>
 
-        };
+            ${getFormsDisplay(
+              word
+            )}
 
+          </td>
 
-      const deleteButton =
-        document.createElement(
-          "button"
-        );
+          <td>
+            ${getBadge(
+              word.partOfSpeech
+            )}
+          </td>
 
-      deleteButton.className =
-        "delete";
+          <td>
 
-      deleteButton.textContent =
-        "削除";
+            <div class="actions">
 
-      deleteButton.onclick =
-        function() {
+              <button
+                class="edit-button"
+                onclick="editWord(${index})">
+                ✎
+              </button>
 
-          deleteWord(index);
+              <button
+                class="delete-button"
+                onclick="deleteWord(${index})">
+                🗑
+              </button>
 
-        };
+            </div>
 
+          </td>
 
-      buttons.appendChild(
-        editButton
-      );
+        </tr>
 
-      buttons.appendChild(
-        deleteButton
-      );
-
-
-      item.appendChild(
-        title
-      );
-
-      item.appendChild(
-        japanese
-      );
-
-      item.appendChild(
-        buttons
-      );
-
-
-      list.appendChild(
-        item
-      );
+      `;
 
     }
   );
 
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
+
+  list.innerHTML =
+    html;
+
 }
 
 
-/* ------------------------
+/* ==================================================
+   活用表示
+================================================== */
+
+function getFormsDisplay(
+  word
+) {
+
+  const f =
+    word.forms || {};
+
+
+  let parts = [];
+
+
+  if (
+    word.partOfSpeech
+    === "verb"
+  ) {
+
+    if (f.past) {
+
+      parts.push(
+        "過去: "
+        + escapeHTML(f.past)
+      );
+
+    }
+
+    if (
+      f.pastParticiple
+    ) {
+
+      parts.push(
+        "過去分詞: "
+        +
+        escapeHTML(
+          f.pastParticiple
+        )
+      );
+
+    }
+
+    if (f.ing) {
+
+      parts.push(
+        "ing: "
+        +
+        escapeHTML(f.ing)
+      );
+
+    }
+
+    if (
+      f.thirdPerson
+    ) {
+
+      parts.push(
+        "三単現: "
+        +
+        escapeHTML(
+          f.thirdPerson
+        )
+      );
+
+    }
+
+  }
+
+
+  if (
+    word.partOfSpeech
+    === "adjective"
+  ) {
+
+    if (
+      f.comparative
+    ) {
+
+      parts.push(
+        "比較級: "
+        +
+        escapeHTML(
+          f.comparative
+        )
+      );
+
+    }
+
+    if (
+      f.superlative
+    ) {
+
+      parts.push(
+        "最上級: "
+        +
+        escapeHTML(
+          f.superlative
+        )
+      );
+
+    }
+
+  }
+
+
+  if (
+    parts.length === 0
+  ) {
+
+    return "";
+
+  }
+
+
+  return `
+
+    <div class="subforms">
+      ${parts.join("　")}
+    </div>
+
+  `;
+
+}
+
+
+/* ==================================================
+   品詞ラベル
+================================================== */
+
+function getBadge(
+  part
+) {
+
+  if (part === "verb") {
+
+    return `
+      <span class="badge badge-verb">
+        動詞
+      </span>
+    `;
+
+  }
+
+
+  if (part === "noun") {
+
+    return `
+      <span class="badge badge-noun">
+        名詞
+      </span>
+    `;
+
+  }
+
+
+  if (
+    part === "adjective"
+  ) {
+
+    return `
+      <span class="badge badge-adjective">
+        形容詞
+      </span>
+    `;
+
+  }
+
+
+  return `
+    <span class="badge badge-other">
+      その他
+    </span>
+  `;
+
+}
+
+
+/* ==================================================
+   絞り込み
+================================================== */
+
+function setFilter(
+  filter,
+  button
+) {
+
+  currentFilter =
+    filter;
+
+
+  document
+    .querySelectorAll(
+      ".filter-button"
+    )
+    .forEach(
+      function(btn) {
+
+        btn
+          .classList
+          .remove(
+            "active"
+          );
+
+      }
+    );
+
+
+  button
+    .classList
+    .add(
+      "active"
+    );
+
+
+  showWords();
+
+}
+
+
+/* ==================================================
    編集
-------------------------- */
+================================================== */
 
 function editWord(index) {
+
+  const word =
+    words[index];
+
 
   editingIndex =
     index;
 
 
   document
-    .getElementById("english")
+    .getElementById(
+      "japanese"
+    )
     .value =
-      words[index].english;
+      word.japanese || "";
 
 
   document
-    .getElementById("japanese")
+    .getElementById(
+      "partOfSpeech"
+    )
     .value =
-      words[index].japanese;
+      word.partOfSpeech
+      || "other";
+
+
+  changePartOfSpeech();
+
+
+  const f =
+    word.forms || {};
+
+
+  clearInputFields();
+
+
+  if (
+    word.partOfSpeech
+    === "verb"
+  ) {
+
+    document
+      .getElementById(
+        "verbBase"
+      )
+      .value =
+        f.base
+        || word.english
+        || "";
+
+
+    document
+      .getElementById(
+        "verbPast"
+      )
+      .value =
+        f.past || "";
+
+
+    document
+      .getElementById(
+        "verbPastParticiple"
+      )
+      .value =
+        f.pastParticiple
+        || "";
+
+
+    document
+      .getElementById(
+        "verbIng"
+      )
+      .value =
+        f.ing || "";
+
+
+    document
+      .getElementById(
+        "verbThirdPerson"
+      )
+      .value =
+        f.thirdPerson
+        || "";
+
+  }
+
+
+  else if (
+    word.partOfSpeech
+    === "adjective"
+  ) {
+
+    document
+      .getElementById(
+        "adjectiveBase"
+      )
+      .value =
+        f.base
+        || word.english
+        || "";
+
+
+    document
+      .getElementById(
+        "comparative"
+      )
+      .value =
+        f.comparative
+        || "";
+
+
+    document
+      .getElementById(
+        "superlative"
+      )
+      .value =
+        f.superlative
+        || "";
+
+  }
+
+
+  else {
+
+    document
+      .getElementById(
+        "normalBase"
+      )
+      .value =
+        f.base
+        || word.english
+        || "";
+
+  }
 
 
   document
-    .getElementById("formTitle")
+    .getElementById(
+      "formTitle"
+    )
     .textContent =
-      "単語を編集";
+      "✎ 単語を編集";
 
 
   document
-    .getElementById("saveButton")
+    .getElementById(
+      "saveButton"
+    )
     .textContent =
       "変更を保存";
 
 
   document
-    .getElementById("cancelButton")
+    .getElementById(
+      "cancelButton"
+    )
     .style.display =
       "block";
 
 
-  updateEnglishMessage();
-
-
   window.scrollTo({
-
     top: 0,
     behavior: "smooth"
-
   });
 
 }
 
 
-/* ------------------------
+/* ==================================================
    削除
-------------------------- */
+================================================== */
 
 function deleteWord(index) {
 
-  const ok =
-    confirm(
-      words[index].english +
+  if (
+    !confirm(
+      words[index].english
+      +
       " を削除しますか？"
-    );
-
-
-  if (!ok) {
+    )
+  ) {
 
     return;
 
@@ -714,78 +1790,129 @@ function deleteWord(index) {
 
   saveData();
 
-  cancelEdit();
-
   showWords();
 
 }
 
 
-/* ------------------------
-   編集キャンセル
-------------------------- */
+/* ==================================================
+   キャンセル
+================================================== */
 
 function cancelEdit() {
-
-  editingIndex =
-    null;
 
   clearForm();
 
 }
 
 
-/* ------------------------
-   入力欄リセット
-------------------------- */
+/* ==================================================
+   入力欄クリア
+================================================== */
 
-function clearForm() {
+function clearInputFields() {
 
-  document
-    .getElementById("english")
-    .value =
-      "";
+  [
+    "normalBase",
+    "verbBase",
+    "verbPast",
+    "verbPastParticiple",
+    "verbIng",
+    "verbThirdPerson",
+    "adjectiveBase",
+    "comparative",
+    "superlative"
+  ]
+  .forEach(
+    function(id) {
 
+      document
+        .getElementById(id)
+        .value = "";
 
-  document
-    .getElementById("japanese")
-    .value =
-      "";
-
-
-  document
-    .getElementById("formTitle")
-    .textContent =
-      "単語を追加";
-
-
-  document
-    .getElementById("saveButton")
-    .textContent =
-      "登録する";
-
-
-  document
-    .getElementById("cancelButton")
-    .style.display =
-      "none";
-
-
-  document
-    .getElementById("englishPreview")
-    .textContent =
-      "";
-
-
-  editingIndex =
-    null;
+    }
+  );
 
 }
 
 
-/* ------------------------
+function clearForm() {
+
+  editingIndex =
+    null;
+
+
+  document
+    .getElementById(
+      "japanese"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "partOfSpeech"
+    )
+    .value = "noun";
+
+
+  clearInputFields();
+
+  changePartOfSpeech();
+
+
+  document
+    .getElementById(
+      "formTitle"
+    )
+    .textContent =
+      "＋ 新しい単語を追加";
+
+
+  document
+    .getElementById(
+      "saveButton"
+    )
+    .textContent =
+      "＋ この単語を登録する";
+
+
+  document
+    .getElementById(
+      "cancelButton"
+    )
+    .style.display =
+      "none";
+
+}
+
+
+/* ==================================================
+   安全表示
+================================================== */
+
+function escapeHTML(
+  text
+) {
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.textContent =
+    text || "";
+
+  return div.innerHTML;
+
+}
+
+
+/* ==================================================
    初期表示
-------------------------- */
+================================================== */
+
+changePartOfSpeech();
 
 showWords();
 
