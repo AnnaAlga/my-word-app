@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>MY WORDS 管理画面</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #f7f7fb;
       margin: 0;
       padding: 20px;
+      color: #222;
     }
 
     .app {
@@ -20,43 +26,83 @@
 
     h1 {
       text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-top: 0;
     }
 
     .nav {
       display: flex;
       gap: 10px;
       justify-content: center;
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
 
     .nav a {
+      flex: 1;
+      max-width: 180px;
+      text-align: center;
       text-decoration: none;
       background: #333;
       color: white;
-      padding: 10px 16px;
-      border-radius: 12px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight: bold;
     }
 
     .card {
       background: white;
-      padding: 25px;
+      padding: 24px;
       margin-bottom: 20px;
       border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      font-weight: bold;
+      margin-top: 16px;
+      margin-bottom: 6px;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #777;
+      margin: 4px 0 8px;
     }
 
     input {
       width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
-      margin: 7px 0;
-      font-size: 16px;
-      border-radius: 10px;
+      padding: 13px;
+      font-size: 17px;
+      border-radius: 12px;
       border: 1px solid #ccc;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #777;
+    }
+
+    .english-preview {
+      min-height: 22px;
+      margin-top: 6px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .error {
+      color: #d33;
+      font-weight: bold;
     }
 
     button {
-      padding: 10px 16px;
+      padding: 11px 16px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
@@ -65,39 +111,65 @@
 
     .add {
       width: 100%;
-      margin-top: 10px;
+      margin-top: 20px;
       background: #333;
       color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .cancel {
+      width: 100%;
+      margin-top: 10px;
+      background: #ddd;
+      display: none;
+    }
+
+    .word-count {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 10px;
     }
 
     .word-item {
-      padding: 15px 0;
-      border-bottom: 1px solid #ddd;
+      padding: 16px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .word-item:last-child {
+      border-bottom: none;
     }
 
     .word-title {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
+      word-break: break-word;
+    }
+
+    .word-japanese {
+      margin-top: 5px;
+      color: #555;
+      font-size: 17px;
     }
 
     .word-buttons {
-      margin-top: 10px;
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
     }
 
     .edit {
       background: #e7e7ff;
-      margin-right: 5px;
     }
 
     .delete {
       background: #ffdede;
     }
 
-    .cancel {
-      background: #ddd;
-      margin-top: 8px;
-      width: 100%;
-      display: none;
+    .empty {
+      text-align: center;
+      color: #888;
+      padding: 20px 0;
     }
   </style>
 </head>
@@ -106,33 +178,79 @@
 
 <div class="app">
 
-  <h1>単語管理</h1>
+  <h1>MY WORDS</h1>
+  <p class="subtitle">単語管理</p>
 
   <div class="nav">
-    <a href="index.html">学習画面</a>
-    <a href="admin.html">管理画面</a>
+    <a href="index.html">📖 学習画面</a>
+    <a href="admin.html">⚙️ 管理画面</a>
   </div>
 
   <div class="card">
 
     <h2 id="formTitle">単語を追加</h2>
 
-    <input id="english" placeholder="英単語">
-    <input id="japanese" placeholder="日本語">
+    <label for="english">英単語</label>
 
-    <button class="add" id="saveButton" onclick="saveWord()">
+    <p class="hint">
+      全角英字で入力しても、自動で半角英字に直します。
+    </p>
+
+    <input
+      id="english"
+      type="text"
+      lang="en"
+      inputmode="text"
+      autocapitalize="none"
+      autocorrect="off"
+      autocomplete="off"
+      spellcheck="false"
+      placeholder="例：beautiful"
+    >
+
+    <div
+      id="englishPreview"
+      class="english-preview">
+    </div>
+
+
+    <label for="japanese">日本語</label>
+
+    <input
+      id="japanese"
+      type="text"
+      lang="ja"
+      inputmode="text"
+      autocomplete="off"
+      placeholder="例：美しい"
+    >
+
+
+    <button
+      class="add"
+      id="saveButton"
+      onclick="saveWord()">
       登録する
     </button>
 
-    <button class="cancel" id="cancelButton" onclick="cancelEdit()">
+    <button
+      class="cancel"
+      id="cancelButton"
+      onclick="cancelEdit()">
       編集をキャンセル
     </button>
 
   </div>
 
+
   <div class="card">
 
     <h2>登録済み単語</h2>
+
+    <div
+      class="word-count"
+      id="wordCount">
+    </div>
 
     <div id="wordList"></div>
 
@@ -140,129 +258,437 @@
 
 </div>
 
+
 <script>
 
-let words = JSON.parse(localStorage.getItem("words")) || [
-  {english:"apple", japanese:"りんご"},
-  {english:"dog", japanese:"犬"},
-  {english:"beautiful", japanese:"美しい"}
-];
+let words =
+  JSON.parse(localStorage.getItem("words"))
+  ||
+  [
+    {english:"apple", japanese:"りんご"},
+    {english:"dog", japanese:"犬"},
+    {english:"beautiful", japanese:"美しい"}
+  ];
 
 let editingIndex = null;
 
+
+/* ------------------------
+   データ保存
+------------------------- */
+
 function saveData() {
-  localStorage.setItem("words", JSON.stringify(words));
+
+  localStorage.setItem(
+    "words",
+    JSON.stringify(words)
+  );
+
 }
+
+
+/* ------------------------
+   英単語を整える
+------------------------- */
+
+function normalizeEnglish(text) {
+
+  return text
+
+    // 全角英数字を半角へ
+    .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(character) {
+
+      return String.fromCharCode(
+        character.charCodeAt(0) - 0xFEE0
+      );
+
+    })
+
+    // 全角スペースを半角へ
+    .replace(/　/g, " ")
+
+    // 前後の空白削除
+    .trim()
+
+    // 小文字へ
+    .toLowerCase();
+
+}
+
+
+/* ------------------------
+   英語として問題ないか確認
+------------------------- */
+
+function isValidEnglish(text) {
+
+  // 英字、数字、スペース、ハイフン、
+  // アポストロフィのみ許可
+
+  const englishPattern =
+    /^[a-z0-9\s\-']+$/i;
+
+  return englishPattern.test(text);
+
+}
+
+
+/* ------------------------
+   入力中に自動変換
+------------------------- */
+
+const englishInput =
+  document.getElementById("english");
+
+englishInput.addEventListener(
+  "input",
+  function() {
+
+    const original =
+      englishInput.value;
+
+    const normalized =
+      normalizeEnglish(original);
+
+    englishInput.value =
+      normalized;
+
+    updateEnglishMessage();
+
+  }
+);
+
+
+/* ------------------------
+   英語入力メッセージ
+------------------------- */
+
+function updateEnglishMessage() {
+
+  const value =
+    englishInput.value.trim();
+
+  const preview =
+    document.getElementById(
+      "englishPreview"
+    );
+
+  if (!value) {
+
+    preview.textContent = "";
+    preview.className =
+      "english-preview";
+
+    return;
+
+  }
+
+
+  if (!isValidEnglish(value)) {
+
+    preview.textContent =
+      "⚠️ 英単語欄に日本語などが含まれています";
+
+    preview.className =
+      "english-preview error";
+
+    return;
+
+  }
+
+
+  preview.textContent =
+    "✓ " + value;
+
+  preview.className =
+    "english-preview";
+
+}
+
+
+/* ------------------------
+   登録・更新
+------------------------- */
 
 function saveWord() {
 
-  const english =
-    document.getElementById("english").value.trim();
+  let english =
+    document
+      .getElementById("english")
+      .value;
 
-  const japanese =
-    document.getElementById("japanese").value.trim();
+  let japanese =
+    document
+      .getElementById("japanese")
+      .value
+      .trim();
+
+
+  english =
+    normalizeEnglish(english);
+
 
   if (!english || !japanese) {
-    alert("英単語と日本語を入力してください");
+
+    alert(
+      "英単語と日本語を入力してください"
+    );
+
     return;
+
   }
+
+
+  if (!isValidEnglish(english)) {
+
+    alert(
+      "英単語欄に日本語や使用できない文字が入っています。"
+    );
+
+    englishInput.focus();
+
+    return;
+
+  }
+
 
   if (editingIndex === null) {
 
     words.push({
+
       english: english,
       japanese: japanese
+
     });
 
   } else {
 
     words[editingIndex] = {
+
       english: english,
       japanese: japanese
+
     };
 
   }
 
+
   saveData();
+
   clearForm();
+
   showWords();
+
 }
+
+
+/* ------------------------
+   一覧表示
+------------------------- */
 
 function showWords() {
 
   const list =
-    document.getElementById("wordList");
+    document.getElementById(
+      "wordList"
+    );
+
+  const count =
+    document.getElementById(
+      "wordCount"
+    );
 
   list.innerHTML = "";
 
+  count.textContent =
+    "登録数：" +
+    words.length +
+    "単語";
+
+
   if (words.length === 0) {
+
     list.innerHTML =
-      "<p>まだ単語が登録されていません。</p>";
+      '<div class="empty">' +
+      'まだ単語が登録されていません。' +
+      '</div>';
+
     return;
+
   }
 
-  words.forEach((word, index) => {
 
-    const item =
-      document.createElement("div");
+  words.forEach(
+    function(word, index) {
 
-    item.className = "word-item";
+      const item =
+        document.createElement(
+          "div"
+        );
 
-    item.innerHTML = `
-      <div class="word-title">
-        ${word.english}
-      </div>
+      item.className =
+        "word-item";
 
-      <div>
-        ${word.japanese}
-      </div>
 
-      <div class="word-buttons">
+      const title =
+        document.createElement(
+          "div"
+        );
 
-        <button
-          class="edit"
-          onclick="editWord(${index})">
-          編集
-        </button>
+      title.className =
+        "word-title";
 
-        <button
-          class="delete"
-          onclick="deleteWord(${index})">
-          削除
-        </button>
+      title.textContent =
+        word.english;
 
-      </div>
-    `;
 
-    list.appendChild(item);
+      const japanese =
+        document.createElement(
+          "div"
+        );
 
-  });
+      japanese.className =
+        "word-japanese";
+
+      japanese.textContent =
+        word.japanese;
+
+
+      const buttons =
+        document.createElement(
+          "div"
+        );
+
+      buttons.className =
+        "word-buttons";
+
+
+      const editButton =
+        document.createElement(
+          "button"
+        );
+
+      editButton.className =
+        "edit";
+
+      editButton.textContent =
+        "編集";
+
+      editButton.onclick =
+        function() {
+
+          editWord(index);
+
+        };
+
+
+      const deleteButton =
+        document.createElement(
+          "button"
+        );
+
+      deleteButton.className =
+        "delete";
+
+      deleteButton.textContent =
+        "削除";
+
+      deleteButton.onclick =
+        function() {
+
+          deleteWord(index);
+
+        };
+
+
+      buttons.appendChild(
+        editButton
+      );
+
+      buttons.appendChild(
+        deleteButton
+      );
+
+
+      item.appendChild(
+        title
+      );
+
+      item.appendChild(
+        japanese
+      );
+
+      item.appendChild(
+        buttons
+      );
+
+
+      list.appendChild(
+        item
+      );
+
+    }
+  );
+
 }
+
+
+/* ------------------------
+   編集
+------------------------- */
 
 function editWord(index) {
 
-  editingIndex = index;
+  editingIndex =
+    index;
 
-  document.getElementById("english").value =
-    words[index].english;
 
-  document.getElementById("japanese").value =
-    words[index].japanese;
+  document
+    .getElementById("english")
+    .value =
+      words[index].english;
 
-  document.getElementById("formTitle").textContent =
-    "単語を編集";
 
-  document.getElementById("saveButton").textContent =
-    "変更を保存";
+  document
+    .getElementById("japanese")
+    .value =
+      words[index].japanese;
 
-  document.getElementById("cancelButton").style.display =
-    "block";
+
+  document
+    .getElementById("formTitle")
+    .textContent =
+      "単語を編集";
+
+
+  document
+    .getElementById("saveButton")
+    .textContent =
+      "変更を保存";
+
+
+  document
+    .getElementById("cancelButton")
+    .style.display =
+      "block";
+
+
+  updateEnglishMessage();
+
 
   window.scrollTo({
+
     top: 0,
     behavior: "smooth"
+
   });
+
 }
+
+
+/* ------------------------
+   削除
+------------------------- */
 
 function deleteWord(index) {
 
@@ -272,38 +698,94 @@ function deleteWord(index) {
       " を削除しますか？"
     );
 
-  if (!ok) return;
 
-  words.splice(index, 1);
+  if (!ok) {
+
+    return;
+
+  }
+
+
+  words.splice(
+    index,
+    1
+  );
+
 
   saveData();
+
   cancelEdit();
+
   showWords();
+
 }
+
+
+/* ------------------------
+   編集キャンセル
+------------------------- */
 
 function cancelEdit() {
 
-  editingIndex = null;
+  editingIndex =
+    null;
 
   clearForm();
+
 }
+
+
+/* ------------------------
+   入力欄リセット
+------------------------- */
 
 function clearForm() {
 
-  document.getElementById("english").value = "";
-  document.getElementById("japanese").value = "";
+  document
+    .getElementById("english")
+    .value =
+      "";
 
-  document.getElementById("formTitle").textContent =
-    "単語を追加";
 
-  document.getElementById("saveButton").textContent =
-    "登録する";
+  document
+    .getElementById("japanese")
+    .value =
+      "";
 
-  document.getElementById("cancelButton").style.display =
-    "none";
 
-  editingIndex = null;
+  document
+    .getElementById("formTitle")
+    .textContent =
+      "単語を追加";
+
+
+  document
+    .getElementById("saveButton")
+    .textContent =
+      "登録する";
+
+
+  document
+    .getElementById("cancelButton")
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById("englishPreview")
+    .textContent =
+      "";
+
+
+  editingIndex =
+    null;
+
 }
+
+
+/* ------------------------
+   初期表示
+------------------------- */
 
 showWords();
 
