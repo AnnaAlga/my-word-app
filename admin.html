@@ -547,7 +547,6 @@ textarea:focus {
 .preset-actions button, .preset-actions a { padding: 10px 12px; border: 0; border-radius: 11px; text-decoration: none; font-size: 13px; font-weight: 900; cursor: pointer; }
 .preset-preview-button { background: #e8f1ff; color: #286ab0; }
 .preset-add-button { background: #3986e8; color: white; }
-.preset-link { background: #e8f7ee; color: #277b49; }
 .preset-details { display: none; max-height: 260px; overflow: auto; margin-top: 14px; padding: 12px; border-radius: 12px; background: white; color: #536177; font-size: 13px; line-height: 1.8; }
 .preset-details.open { display: block; }
 .preset-lesson-title { margin-top: 8px; color: #243149; font-weight: 900; }
@@ -3059,16 +3058,6 @@ function importPreset(presetId) {
   showToast(summary.newCount + "語を追加し、" + summary.existingCount + "語を利用しました");
 }
 
-function selectedPresetLesson(presetId) {
-  const select = document.getElementById("presetLesson-" + presetId);
-  return select ? select.value : "1";
-}
-
-function openPresetPage(page, presetId) {
-  const lesson = selectedPresetLesson(presetId);
-  window.location.href = page + "?preset=" + encodeURIComponent(presetId) + "&lesson=" + encodeURIComponent(lesson);
-}
-
 function togglePresetDetails(presetId) {
   const details = document.getElementById("presetDetails-" + presetId);
   if (details) details.classList.toggle("open");
@@ -3084,9 +3073,6 @@ function renderPresets() {
 
   grid.innerHTML = availablePresets.map(function(preset) {
     const summary = getPresetImportSummary(preset);
-    const options = preset.lessonNames.map(function(name, index) {
-      return '<option value="' + (index + 1) + '">セット' + (index + 1) + '：' + escapeHTML(name) + '（20語）</option>';
-    }).join("");
     const details = preset.lessonNames.map(function(name, index) {
       const lesson = index + 1;
       const names = preset.words.filter(function(word) {
@@ -3099,12 +3085,9 @@ function renderPresets() {
     return '<article class="preset-card"><h3>' + escapeHTML(preset.name) + '</h3>' +
       '<p>' + escapeHTML(preset.sourceNote) + '</p>' +
       '<p><strong>追加予定：</strong>新規 ' + summary.newCount + '語 ／ 登録済み利用 ' + summary.existingCount + '語</p>' +
-      '<select id="presetLesson-' + preset.id + '">' + options + '</select>' +
       '<div class="preset-actions">' +
         '<button class="preset-preview-button" onclick="togglePresetDetails(\'' + preset.id + '\')">内容を見る</button>' +
         '<button class="preset-add-button" onclick="importPreset(\'' + preset.id + '\')">単語帳に追加</button>' +
-        '<button class="preset-link" onclick="openPresetPage(\'index.html\',\'' + preset.id + '\')">セットを学習</button>' +
-        '<button class="preset-link" onclick="openPresetPage(\'test.html\',\'' + preset.id + '\')">セットでテスト</button>' +
       '</div><div id="presetDetails-' + preset.id + '" class="preset-details">' + details + '</div></article>';
   }).join("");
 }
