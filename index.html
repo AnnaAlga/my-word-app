@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY WORDS</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f7fb;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .app {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      margin: 20px 0;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 6px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 12px 20px;
+      margin: 8px;
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .add {
+      background: #333;
+      color: white;
+    }
+
+    .word {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .meaning {
+      font-size: 22px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>MY WORDS</h1>
+  <p>わたしの英単語帳</p>
+
+  <div class="card">
+
+    <h2>単語を追加</h2>
+
+    <input id="english" placeholder="英単語">
+    <input id="japanese" placeholder="日本語">
+
+    <br>
+
+    <button class="add" onclick="addWord()">
+      登録する
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <div class="word" id="word">
+      apple
+    </div>
+
+    <div class="meaning" id="meaning">
+      りんご
+    </div>
+
+    <button onclick="nextWord()">
+      次の単語 →
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let words =
+JSON.parse(localStorage.getItem("words"))
+||
+[
+  {english:"apple", japanese:"りんご"},
+  {english:"dog", japanese:"犬"},
+  {english:"beautiful", japanese:"美しい"}
+];
+
+let current = 0;
+
+
+function showWord(){
+
+  document.getElementById("word").textContent =
+    words[current].english;
+
+  document.getElementById("meaning").textContent =
+    words[current].japanese;
+
+}
+
+
+function nextWord(){
+
+  current++;
+
+  if(current >= words.length){
+    current = 0;
+  }
+
+  showWord();
+
+}
+
+
+function addWord(){
+
+  const english =
+    document.getElementById("english").value;
+
+  const japanese =
+    document.getElementById("japanese").value;
+
+
+  if(!english || !japanese){
+    alert("英単語と日本語を入力してください");
+    return;
+  }
+
+
+  words.push({
+    english: english,
+    japanese: japanese
+  });
+
+
+  localStorage.setItem(
+    "words",
+    JSON.stringify(words)
+  );
+
+
+  document.getElementById("english").value = "";
+  document.getElementById("japanese").value = "";
+
+  alert("登録しました！");
+
+}
+
+showWord();
+
+</script>
+
+</body>
+</html>
