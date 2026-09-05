@@ -1314,19 +1314,6 @@ button {
 
       <button
         class="option-button test-type"
-        onclick="selectTestType('enja', this)">
-
-        英語 → 日本語
-
-        <small>
-          英語を見て日本語を入力
-        </small>
-
-      </button>
-
-
-      <button
-        class="option-button test-type"
         onclick="selectTestType('verb', this)">
 
         動詞の変化
@@ -2241,45 +2228,6 @@ function buildItems(
     );
 
   }
-
-
-
-  /* 英語 → 日本語 */
-
-  else if (
-    type ===
-    "enja"
-  ) {
-
-    sourceWords.forEach(
-      function(word) {
-
-        items.push({
-
-          word: word,
-
-          label:
-            "日本語の意味を入力してください",
-
-          question:
-            getDisplayEnglish(word),
-
-          answer:
-            word.japanese,
-
-          questionIsEnglish:
-            true,
-
-          answerIsEnglish:
-            false
-
-        });
-
-      }
-    );
-
-  }
-
 
 
   /* 苦手 */
