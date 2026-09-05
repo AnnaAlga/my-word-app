@@ -54,6 +54,14 @@
       color: white;
     }
 
+    .answer {
+      background: #e7e7ff;
+    }
+
+    .next {
+      background: #ddd;
+    }
+
     .word {
       font-size: 32px;
       font-weight: bold;
@@ -62,6 +70,7 @@
     .meaning {
       font-size: 22px;
       margin-top: 15px;
+      min-height: 30px;
     }
   </style>
 </head>
@@ -90,22 +99,23 @@
 
   <div class="card">
 
-    <div class="word" id="word">
-      apple
-    </div>
+    <div class="word" id="word"></div>
 
-    <div class="meaning" id="meaning">
-      りんご
-    </div>
+    <div class="meaning" id="meaning"></div>
 
-    <button onclick="nextWord()">
+    <button class="answer" onclick="showAnswer()">
+      答えを見る
+    </button>
+
+    <br>
+
+    <button class="next" onclick="nextWord()">
       次の単語 →
     </button>
 
   </div>
 
 </div>
-
 
 <script>
 
@@ -125,6 +135,14 @@ function showWord(){
 
   document.getElementById("word").textContent =
     words[current].english;
+
+  // 日本語は最初は隠す
+  document.getElementById("meaning").textContent = "？？？";
+
+}
+
+
+function showAnswer(){
 
   document.getElementById("meaning").textContent =
     words[current].japanese;
