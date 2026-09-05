@@ -1,488 +1,1252 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>MY WORDS テスト</title>
+<title>MY WORDS テスト</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f7f7fb;
-      margin: 0;
-      padding: 20px;
-      color: #222;
-      text-align: center;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    .app {
-      max-width: 520px;
-      margin: auto;
-    }
+body {
+  margin: 0;
+  padding: 22px;
+  background: #f4f8fc;
+  color: #243149;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
 
-    h1 {
-      margin-bottom: 5px;
-    }
+button,
+a,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
 
-    .subtitle {
-      color: #777;
-      margin-top: 0;
-    }
+.app {
+  max-width: 1400px;
+  margin: auto;
+}
 
-    .nav {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      margin: 20px 0;
-      flex-wrap: wrap;
-    }
 
-    .nav a {
-      text-decoration: none;
-      background: #333;
-      color: white;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 14px;
-    }
+/* ==============================
+   HEADER
+============================== */
 
-    .card {
-      background: white;
-      padding: 28px 22px;
-      border-radius: 22px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      margin-bottom: 20px;
-    }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 18px;
+}
 
-    .setup-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 16px;
-    }
+.logo {
+  font-size: 34px;
+  font-weight: 900;
+}
 
-    .option-group {
-      margin-bottom: 24px;
-    }
+.logo span {
+  margin-left: 10px;
+  font-size: 19px;
+  color: #76839a;
+}
 
-    .option-label {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+.main-nav {
+  display: flex;
+  gap: 10px;
+}
 
-    .option-buttons {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+.main-nav a {
+  min-width: 120px;
+  padding: 13px 18px;
+  text-decoration: none;
+  text-align: center;
+  color: #243149;
+  background: #eaf1fa;
+  border-radius: 14px;
+  font-weight: 800;
+}
 
-    .option-button {
-      padding: 13px 10px;
-      border: 2px solid #ddd;
-      background: #fff;
-      border-radius: 14px;
-      font-size: 15px;
-      cursor: pointer;
-    }
+.main-nav a.active {
+  background: #3986e8;
+  color: white;
+}
 
-    .option-button.active {
-      background: #333;
-      color: white;
-      border-color: #333;
-    }
 
-    .start,
-    .check,
-    .next,
-    .retry,
-    .back,
-    .retry-wrong {
-      width: 100%;
-      padding: 14px;
-      margin-top: 14px;
-      border: none;
-      border-radius: 14px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+/* ==============================
+   CARD
+============================== */
 
-    .start,
-    .check,
-    .retry {
-      background: #333;
-      color: white;
-    }
+.card {
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 5px 22px rgba(45,60,90,.08);
+}
 
-    .next,
-    .back {
-      background: #e7e7ff;
-    }
 
-    .retry-wrong {
-      background: #fff0cf;
-      color: #6b4d00;
-    }
+/* ==============================
+   SETUP SCREEN
+============================== */
 
-    .next {
-      display: none;
-    }
+.setup-card {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px;
+}
 
-    .note {
-      margin-top: 12px;
-      color: #777;
-      font-size: 13px;
-      line-height: 1.6;
-    }
+.setup-title {
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
 
-    .score {
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      margin-bottom: 15px;
-      font-weight: bold;
-    }
+.setup-subtitle {
+  color: #778399;
+  margin-bottom: 28px;
+}
 
-    .question-label {
-      color: #777;
-      font-size: 14px;
-    }
+.setup-section {
+  margin-bottom: 28px;
+}
 
-    .japanese {
-      font-size: 34px;
-      font-weight: bold;
-      margin: 20px 0 28px;
-    }
+.setup-label {
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
 
-    input {
-      width: 100%;
-      padding: 15px;
-      border: 2px solid #ddd;
-      border-radius: 14px;
-      font-size: 22px;
-      text-align: center;
-      outline: none;
-    }
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
 
-    input:focus {
-      border-color: #777;
-    }
+.option-button {
+  min-height: 70px;
+  padding: 12px;
+  border: 2px solid #e0e6ef;
+  background: #f9fbfe;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #31405a;
+  cursor: pointer;
+}
 
-    .result {
-      min-height: 65px;
-      margin-top: 20px;
-      font-size: 20px;
-      font-weight: bold;
-    }
+.option-button small {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  opacity: .7;
+}
 
-    .correct {
-      color: #1b8a4b;
-    }
+.option-button.active {
+  background: #3986e8;
+  color: white;
+  border-color: #3986e8;
+}
 
-    .wrong {
-      color: #d33;
-    }
+.count-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
 
-    .answer-text {
-      font-size: 16px;
-      font-weight: normal;
-      margin-top: 8px;
-      color: #555;
-    }
+.start-button {
+  width: 100%;
+  padding: 18px;
+  border: 0;
+  border-radius: 16px;
+  background: #3986e8;
+  color: white;
+  font-size: 20px;
+  font-weight: 900;
+  cursor: pointer;
+}
 
-    .weak-message {
-      font-size: 14px;
-      margin-top: 8px;
-      color: #d86b00;
-    }
+.setup-note {
+  margin-top: 14px;
+  text-align: center;
+  color: #7c8798;
+}
 
-    #testScreen {
-      display: none;
-    }
 
-    .mode-name {
-      font-size: 13px;
-      color: #777;
-      margin-bottom: 12px;
-    }
+/* ==============================
+   TEST SCREEN
+============================== */
 
-    .wrong-list-title {
-      margin-top: 35px;
-      margin-bottom: 15px;
-      font-size: 20px;
-    }
+#testScreen {
+  display: none;
+}
 
-    .wrong-list {
-      text-align: left;
-    }
+.status-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
 
-    .wrong-item {
-      background: #fff5f5;
-      border-radius: 14px;
-      padding: 15px;
-      margin-bottom: 10px;
-    }
+.status-card {
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 4px 18px rgba(45,60,90,.07);
+}
 
-    .wrong-japanese {
-      font-size: 19px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
+.status-title {
+  color: #738097;
+  font-size: 14px;
+  font-weight: 800;
+}
 
-    .wrong-detail {
-      font-size: 15px;
-      line-height: 1.7;
-    }
+.status-number {
+  margin-top: 5px;
+  font-size: 24px;
+  font-weight: 900;
+}
 
-    .user-answer {
-      color: #d33;
-    }
+.progress-bar {
+  height: 9px;
+  border-radius: 99px;
+  background: #e8edf4;
+  margin-top: 10px;
+  overflow: hidden;
+}
 
-    .correct-answer {
-      color: #1b8a4b;
-      font-weight: bold;
-    }
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: #43bf76;
+  border-radius: 99px;
+}
 
-    .perfect-message {
-      margin: 25px 0;
-      padding: 18px;
-      background: #f0fff5;
-      border-radius: 14px;
-      font-size: 18px;
-    }
-  </style>
+
+/* ==============================
+   TEST LAYOUT
+============================== */
+
+.test-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 65%) minmax(330px, 35%);
+  gap: 18px;
+  align-items: start;
+}
+
+.test-card {
+  padding: 26px;
+}
+
+.info-card {
+  padding: 24px;
+}
+
+
+/* ==============================
+   QUESTION
+============================== */
+
+.question-type {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #eaf4ff;
+  color: #286eb6;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.question-box {
+  min-height: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.question-main {
+  font-size: clamp(48px, 7vw, 84px);
+  font-weight: 900;
+  line-height: 1.1;
+  word-break: break-word;
+}
+
+.speaker-button {
+  width: 58px;
+  height: 58px;
+  border: 0;
+  border-radius: 50%;
+  background: #e2f0ff;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.answer-input {
+  width: 100%;
+  margin-top: 15px;
+  padding: 17px;
+  border: 2px solid #d8dee9;
+  border-radius: 14px;
+  font-size: 28px;
+  text-align: center;
+  outline: none;
+}
+
+.answer-input:focus {
+  border-color: #3986e8;
+}
+
+.check-button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 16px;
+  border: 0;
+  border-radius: 15px;
+  background: #3986e8;
+  color: white;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+
+/* ==============================
+   RESULT
+============================== */
+
+.result-box {
+  display: none;
+  margin-top: 16px;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.result-box.correct {
+  display: block;
+  background: #eaf9ef;
+  color: #177241;
+}
+
+.result-box.wrong {
+  display: block;
+  background: #fff0f3;
+  color: #a62945;
+}
+
+.result-main {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.result-detail {
+  margin-top: 9px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.answer-sound {
+  margin-left: 8px;
+  border: 0;
+  background: #e4f0ff;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+}
+
+
+/* ==============================
+   HANDWRITING
+============================== */
+
+.handwriting {
+  display: none;
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 18px;
+  background: #fff7dc;
+}
+
+.handwriting.show {
+  display: block;
+}
+
+.handwriting-title {
+  font-size: 21px;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.handwriting-sub {
+  color: #7d6a27;
+  margin-bottom: 14px;
+}
+
+.canvas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.canvas-wrap {
+  position: relative;
+  background: white;
+  border-radius: 14px;
+  border: 2px solid #eadfac;
+  overflow: hidden;
+  min-height: 170px;
+}
+
+.canvas-number {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #62adf1;
+  color: white;
+  font-weight: 900;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.write-canvas {
+  display: block;
+  width: 100%;
+  height: 170px;
+  touch-action: none;
+}
+
+.handwriting-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.clear-button,
+.next-button {
+  padding: 15px;
+  border: 0;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.clear-button {
+  background: #edf1f7;
+  color: #41506a;
+}
+
+.next-button {
+  background: #3986e8;
+  color: white;
+}
+
+
+/* ==============================
+   INFO PANEL
+============================== */
+
+.info-title {
+  font-size: 23px;
+  font-weight: 900;
+  margin-bottom: 18px;
+}
+
+.info-word-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-word-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-word {
+  font-size: 38px;
+  font-weight: 900;
+}
+
+.small-speaker {
+  width: 43px;
+  height: 43px;
+  border: 0;
+  border-radius: 50%;
+  background: #e2f0ff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.badge {
+  padding: 7px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.badge-verb {
+  background: #dff6e9;
+  color: #23804b;
+}
+
+.badge-noun {
+  background: #e2f1ff;
+  color: #2677bb;
+}
+
+.badge-adjective {
+  background: #fff0d9;
+  color: #9e6b12;
+}
+
+.badge-other {
+  background: #eeeef2;
+  color: #697385;
+}
+
+.info-section {
+  margin-top: 18px;
+}
+
+.info-label {
+  font-size: 14px;
+  font-weight: 900;
+  color: #4b73a6;
+  margin-bottom: 8px;
+}
+
+.meaning-box {
+  background: #f2f5f8;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.forms-box {
+  border: 1px solid #e1e6ed;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  border-bottom: 1px solid #e5e9ef;
+}
+
+.form-row:last-child {
+  border-bottom: 0;
+}
+
+.form-name {
+  padding: 11px;
+  background: #eef9f2;
+  font-weight: 800;
+}
+
+.form-value {
+  padding: 11px;
+}
+
+.form-sound {
+  display: flex;
+  align-items: center;
+  padding: 5px 7px;
+}
+
+.form-sound button {
+  width: 33px;
+  height: 33px;
+  border: 0;
+  border-radius: 50%;
+  background: #e9f4ff;
+}
+
+
+/* ==============================
+   MEMO
+============================== */
+
+.memo-box {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #eef6ff;
+}
+
+.memo-title {
+  font-size: 17px;
+  font-weight: 900;
+  color: #37679e;
+  margin-bottom: 9px;
+}
+
+.memo-box textarea {
+  width: 100%;
+  min-height: 130px;
+  padding: 12px;
+  border: 1px solid #cfdbe8;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.memo-save {
+  width: 100%;
+  margin-top: 8px;
+  padding: 11px;
+  border: 0;
+  border-radius: 11px;
+  background: #4e94d8;
+  color: white;
+  font-weight: 900;
+}
+
+
+/* ==============================
+   FINAL RESULT
+============================== */
+
+.final-result {
+  max-width: 1000px;
+  margin: auto;
+}
+
+.final-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 18px;
+}
+
+.final-score {
+  padding: 28px;
+  text-align: center;
+}
+
+.big-score {
+  font-size: 72px;
+  font-weight: 900;
+}
+
+.big-rate {
+  margin-top: 10px;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.wrong-list-card {
+  padding: 26px;
+}
+
+.wrong-item {
+  padding: 14px;
+  margin-bottom: 10px;
+  background: #fff3f5;
+  border-radius: 13px;
+}
+
+.wrong-word {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.wrong-detail {
+  margin-top: 6px;
+  line-height: 1.7;
+}
+
+.final-actions {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 12px;
+}
+
+.final-actions button {
+  padding: 15px;
+  border: 0;
+  border-radius: 14px;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.retry-wrong {
+  background: #ffd977;
+}
+
+.select-again {
+  background: #3986e8;
+  color: white;
+}
+
+.back-study {
+  background: #e7ecf3;
+}
+
+
+/* ==============================
+   RESPONSIVE
+============================== */
+
+@media (max-width: 1000px) {
+
+  .option-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .test-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .canvas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .final-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  body {
+    padding: 13px;
+  }
+
+  .header {
+    display: block;
+  }
+
+  .main-nav {
+    margin-top: 12px;
+  }
+
+  .main-nav a {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 6px;
+  }
+
+  .option-grid,
+  .count-grid,
+  .status-grid,
+  .handwriting-actions,
+  .final-actions {
+    grid-template-columns: 1fr;
+  }
+
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <h1>MY WORDS</h1>
-  <p class="subtitle">テストモード</p>
+<header class="header">
 
-  <div class="nav">
+  <div class="logo">
+    MY WORDS
+    <span>テストモード</span>
+  </div>
+
+  <nav class="main-nav">
     <a href="index.html">📖 学習</a>
-    <a href="test.html">✏️ テスト</a>
+    <a href="test.html" class="active">✏️ テスト</a>
     <a href="admin.html">⚙️ 管理</a>
+  </nav>
+
+</header>
+
+
+<!-- =========================
+     設定画面
+========================= -->
+
+<section id="setupScreen" class="card setup-card">
+
+  <div class="setup-title">
+    テストを選ぼう
+  </div>
+
+  <div class="setup-subtitle">
+    テストの種類と問題数を選んでください。
   </div>
 
 
-  <!-- テスト設定 -->
-  <div id="setupScreen" class="card">
+  <div class="setup-section">
 
-    <div class="setup-title">
-      テストを選ぼう
+    <div class="setup-label">
+      テストの種類
     </div>
 
-    <div class="option-group">
+    <div class="option-grid">
 
-      <div class="option-label">
-        どの単語をテストする？
-      </div>
+      <button
+        class="option-button test-type active"
+        onclick="selectTestType('jaen', this)">
+        日本語 → 英語
+        <small>日本語を見て英語を入力</small>
+      </button>
 
-      <div class="option-buttons">
+      <button
+        class="option-button test-type"
+        onclick="selectTestType('enja', this)">
+        英語 → 日本語
+        <small>英語を見て日本語を入力</small>
+      </button>
 
-        <button
-          id="modeAll"
-          class="option-button active"
-          onclick="selectMode('all')">
-          全単語
-        </button>
+      <button
+        class="option-button test-type"
+        onclick="selectTestType('verb', this)">
+        動詞の変化
+        <small>過去形・過去分詞など</small>
+      </button>
 
-        <button
-          id="modeWeak"
-          class="option-button"
-          onclick="selectMode('weak')">
-          ★ 苦手だけ
-        </button>
+      <button
+        class="option-button test-type"
+        onclick="selectTestType('adjective', this)">
+        形容詞の変化
+        <small>比較級・最上級</small>
+      </button>
 
-      </div>
+      <button
+        class="option-button test-type"
+        onclick="selectTestType('weak', this)">
+        ★ 苦手だけ
+        <small>苦手単語だけ出題</small>
+      </button>
 
-    </div>
-
-
-    <div class="option-group">
-
-      <div class="option-label">
-        何問にする？
-      </div>
-
-      <div class="option-buttons">
-
-        <button
-          class="option-button count-button active"
-          onclick="selectCount(5, this)">
-          5問
-        </button>
-
-        <button
-          class="option-button count-button"
-          onclick="selectCount(10, this)">
-          10問
-        </button>
-
-        <button
-          class="option-button count-button"
-          onclick="selectCount(20, this)">
-          20問
-        </button>
-
-        <button
-          class="option-button count-button"
-          onclick="selectCount('all', this)">
-          全部
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <button
-      class="start"
-      onclick="startTest()">
-      テストスタート！
-    </button>
-
-    <div
-      id="setupNote"
-      class="note">
     </div>
 
   </div>
 
 
-  <!-- テスト本体 -->
-  <div id="testScreen">
+  <div class="setup-section">
 
-    <div class="score">
+    <div class="setup-label">
+      問題数
+    </div>
 
-      <div>
+    <div class="count-grid">
+
+      <button
+        class="option-button count-button active"
+        onclick="selectCount(5, this)">
+        5問
+      </button>
+
+      <button
+        class="option-button count-button"
+        onclick="selectCount(10, this)">
+        10問
+      </button>
+
+      <button
+        class="option-button count-button"
+        onclick="selectCount(20, this)">
+        20問
+      </button>
+
+      <button
+        class="option-button count-button"
+        onclick="selectCount('all', this)">
+        全部
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <button
+    class="start-button"
+    onclick="startTest()">
+    テストスタート！
+  </button>
+
+  <div
+    id="setupNote"
+    class="setup-note">
+  </div>
+
+</section>
+
+
+<!-- =========================
+     テスト画面
+========================= -->
+
+<section id="testScreen">
+
+  <div class="status-grid">
+
+    <div class="status-card">
+
+      <div class="status-title">
         問題
-        <span id="questionNumber">1</span>
       </div>
-
-      <div>
-        正解
-        <span id="correctCount">0</span>
-      </div>
-
-    </div>
-
-    <div class="card">
 
       <div
-        class="mode-name"
-        id="modeName">
+        id="questionProgress"
+        class="status-number">
+        1 / 10
       </div>
 
-      <div id="testArea">
-
-        <div class="question-label">
-          この日本語を英語で入力してください
-        </div>
-
+      <div class="progress-bar">
         <div
-          class="japanese"
-          id="japanese">
+          id="progressFill"
+          class="progress-fill">
         </div>
+      </div>
 
-        <input
-          id="answer"
-          type="text"
-          lang="en"
-          inputmode="text"
-          autocapitalize="none"
-          autocorrect="off"
-          autocomplete="off"
-          spellcheck="false"
-          placeholder="英単語を入力"
-        >
+    </div>
 
-        <button
-          class="check"
-          id="checkButton"
-          onclick="checkAnswer()">
-          答え合わせ
-        </button>
 
-        <div
-          class="result"
-          id="result">
-        </div>
+    <div class="status-card">
 
-        <button
-          class="next"
-          id="nextButton"
-          onclick="nextQuestion()">
-          次の問題 →
-        </button>
+      <div class="status-title">
+        正解
+      </div>
 
+      <div
+        id="correctCount"
+        class="status-number">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="status-card">
+
+      <div class="status-title">
+        正答率
+      </div>
+
+      <div
+        id="accuracy"
+        class="status-number">
+        0%
       </div>
 
     </div>
 
   </div>
+
+
+  <div class="test-layout">
+
+    <!-- 左 -->
+
+    <section class="card test-card">
+
+      <div
+        id="questionType"
+        class="question-type">
+      </div>
+
+
+      <div class="question-box">
+
+        <div
+          id="questionMain"
+          class="question-main">
+        </div>
+
+        <button
+          id="questionSpeaker"
+          class="speaker-button"
+          onclick="speakQuestion()">
+          🔊
+        </button>
+
+      </div>
+
+
+      <input
+        id="answerInput"
+        class="answer-input"
+        type="text"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="none"
+        spellcheck="false"
+        placeholder="答えを入力">
+
+
+      <button
+        id="checkButton"
+        class="check-button"
+        onclick="checkAnswer()">
+        答え合わせ
+      </button>
+
+
+      <div
+        id="resultBox"
+        class="result-box">
+      </div>
+
+
+      <div
+        id="handwriting"
+        class="handwriting">
+
+        <div class="handwriting-title">
+          ✍ 3回書いて覚えよう
+        </div>
+
+        <div
+          id="handwritingSub"
+          class="handwriting-sub">
+        </div>
+
+
+        <div class="canvas-grid">
+
+          <div class="canvas-wrap">
+            <div class="canvas-number">1</div>
+            <canvas
+              id="canvas1"
+              class="write-canvas">
+            </canvas>
+          </div>
+
+          <div class="canvas-wrap">
+            <div class="canvas-number">2</div>
+            <canvas
+              id="canvas2"
+              class="write-canvas">
+            </canvas>
+          </div>
+
+          <div class="canvas-wrap">
+            <div class="canvas-number">3</div>
+            <canvas
+              id="canvas3"
+              class="write-canvas">
+            </canvas>
+          </div>
+
+        </div>
+
+
+        <div class="handwriting-actions">
+
+          <button
+            class="clear-button"
+            onclick="clearCanvases()">
+            🗑 全部消す
+          </button>
+
+          <button
+            class="next-button"
+            onclick="nextQuestion()">
+            3回書いた！ 次へ →
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="nextButton"
+        class="next-button"
+        style="display:none; width:100%; margin-top:16px;"
+        onclick="nextQuestion()">
+        次の問題 →
+      </button>
+
+    </section>
+
+
+    <!-- 右 -->
+
+    <aside class="card info-card">
+
+      <div class="info-title">
+        この単語の情報
+      </div>
+
+      <div id="infoContent"></div>
+
+    </aside>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     結果画面
+========================= -->
+
+<section
+  id="finalScreen"
+  class="final-result"
+  style="display:none;">
+
+  <div class="final-grid">
+
+    <div class="card final-score">
+
+      <div>
+        テスト終了！
+      </div>
+
+      <div
+        id="finalScore"
+        class="big-score">
+      </div>
+
+      <div
+        id="finalRate"
+        class="big-rate">
+      </div>
+
+      <div
+        id="finalMessage"
+        style="margin-top:18px; font-size:22px; font-weight:900;">
+      </div>
+
+    </div>
+
+
+    <div class="card wrong-list-card">
+
+      <h2>
+        📝 間違えた単語
+      </h2>
+
+      <div id="wrongList"></div>
+
+    </div>
+
+  </div>
+
+
+  <div class="final-actions">
+
+    <button
+      id="retryWrongButton"
+      class="retry-wrong"
+      onclick="retryWrongOnly()">
+      間違えた問題だけもう一度
+    </button>
+
+    <button
+      class="select-again"
+      onclick="location.reload()">
+      テストを選び直す
+    </button>
+
+    <button
+      class="back-study"
+      onclick="location.href='index.html'">
+      学習画面へ
+    </button>
+
+  </div>
+
+</section>
 
 </div>
 
 
 <script>
 
+/* =============================
+   DATA
+============================= */
+
 let words =
-  JSON.parse(localStorage.getItem("words")) || [];
+  JSON.parse(
+    localStorage.getItem("words")
+  ) || [];
 
 let weakWords =
-  JSON.parse(localStorage.getItem("weakWords")) || [];
+  JSON.parse(
+    localStorage.getItem("weakWords")
+  ) || [];
 
-let selectedMode = "all";
+let memos =
+  JSON.parse(
+    localStorage.getItem("wordMemos")
+  ) || {};
+
+
+words = words.map(function(word) {
+
+  if (!word.forms) {
+    word.forms = {
+      base: word.english || ""
+    };
+  }
+
+  if (!word.partOfSpeech) {
+    word.partOfSpeech = "other";
+  }
+
+  return word;
+
+});
+
+
+let selectedType = "jaen";
 let selectedCount = 5;
 
-let testWords = [];
+let testItems = [];
 let current = 0;
 let correctCount = 0;
+let answeredCount = 0;
 let answered = false;
 
 let wrongAnswers = [];
-
-/* 再テスト中かどうか */
 let retryMode = false;
 
 
-/* -----------------------
-   モード選択
------------------------ */
+/* =============================
+   SETTINGS
+============================= */
 
-function selectMode(mode) {
+function selectTestType(type, button) {
 
-  selectedMode = mode;
-
-  document
-    .getElementById("modeAll")
-    .classList.toggle(
-      "active",
-      mode === "all"
-    );
+  selectedType = type;
 
   document
-    .getElementById("modeWeak")
-    .classList.toggle(
-      "active",
-      mode === "weak"
-    );
+    .querySelectorAll(".test-type")
+    .forEach(function(btn) {
+      btn.classList.remove("active");
+    });
+
+  button.classList.add("active");
 
   updateSetupNote();
 
 }
 
-
-/* -----------------------
-   問題数
------------------------ */
 
 function selectCount(count, button) {
 
@@ -491,9 +1255,7 @@ function selectCount(count, button) {
   document
     .querySelectorAll(".count-button")
     .forEach(function(btn) {
-
       btn.classList.remove("active");
-
     });
 
   button.classList.add("active");
@@ -501,200 +1263,269 @@ function selectCount(count, button) {
 }
 
 
-/* -----------------------
-   テスト対象
------------------------ */
+function updateSetupNote() {
 
-function getAvailableWords() {
+  let count = 0;
 
-  if (selectedMode === "weak") {
+  if (selectedType === "weak") {
 
-    return words.filter(function(word) {
+    count =
+      words.filter(function(word) {
+        return weakWords.includes(word.english);
+      }).length;
 
-      return weakWords.includes(
-        word.english
-      );
+    document
+      .getElementById("setupNote")
+      .textContent =
+        "現在の苦手単語：" +
+        count +
+        "個";
+
+  }
+
+  else {
+
+    document
+      .getElementById("setupNote")
+      .textContent =
+        "現在の登録単語：" +
+        words.length +
+        "個";
+
+  }
+
+}
+
+
+/* =============================
+   BUILD QUESTIONS
+============================= */
+
+function buildItems(type) {
+
+  const items = [];
+
+
+  if (type === "jaen") {
+
+    words.forEach(function(word) {
+
+      items.push({
+        word: word,
+        label: "英単語を入力してください",
+        question: word.japanese,
+        answer: word.english,
+        questionIsEnglish: false,
+        answerIsEnglish: true
+      });
 
     });
 
   }
 
-  return [...words];
 
-}
+  else if (type === "enja") {
 
+    words.forEach(function(word) {
 
-/* -----------------------
-   説明表示
------------------------ */
+      items.push({
+        word: word,
+        label: "日本語の意味を入力してください",
+        question: word.english,
+        answer: word.japanese,
+        questionIsEnglish: true,
+        answerIsEnglish: false
+      });
 
-function updateSetupNote() {
-
-  const available =
-    getAvailableWords();
-
-  const note =
-    document.getElementById("setupNote");
-
-
-  if (selectedMode === "weak") {
-
-    if (available.length === 0) {
-
-      note.textContent =
-        "苦手単語はまだありません。テストで間違えると自動で追加されます。";
-
-    } else {
-
-      note.textContent =
-        "現在の苦手単語：" +
-        available.length +
-        "個";
-
-    }
-
-  } else {
-
-    note.textContent =
-      "現在の登録単語：" +
-      available.length +
-      "個";
+    });
 
   }
 
-}
 
+  else if (type === "weak") {
 
-/* -----------------------
-   英語整形
------------------------ */
+    words
+      .filter(function(word) {
+        return weakWords.includes(word.english);
+      })
+      .forEach(function(word) {
 
-function normalizeEnglish(text) {
+        items.push({
+          word: word,
+          label: "苦手単語をテスト",
+          question: word.japanese,
+          answer: word.english,
+          questionIsEnglish: false,
+          answerIsEnglish: true
+        });
 
-  return text
-    .replace(
-      /[Ａ-Ｚａ-ｚ０-９]/g,
-      function(character) {
-
-        return String.fromCharCode(
-          character.charCodeAt(0)
-          - 0xFEE0
-        );
-
-      }
-    )
-    .replace(/　/g, " ")
-    .trim()
-    .toLowerCase();
-
-}
-
-
-/* -----------------------
-   シャッフル
------------------------ */
-
-function shuffle(array) {
-
-  const copied = [...array];
-
-  for (
-    let i = copied.length - 1;
-    i > 0;
-    i--
-  ) {
-
-    const j =
-      Math.floor(
-        Math.random() * (i + 1)
-      );
-
-    [
-      copied[i],
-      copied[j]
-    ] = [
-      copied[j],
-      copied[i]
-    ];
+      });
 
   }
 
-  return copied;
 
-}
+  else if (type === "verb") {
+
+    words
+      .filter(function(word) {
+        return word.partOfSpeech === "verb";
+      })
+      .forEach(function(word) {
+
+        const f = word.forms || {};
+        const base = f.base || word.english;
 
 
-/* -----------------------
-   苦手登録
------------------------ */
+        if (f.past) {
 
-function addWeakWord(english) {
+          items.push({
+            word: word,
+            label: "過去形にしてください",
+            question: base,
+            answer: f.past,
+            questionIsEnglish: true,
+            answerIsEnglish: true
+          });
 
-  if (!weakWords.includes(english)) {
+        }
 
-    weakWords.push(english);
 
-    localStorage.setItem(
-      "weakWords",
-      JSON.stringify(weakWords)
-    );
+        if (f.pastParticiple) {
+
+          items.push({
+            word: word,
+            label: "過去分詞にしてください",
+            question: base,
+            answer: f.pastParticiple,
+            questionIsEnglish: true,
+            answerIsEnglish: true
+          });
+
+        }
+
+
+        if (f.ing) {
+
+          items.push({
+            word: word,
+            label: "ing形にしてください",
+            question: base,
+            answer: f.ing,
+            questionIsEnglish: true,
+            answerIsEnglish: true
+          });
+
+        }
+
+
+        if (f.thirdPerson) {
+
+          items.push({
+            word: word,
+            label: "三人称単数現在にしてください",
+            question: base,
+            answer: f.thirdPerson,
+            questionIsEnglish: true,
+            answerIsEnglish: true
+          });
+
+        }
+
+      });
 
   }
 
+
+  else if (type === "adjective") {
+
+    words
+      .filter(function(word) {
+        return word.partOfSpeech === "adjective";
+      })
+      .forEach(function(word) {
+
+        const f = word.forms || {};
+        const base = f.base || word.english;
+
+
+        if (f.comparative) {
+
+          items.push({
+            word: word,
+            label: "比較級にしてください",
+            question: base,
+            answer: f.comparative,
+            questionIsEnglish: true,
+            answerIsEnglish: true
+          });
+
+        }
+
+
+        if (f.superlative) {
+
+          items.push({
+            word: word,
+            label: "最上級にしてください",
+            question: base,
+            answer: f.superlative,
+            questionIsEnglish: true,
+            answerIsEnglish: true
+          });
+
+        }
+
+      });
+
+  }
+
+
+  return items;
+
 }
 
 
-/* -----------------------
-   通常テスト開始
------------------------ */
+/* =============================
+   START
+============================= */
 
 function startTest() {
 
-  const available =
-    getAvailableWords();
+  let available =
+    buildItems(selectedType);
 
 
   if (available.length === 0) {
 
-    if (selectedMode === "weak") {
-
-      alert(
-        "苦手単語がありません。"
-      );
-
-    } else {
-
-      alert(
-        "単語が登録されていません。"
-      );
-
-    }
+    alert(
+      "このテストで使える単語がありません。"
+    );
 
     return;
 
   }
 
 
-  const shuffled =
+  available =
     shuffle(available);
 
 
   if (selectedCount === "all") {
 
-    testWords = shuffled;
+    testItems =
+      available;
 
-  } else {
+  }
 
-    const actualCount =
-      Math.min(
-        selectedCount,
-        shuffled.length
-      );
+  else {
 
-    testWords =
-      shuffled.slice(
+    testItems =
+      available.slice(
         0,
-        actualCount
+        Math.min(
+          selectedCount,
+          available.length
+        )
       );
 
   }
@@ -707,86 +1538,30 @@ function startTest() {
 }
 
 
-/* -----------------------
-   間違いだけ再テスト
------------------------ */
-
-function retryWrongOnly() {
-
-  if (wrongAnswers.length === 0) {
-    return;
-  }
-
-
-  const retryWords =
-    wrongAnswers.map(function(item) {
-
-      return {
-        english:
-          item.correctAnswer,
-
-        japanese:
-          item.japanese
-      };
-
-    });
-
-
-  testWords =
-    shuffle(retryWords);
-
-
-  retryMode = true;
-
-  prepareTest();
-
-}
-
-
-/* -----------------------
-   テスト準備
------------------------ */
+/* =============================
+   PREPARE
+============================= */
 
 function prepareTest() {
 
   current = 0;
   correctCount = 0;
+  answeredCount = 0;
   answered = false;
-
-  /*
-    重要：
-    再テスト開始前に
-    前回の間違い一覧をリセット
-  */
   wrongAnswers = [];
-
-
-  document
-    .getElementById("correctCount")
-    .textContent = "0";
 
 
   document
     .getElementById("setupScreen")
     .style.display = "none";
 
+  document
+    .getElementById("finalScreen")
+    .style.display = "none";
 
   document
     .getElementById("testScreen")
     .style.display = "block";
-
-
-  rebuildTestArea();
-
-
-  document
-    .getElementById("modeName")
-    .textContent =
-      retryMode
-        ? "🔁 間違えた問題だけ再テスト"
-        : selectedMode === "weak"
-          ? "★ 苦手単語テスト"
-          : "全単語テスト";
 
 
   showQuestion();
@@ -794,103 +1569,63 @@ function prepareTest() {
 }
 
 
-/* -----------------------
-   結果画面の後、
-   問題画面を作り直す
------------------------ */
-
-function rebuildTestArea() {
-
-  document
-    .getElementById("testArea")
-    .innerHTML = `
-
-      <div class="question-label">
-        この日本語を英語で入力してください
-      </div>
-
-      <div
-        class="japanese"
-        id="japanese">
-      </div>
-
-      <input
-        id="answer"
-        type="text"
-        lang="en"
-        inputmode="text"
-        autocapitalize="none"
-        autocorrect="off"
-        autocomplete="off"
-        spellcheck="false"
-        placeholder="英単語を入力"
-      >
-
-      <button
-        class="check"
-        id="checkButton"
-        onclick="checkAnswer()">
-        答え合わせ
-      </button>
-
-      <div
-        class="result"
-        id="result">
-      </div>
-
-      <button
-        class="next"
-        id="nextButton"
-        onclick="nextQuestion()">
-        次の問題 →
-      </button>
-
-    `;
-
-
-  document
-    .getElementById("answer")
-    .addEventListener(
-      "keydown",
-      handleEnter
-    );
-
-}
-
-
-/* -----------------------
-   問題表示
------------------------ */
+/* =============================
+   SHOW QUESTION
+============================= */
 
 function showQuestion() {
 
   answered = false;
 
+  clearCanvases();
 
   document
-    .getElementById("japanese")
+    .getElementById("handwriting")
+    .classList.remove("show");
+
+  document
+    .getElementById("nextButton")
+    .style.display = "none";
+
+
+  const item =
+    testItems[current];
+
+
+  document
+    .getElementById("questionType")
     .textContent =
-      testWords[current].japanese;
+      item.label;
 
 
   document
-    .getElementById("questionNumber")
+    .getElementById("questionMain")
     .textContent =
-      (current + 1)
-      + " / "
-      + testWords.length;
-
-
-  const answer =
-    document.getElementById("answer");
-
-  answer.value = "";
-  answer.disabled = false;
+      item.question;
 
 
   document
-    .getElementById("result")
-    .innerHTML = "";
+    .getElementById("questionSpeaker")
+    .style.display =
+      item.questionIsEnglish
+        ? "block"
+        : "none";
+
+
+  const input =
+    document.getElementById(
+      "answerInput"
+    );
+
+
+  input.value = "";
+  input.disabled = false;
+
+
+  input.placeholder =
+    item.answerIsEnglish
+      ? "英語を入力"
+      : "日本語を入力";
 
 
   document
@@ -898,41 +1633,59 @@ function showQuestion() {
     .style.display = "block";
 
 
-  document
-    .getElementById("nextButton")
-    .style.display = "none";
+  const result =
+    document.getElementById(
+      "resultBox"
+    );
+
+  result.className =
+    "result-box";
+
+  result.innerHTML =
+    "";
+
+
+  renderInfo(
+    item.word
+  );
+
+
+  updateStatus();
 
 
   setTimeout(function() {
-
-    answer.focus();
-
+    input.focus();
   }, 100);
 
 }
 
 
-/* -----------------------
-   答え合わせ
------------------------ */
+/* =============================
+   CHECK
+============================= */
 
 function checkAnswer() {
 
   if (answered) return;
 
 
-  const input =
-    normalizeEnglish(
-      document
-        .getElementById("answer")
-        .value
-    );
+  const item =
+    testItems[current];
 
 
-  if (!input) {
+  let userAnswer =
+    document
+      .getElementById(
+        "answerInput"
+      )
+      .value
+      .trim();
+
+
+  if (!userAnswer) {
 
     alert(
-      "英単語を入力してください"
+      "答えを入力してください"
     );
 
     return;
@@ -940,100 +1693,208 @@ function checkAnswer() {
   }
 
 
-  const currentWord =
-    testWords[current];
+  let correctAnswer =
+    item.answer;
 
 
-  const correctAnswer =
-    normalizeEnglish(
-      currentWord.english
-    );
+  if (item.answerIsEnglish) {
+
+    userAnswer =
+      normalizeEnglish(
+        userAnswer
+      );
+
+    correctAnswer =
+      normalizeEnglish(
+        correctAnswer
+      );
+
+  }
 
 
   answered = true;
+  answeredCount++;
 
 
   const result =
-    document.getElementById("result");
+    document.getElementById(
+      "resultBox"
+    );
 
 
-  if (input === correctAnswer) {
+  if (
+    userAnswer ===
+    correctAnswer
+  ) {
 
     correctCount++;
 
+    result.className =
+      "result-box correct";
+
     result.innerHTML = `
-      <div class="correct">
+
+      <div class="result-main">
         🎉 正解！
       </div>
+
+      ${
+        item.answerIsEnglish
+        ?
+        `
+        <div class="result-detail">
+          ${escapeHTML(item.answer)}
+          <button
+            class="answer-sound"
+            onclick='speakEnglish(${JSON.stringify(item.answer)})'>
+            🔊
+          </button>
+        </div>
+        `
+        : ""
+      }
+
     `;
 
-  } else {
+
+    document
+      .getElementById("nextButton")
+      .style.display =
+        "block";
+
+  }
+
+  else {
 
     addWeakWord(
-      currentWord.english
+      item.word.english
     );
 
 
     wrongAnswers.push({
 
-      japanese:
-        currentWord.japanese,
+      item: item,
 
       userAnswer:
-        input,
+        userAnswer,
 
       correctAnswer:
-        currentWord.english
+        item.answer
 
     });
 
 
+    result.className =
+      "result-box wrong";
+
     result.innerHTML = `
-      <div class="wrong">
+
+      <div class="result-main">
         ❌ ざんねん
       </div>
 
-      <div class="answer-text">
-        正解は
+      <div class="result-detail">
+
+        あなたの答え：
         <strong>
-          ${escapeHTML(currentWord.english)}
+          ${escapeHTML(userAnswer)}
         </strong>
+
+        <br>
+
+        正解：
+        <strong>
+          ${escapeHTML(item.answer)}
+        </strong>
+
+        ${
+          item.answerIsEnglish
+          ?
+          `
+            <button
+              class="answer-sound"
+              onclick='speakEnglish(${JSON.stringify(item.answer)})'>
+              🔊
+            </button>
+          `
+          : ""
+        }
+
+        <br>
+
+        ★ 苦手単語に追加しました
+
       </div>
 
-      <div class="weak-message">
-        ★ 苦手単語に追加しました
-      </div>
     `;
+
+
+    if (item.answerIsEnglish) {
+
+      document
+        .getElementById(
+          "handwritingSub"
+        )
+        .textContent =
+          "「" +
+          item.answer +
+          "」を3回書いてみましょう。";
+
+
+      document
+        .getElementById(
+          "handwriting"
+        )
+        .classList.add(
+          "show"
+        );
+
+
+      setTimeout(
+        resizeCanvases,
+        50
+      );
+
+    }
+
+    else {
+
+      document
+        .getElementById(
+          "nextButton"
+        )
+        .style.display =
+          "block";
+
+    }
 
   }
 
 
   document
-    .getElementById("correctCount")
-    .textContent =
-      correctCount;
+    .getElementById(
+      "answerInput"
+    )
+    .disabled =
+      true;
 
 
   document
-    .getElementById("answer")
-    .disabled = true;
+    .getElementById(
+      "checkButton"
+    )
+    .style.display =
+      "none";
 
 
-  document
-    .getElementById("checkButton")
-    .style.display = "none";
-
-
-  document
-    .getElementById("nextButton")
-    .style.display = "block";
+  updateStatus();
 
 }
 
 
-/* -----------------------
-   次の問題
------------------------ */
+/* =============================
+   NEXT
+============================= */
 
 function nextQuestion() {
 
@@ -1042,10 +1903,10 @@ function nextQuestion() {
 
   if (
     current >=
-    testWords.length
+    testItems.length
   ) {
 
-    showResult();
+    showFinal();
 
     return;
 
@@ -1057,92 +1918,226 @@ function nextQuestion() {
 }
 
 
-/* -----------------------
-   結果表示
------------------------ */
+/* =============================
+   STATUS
+============================= */
 
-function showResult() {
+function updateStatus() {
 
-  const percent =
+  document
+    .getElementById(
+      "questionProgress"
+    )
+    .textContent =
+      (current + 1)
+      + " / "
+      + testItems.length;
+
+
+  document
+    .getElementById(
+      "correctCount"
+    )
+    .textContent =
+      correctCount;
+
+
+  const rate =
+    answeredCount === 0
+      ? 0
+      : Math.round(
+          correctCount /
+          answeredCount *
+          100
+        );
+
+
+  document
+    .getElementById(
+      "accuracy"
+    )
+    .textContent =
+      rate + "%";
+
+
+  document
+    .getElementById(
+      "progressFill"
+    )
+    .style.width =
+      (
+        (current + 1) /
+        testItems.length *
+        100
+      )
+      + "%";
+
+}
+
+
+/* =============================
+   FINAL
+============================= */
+
+function showFinal() {
+
+  document
+    .getElementById(
+      "testScreen"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "finalScreen"
+    )
+    .style.display =
+      "block";
+
+
+  const rate =
     Math.round(
       correctCount /
-      testWords.length *
+      testItems.length *
       100
     );
+
+
+  document
+    .getElementById(
+      "finalScore"
+    )
+    .textContent =
+      correctCount
+      + " / "
+      + testItems.length;
+
+
+  document
+    .getElementById(
+      "finalRate"
+    )
+    .textContent =
+      "正答率 "
+      + rate
+      + "%";
 
 
   let message = "";
 
 
-  if (percent === 100) {
+  if (rate === 100) {
 
     message =
       "🏆 パーフェクト！";
 
-  } else if (percent >= 80) {
+  }
+
+  else if (rate >= 80) {
 
     message =
       "🎉 すごい！";
 
-  } else if (percent >= 60) {
+  }
+
+  else if (rate >= 60) {
 
     message =
       "👍 いい感じ！";
 
-  } else {
+  }
+
+  else {
 
     message =
-      "もう一度挑戦してみよう！";
+      "もう一度やってみよう！";
 
   }
 
 
-  let wrongListHTML = "";
+  document
+    .getElementById(
+      "finalMessage"
+    )
+    .textContent =
+      message;
 
 
-  if (wrongAnswers.length === 0) {
+  const list =
+    document.getElementById(
+      "wrongList"
+    );
 
-    wrongListHTML = `
-      <div class="perfect-message">
-        🎉 間違えた単語はありません！
+
+  if (
+    wrongAnswers.length === 0
+  ) {
+
+    list.innerHTML = `
+      <div style="
+        padding:25px;
+        background:#eefaf2;
+        border-radius:14px;
+        text-align:center;
+        font-weight:900;
+      ">
+        🎉 間違えた問題はありません！
       </div>
     `;
 
-  } else {
 
-    wrongListHTML = `
-      <div class="wrong-list-title">
-        📝 間違えた単語
-      </div>
+    document
+      .getElementById(
+        "retryWrongButton"
+      )
+      .style.display =
+        "none";
 
-      <div class="wrong-list">
-    `;
+  }
+
+  else {
+
+    document
+      .getElementById(
+        "retryWrongButton"
+      )
+      .style.display =
+        "block";
+
+
+    let html = "";
 
 
     wrongAnswers.forEach(
-      function(item) {
+      function(entry) {
 
-        wrongListHTML += `
+        html += `
 
           <div class="wrong-item">
 
-            <div class="wrong-japanese">
-              ${escapeHTML(item.japanese)}
+            <div class="wrong-word">
+              ${escapeHTML(
+                entry.item.question
+              )}
             </div>
 
             <div class="wrong-detail">
 
-              あなたの答え：
-              <span class="user-answer">
-                ${escapeHTML(item.userAnswer)}
-              </span>
+              あなた：
+              ${escapeHTML(
+                entry.userAnswer
+              )}
 
               <br>
 
               正解：
-              <span class="correct-answer">
-                ${escapeHTML(item.correctAnswer)}
-              </span>
+              <strong>
+                ${escapeHTML(
+                  entry.correctAnswer
+                )}
+              </strong>
 
             </div>
 
@@ -1154,135 +2149,885 @@ function showResult() {
     );
 
 
-    wrongListHTML += `
-      </div>
-    `;
+    list.innerHTML =
+      html;
 
   }
-
-
-  let retryWrongButton = "";
-
-
-  if (wrongAnswers.length > 0) {
-
-    retryWrongButton = `
-
-      <button
-        class="retry-wrong"
-        onclick="retryWrongOnly()">
-        🔁 間違えた
-        ${wrongAnswers.length}
-        問だけもう一度
-      </button>
-
-    `;
-
-  }
-
-
-  document
-    .getElementById("testArea")
-    .innerHTML = `
-
-      <h2>
-        テスト終了！
-      </h2>
-
-      <div
-        style="
-          font-size:50px;
-          margin:25px 0;
-        ">
-        ${correctCount}
-        /
-        ${testWords.length}
-      </div>
-
-      <div
-        style="
-          font-size:24px;
-          margin-bottom:20px;
-        ">
-        ${message}
-      </div>
-
-
-      ${wrongListHTML}
-
-
-      ${retryWrongButton}
-
-
-      <button
-        class="retry"
-        onclick="location.reload()">
-        テストを選び直す
-      </button>
-
-
-      <button
-        class="back"
-        onclick="location.href='index.html'">
-        学習画面へ
-      </button>
-
-    `;
 
 }
 
 
-/* -----------------------
-   HTML安全処理
------------------------ */
+/* =============================
+   RETRY WRONG
+============================= */
 
-function escapeHTML(text) {
+function retryWrongOnly() {
+
+  if (
+    wrongAnswers.length === 0
+  ) {
+    return;
+  }
+
+
+  testItems =
+    shuffle(
+      wrongAnswers.map(
+        function(entry) {
+          return entry.item;
+        }
+      )
+    );
+
+
+  retryMode =
+    true;
+
+
+  prepareTest();
+
+}
+
+
+/* =============================
+   WEAK
+============================= */
+
+function addWeakWord(
+  english
+) {
+
+  if (
+    !weakWords.includes(
+      english
+    )
+  ) {
+
+    weakWords.push(
+      english
+    );
+
+
+    localStorage.setItem(
+      "weakWords",
+      JSON.stringify(
+        weakWords
+      )
+    );
+
+  }
+
+}
+
+
+/* =============================
+   AUDIO
+============================= */
+
+function speakEnglish(
+  text
+) {
+
+  if (
+    !text
+    ||
+    !(
+      "speechSynthesis"
+      in window
+    )
+  ) {
+    return;
+  }
+
+
+  speechSynthesis.cancel();
+
+
+  const speech =
+    new SpeechSynthesisUtterance(
+      text
+    );
+
+
+  speech.lang =
+    "en-US";
+
+  speech.rate =
+    0.8;
+
+
+  const voices =
+    speechSynthesis
+      .getVoices();
+
+
+  const voice =
+    voices.find(
+      function(v) {
+
+        return (
+          v.lang
+          &&
+          v.lang
+            .toLowerCase()
+            .startsWith(
+              "en-us"
+            )
+        );
+
+      }
+    )
+    ||
+    voices.find(
+      function(v) {
+
+        return (
+          v.lang
+          &&
+          v.lang
+            .toLowerCase()
+            .startsWith(
+              "en"
+            )
+        );
+
+      }
+    );
+
+
+  if (voice) {
+    speech.voice = voice;
+  }
+
+
+  speechSynthesis.speak(
+    speech
+  );
+
+}
+
+
+function speakQuestion() {
+
+  if (
+    testItems.length === 0
+  ) {
+    return;
+  }
+
+
+  const item =
+    testItems[current];
+
+
+  if (
+    item.questionIsEnglish
+  ) {
+
+    speakEnglish(
+      item.question
+    );
+
+  }
+
+}
+
+
+/* =============================
+   INFO
+============================= */
+
+function renderInfo(
+  word
+) {
+
+  const info =
+    document.getElementById(
+      "infoContent"
+    );
+
+
+  const f =
+    word.forms || {
+      base: word.english
+    };
+
+
+  const rows =
+    [];
+
+
+  if (
+    word.partOfSpeech
+    === "verb"
+  ) {
+
+    if (f.base) {
+      rows.push(
+        ["原形", f.base]
+      );
+    }
+
+    if (f.past) {
+      rows.push(
+        ["過去形", f.past]
+      );
+    }
+
+    if (f.pastParticiple) {
+      rows.push(
+        [
+          "過去分詞",
+          f.pastParticiple
+        ]
+      );
+    }
+
+    if (f.ing) {
+      rows.push(
+        ["ing形", f.ing]
+      );
+    }
+
+    if (f.thirdPerson) {
+      rows.push(
+        [
+          "三単現",
+          f.thirdPerson
+        ]
+      );
+    }
+
+  }
+
+
+  else if (
+    word.partOfSpeech
+    === "adjective"
+  ) {
+
+    if (f.base) {
+      rows.push(
+        ["原級", f.base]
+      );
+    }
+
+    if (f.comparative) {
+      rows.push(
+        [
+          "比較級",
+          f.comparative
+        ]
+      );
+    }
+
+    if (f.superlative) {
+      rows.push(
+        [
+          "最上級",
+          f.superlative
+        ]
+      );
+    }
+
+  }
+
+
+  else {
+
+    rows.push(
+      [
+        "基本形",
+        f.base ||
+        word.english
+      ]
+    );
+
+  }
+
+
+  let formsHTML = `
+    <div class="info-section">
+      <div class="info-label">
+        変化形
+      </div>
+      <div class="forms-box">
+  `;
+
+
+  rows.forEach(
+    function(row) {
+
+      formsHTML += `
+
+        <div class="form-row">
+
+          <div class="form-name">
+            ${escapeHTML(
+              row[0]
+            )}
+          </div>
+
+          <div class="form-value">
+            ${escapeHTML(
+              row[1]
+            )}
+          </div>
+
+          <div class="form-sound">
+
+            <button
+              onclick='speakEnglish(${JSON.stringify(row[1])})'>
+              🔊
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+  );
+
+
+  formsHTML += `
+      </div>
+    </div>
+  `;
+
+
+  const memo =
+    memos[
+      word.english
+    ] || "";
+
+
+  info.innerHTML = `
+
+    <div class="info-word-row">
+
+      <div class="info-word-main">
+
+        <div class="info-word">
+          ${escapeHTML(
+            word.english
+          )}
+        </div>
+
+        <button
+          class="small-speaker"
+          onclick='speakEnglish(${JSON.stringify(word.english)})'>
+          🔊
+        </button>
+
+      </div>
+
+      ${getBadge(
+        word.partOfSpeech
+      )}
+
+    </div>
+
+
+    <div class="info-section">
+
+      <div class="info-label">
+        日本語の意味
+      </div>
+
+      <div class="meaning-box">
+        ${escapeHTML(
+          word.japanese
+        )}
+      </div>
+
+    </div>
+
+
+    ${formsHTML}
+
+
+    <div class="memo-box">
+
+      <div class="memo-title">
+        ✎ 自分メモ
+      </div>
+
+      <textarea
+        id="memoInput"
+        placeholder="間違えやすいポイントなどをメモできます。">${escapeHTML(memo)}</textarea>
+
+      <button
+        class="memo-save"
+        onclick="saveMemo()">
+        メモを保存
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =============================
+   MEMO
+============================= */
+
+function saveMemo() {
+
+  if (
+    testItems.length === 0
+  ) {
+    return;
+  }
+
+
+  const word =
+    testItems[current]
+      .word;
+
+
+  memos[
+    word.english
+  ] =
+    document
+      .getElementById(
+        "memoInput"
+      )
+      .value;
+
+
+  localStorage.setItem(
+    "wordMemos",
+    JSON.stringify(
+      memos
+    )
+  );
+
+}
+
+
+/* =============================
+   BADGE
+============================= */
+
+function getBadge(
+  part
+) {
+
+  if (part === "verb") {
+
+    return `
+      <span class="badge badge-verb">
+        動詞
+      </span>
+    `;
+
+  }
+
+
+  if (part === "noun") {
+
+    return `
+      <span class="badge badge-noun">
+        名詞
+      </span>
+    `;
+
+  }
+
+
+  if (
+    part === "adjective"
+  ) {
+
+    return `
+      <span class="badge badge-adjective">
+        形容詞
+      </span>
+    `;
+
+  }
+
+
+  return `
+    <span class="badge badge-other">
+      その他
+    </span>
+  `;
+
+}
+
+
+/* =============================
+   HANDWRITING
+============================= */
+
+const canvases = [
+  document.getElementById(
+    "canvas1"
+  ),
+  document.getElementById(
+    "canvas2"
+  ),
+  document.getElementById(
+    "canvas3"
+  )
+];
+
+
+canvases.forEach(
+  function(canvas) {
+
+    setupCanvas(
+      canvas
+    );
+
+  }
+);
+
+
+function setupCanvas(
+  canvas
+) {
+
+  let drawing = false;
+
+
+  function pointerPosition(
+    event
+  ) {
+
+    const rect =
+      canvas
+        .getBoundingClientRect();
+
+
+    return {
+
+      x:
+        event.clientX
+        - rect.left,
+
+      y:
+        event.clientY
+        - rect.top
+
+    };
+
+  }
+
+
+  canvas.addEventListener(
+    "pointerdown",
+    function(event) {
+
+      drawing = true;
+
+      canvas.setPointerCapture(
+        event.pointerId
+      );
+
+
+      const ctx =
+        canvas.getContext(
+          "2d"
+        );
+
+
+      const point =
+        pointerPosition(
+          event
+        );
+
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        point.x,
+        point.y
+      );
+
+    }
+  );
+
+
+  canvas.addEventListener(
+    "pointermove",
+    function(event) {
+
+      if (!drawing) {
+        return;
+      }
+
+
+      const ctx =
+        canvas.getContext(
+          "2d"
+        );
+
+
+      const point =
+        pointerPosition(
+          event
+        );
+
+
+      ctx.lineWidth =
+        4;
+
+      ctx.lineCap =
+        "round";
+
+      ctx.lineJoin =
+        "round";
+
+      ctx.strokeStyle =
+        "#555";
+
+
+      ctx.lineTo(
+        point.x,
+        point.y
+      );
+
+      ctx.stroke();
+
+    }
+  );
+
+
+  canvas.addEventListener(
+    "pointerup",
+    function() {
+
+      drawing =
+        false;
+
+    }
+  );
+
+
+  canvas.addEventListener(
+    "pointercancel",
+    function() {
+
+      drawing =
+        false;
+
+    }
+  );
+
+}
+
+
+function resizeCanvases() {
+
+  canvases.forEach(
+    function(canvas) {
+
+      const rect =
+        canvas
+          .getBoundingClientRect();
+
+
+      if (
+        rect.width === 0
+        ||
+        rect.height === 0
+      ) {
+        return;
+      }
+
+
+      const ratio =
+        window.devicePixelRatio
+        || 1;
+
+
+      canvas.width =
+        rect.width
+        * ratio;
+
+      canvas.height =
+        rect.height
+        * ratio;
+
+
+      const ctx =
+        canvas.getContext(
+          "2d"
+        );
+
+
+      ctx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+      );
+
+    }
+  );
+
+}
+
+
+function clearCanvases() {
+
+  canvases.forEach(
+    function(canvas) {
+
+      const ctx =
+        canvas.getContext(
+          "2d"
+        );
+
+
+      ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+    }
+  );
+
+}
+
+
+/* =============================
+   UTILITIES
+============================= */
+
+function normalizeEnglish(
+  text
+) {
+
+  return text
+    .replace(
+      /[Ａ-Ｚａ-ｚ０-９]/g,
+      function(character) {
+
+        return String
+          .fromCharCode(
+            character
+              .charCodeAt(0)
+            - 0xFEE0
+          );
+
+      }
+    )
+    .replace(
+      /　/g,
+      " "
+    )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+function shuffle(
+  array
+) {
+
+  const copied =
+    [...array];
+
+
+  for (
+    let i =
+      copied.length - 1;
+
+    i > 0;
+
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random()
+        *
+        (i + 1)
+      );
+
+
+    [
+      copied[i],
+      copied[j]
+    ]
+    =
+    [
+      copied[j],
+      copied[i]
+    ];
+
+  }
+
+
+  return copied;
+
+}
+
+
+function escapeHTML(
+  text
+) {
 
   const div =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  div.textContent = text;
+  div.textContent =
+    text || "";
 
   return div.innerHTML;
 
 }
 
 
-/* -----------------------
-   Enterキー
------------------------ */
+/* =============================
+   ENTER KEY
+============================= */
 
-function handleEnter(event) {
-
-  if (event.key === "Enter") {
-
-    if (!answered) {
-
-      checkAnswer();
-
-    } else {
-
-      nextQuestion();
-
-    }
-
-  }
-
-}
-
-
-/* 最初の入力欄にもEnter対応 */
 document
-  .getElementById("answer")
+  .getElementById(
+    "answerInput"
+  )
   .addEventListener(
     "keydown",
-    handleEnter
+    function(event) {
+
+      if (
+        event.key === "Enter"
+        &&
+        !answered
+      ) {
+
+        checkAnswer();
+
+      }
+
+    }
   );
 
 
-/* -----------------------
-   初期表示
------------------------ */
+window.addEventListener(
+  "resize",
+  function() {
+
+    resizeCanvases();
+
+  }
+);
+
 
 updateSetupNote();
 
