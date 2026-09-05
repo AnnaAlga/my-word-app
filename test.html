@@ -51,19 +51,100 @@
       font-size: 14px;
     }
 
+    .card {
+      background: white;
+      padding: 28px 22px;
+      border-radius: 22px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .setup-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .option-group {
+      margin-bottom: 24px;
+    }
+
+    .option-label {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .option-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .option-button {
+      padding: 13px 10px;
+      border: 2px solid #ddd;
+      background: #fff;
+      border-radius: 14px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .option-button.active {
+      background: #333;
+      color: white;
+      border-color: #333;
+    }
+
+    .start,
+    .check,
+    .next,
+    .retry,
+    .back,
+    .retry-wrong {
+      width: 100%;
+      padding: 14px;
+      margin-top: 14px;
+      border: none;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .start,
+    .check,
+    .retry {
+      background: #333;
+      color: white;
+    }
+
+    .next,
+    .back {
+      background: #e7e7ff;
+    }
+
+    .retry-wrong {
+      background: #fff0cf;
+      color: #6b4d00;
+    }
+
+    .next {
+      display: none;
+    }
+
+    .note {
+      margin-top: 12px;
+      color: #777;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
     .score {
       display: flex;
       justify-content: center;
       gap: 18px;
       margin-bottom: 15px;
       font-weight: bold;
-    }
-
-    .card {
-      background: white;
-      padding: 30px 22px;
-      border-radius: 22px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
 
     .question-label {
@@ -87,25 +168,8 @@
       outline: none;
     }
 
-    button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 14px;
-      border: none;
-      border-radius: 14px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .check {
-      background: #333;
-      color: white;
-    }
-
-    .next {
-      background: #e7e7ff;
-      display: none;
+    input:focus {
+      border-color: #777;
     }
 
     .result {
@@ -136,9 +200,59 @@
       color: #d86b00;
     }
 
-    .empty {
+    #testScreen {
+      display: none;
+    }
+
+    .mode-name {
+      font-size: 13px;
       color: #777;
-      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .wrong-list-title {
+      margin-top: 35px;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .wrong-list {
+      text-align: left;
+    }
+
+    .wrong-item {
+      background: #fff5f5;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+
+    .wrong-japanese {
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .wrong-detail {
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .user-answer {
+      color: #d33;
+    }
+
+    .correct-answer {
+      color: #1b8a4b;
+      font-weight: bold;
+    }
+
+    .perfect-message {
+      margin: 25px 0;
+      padding: 18px;
+      background: #f0fff5;
+      border-radius: 14px;
+      font-size: 18px;
     }
   </style>
 </head>
@@ -156,63 +270,159 @@
     <a href="admin.html">⚙️ 管理</a>
   </div>
 
-  <div class="score">
 
-    <div>
-      問題
-      <span id="questionNumber">1</span>
+  <!-- テスト設定 -->
+  <div id="setupScreen" class="card">
+
+    <div class="setup-title">
+      テストを選ぼう
     </div>
 
-    <div>
-      正解
-      <span id="correctCount">0</span>
+    <div class="option-group">
+
+      <div class="option-label">
+        どの単語をテストする？
+      </div>
+
+      <div class="option-buttons">
+
+        <button
+          id="modeAll"
+          class="option-button active"
+          onclick="selectMode('all')">
+          全単語
+        </button>
+
+        <button
+          id="modeWeak"
+          class="option-button"
+          onclick="selectMode('weak')">
+          ★ 苦手だけ
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="option-group">
+
+      <div class="option-label">
+        何問にする？
+      </div>
+
+      <div class="option-buttons">
+
+        <button
+          class="option-button count-button active"
+          onclick="selectCount(5, this)">
+          5問
+        </button>
+
+        <button
+          class="option-button count-button"
+          onclick="selectCount(10, this)">
+          10問
+        </button>
+
+        <button
+          class="option-button count-button"
+          onclick="selectCount(20, this)">
+          20問
+        </button>
+
+        <button
+          class="option-button count-button"
+          onclick="selectCount('all', this)">
+          全部
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="start"
+      onclick="startTest()">
+      テストスタート！
+    </button>
+
+    <div
+      id="setupNote"
+      class="note">
     </div>
 
   </div>
 
-  <div class="card">
 
-    <div id="testArea">
+  <!-- テスト本体 -->
+  <div id="testScreen">
 
-      <div class="question-label">
-        この日本語を英語で入力してください
+    <div class="score">
+
+      <div>
+        問題
+        <span id="questionNumber">1</span>
       </div>
+
+      <div>
+        正解
+        <span id="correctCount">0</span>
+      </div>
+
+    </div>
+
+    <div class="card">
 
       <div
-        class="japanese"
-        id="japanese">
+        class="mode-name"
+        id="modeName">
       </div>
 
-      <input
-        id="answer"
-        type="text"
-        lang="en"
-        inputmode="text"
-        autocapitalize="none"
-        autocorrect="off"
-        autocomplete="off"
-        spellcheck="false"
-        placeholder="英単語を入力"
-      >
+      <div id="testArea">
 
-      <button
-        class="check"
-        id="checkButton"
-        onclick="checkAnswer()">
-        答え合わせ
-      </button>
+        <div class="question-label">
+          この日本語を英語で入力してください
+        </div>
 
-      <div
-        class="result"
-        id="result">
+        <div
+          class="japanese"
+          id="japanese">
+        </div>
+
+        <input
+          id="answer"
+          type="text"
+          lang="en"
+          inputmode="text"
+          autocapitalize="none"
+          autocorrect="off"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="英単語を入力"
+        >
+
+        <button
+          class="check"
+          id="checkButton"
+          onclick="checkAnswer()">
+          答え合わせ
+        </button>
+
+        <div
+          class="result"
+          id="result">
+        </div>
+
+        <button
+          class="next"
+          id="nextButton"
+          onclick="nextQuestion()">
+          次の問題 →
+        </button>
+
       </div>
-
-      <button
-        class="next"
-        id="nextButton"
-        onclick="nextQuestion()">
-        次の問題 →
-      </button>
 
     </div>
 
@@ -229,17 +439,134 @@ let words =
 let weakWords =
   JSON.parse(localStorage.getItem("weakWords")) || [];
 
-let shuffledWords = [];
+let selectedMode = "all";
+let selectedCount = 5;
 
+let testWords = [];
 let current = 0;
-
 let correctCount = 0;
-
 let answered = false;
+
+let wrongAnswers = [];
+
+/* 再テスト中かどうか */
+let retryMode = false;
 
 
 /* -----------------------
-   英語を整える
+   モード選択
+----------------------- */
+
+function selectMode(mode) {
+
+  selectedMode = mode;
+
+  document
+    .getElementById("modeAll")
+    .classList.toggle(
+      "active",
+      mode === "all"
+    );
+
+  document
+    .getElementById("modeWeak")
+    .classList.toggle(
+      "active",
+      mode === "weak"
+    );
+
+  updateSetupNote();
+
+}
+
+
+/* -----------------------
+   問題数
+----------------------- */
+
+function selectCount(count, button) {
+
+  selectedCount = count;
+
+  document
+    .querySelectorAll(".count-button")
+    .forEach(function(btn) {
+
+      btn.classList.remove("active");
+
+    });
+
+  button.classList.add("active");
+
+}
+
+
+/* -----------------------
+   テスト対象
+----------------------- */
+
+function getAvailableWords() {
+
+  if (selectedMode === "weak") {
+
+    return words.filter(function(word) {
+
+      return weakWords.includes(
+        word.english
+      );
+
+    });
+
+  }
+
+  return [...words];
+
+}
+
+
+/* -----------------------
+   説明表示
+----------------------- */
+
+function updateSetupNote() {
+
+  const available =
+    getAvailableWords();
+
+  const note =
+    document.getElementById("setupNote");
+
+
+  if (selectedMode === "weak") {
+
+    if (available.length === 0) {
+
+      note.textContent =
+        "苦手単語はまだありません。テストで間違えると自動で追加されます。";
+
+    } else {
+
+      note.textContent =
+        "現在の苦手単語：" +
+        available.length +
+        "個";
+
+    }
+
+  } else {
+
+    note.textContent =
+      "現在の登録単語：" +
+      available.length +
+      "個";
+
+  }
+
+}
+
+
+/* -----------------------
+   英語整形
 ----------------------- */
 
 function normalizeEnglish(text) {
@@ -264,7 +591,7 @@ function normalizeEnglish(text) {
 
 
 /* -----------------------
-   ランダム並び替え
+   シャッフル
 ----------------------- */
 
 function shuffle(array) {
@@ -318,30 +645,215 @@ function addWeakWord(english) {
 
 
 /* -----------------------
-   テスト開始
+   通常テスト開始
 ----------------------- */
 
 function startTest() {
 
-  if (words.length === 0) {
+  const available =
+    getAvailableWords();
 
-    document
-      .getElementById("testArea")
-      .innerHTML = `
-        <div class="empty">
-          まだ単語が登録されていません。<br>
-          管理画面から単語を登録してください。
-        </div>
-      `;
+
+  if (available.length === 0) {
+
+    if (selectedMode === "weak") {
+
+      alert(
+        "苦手単語がありません。"
+      );
+
+    } else {
+
+      alert(
+        "単語が登録されていません。"
+      );
+
+    }
 
     return;
 
   }
 
-  shuffledWords =
-    shuffle(words);
+
+  const shuffled =
+    shuffle(available);
+
+
+  if (selectedCount === "all") {
+
+    testWords = shuffled;
+
+  } else {
+
+    const actualCount =
+      Math.min(
+        selectedCount,
+        shuffled.length
+      );
+
+    testWords =
+      shuffled.slice(
+        0,
+        actualCount
+      );
+
+  }
+
+
+  retryMode = false;
+
+  prepareTest();
+
+}
+
+
+/* -----------------------
+   間違いだけ再テスト
+----------------------- */
+
+function retryWrongOnly() {
+
+  if (wrongAnswers.length === 0) {
+    return;
+  }
+
+
+  const retryWords =
+    wrongAnswers.map(function(item) {
+
+      return {
+        english:
+          item.correctAnswer,
+
+        japanese:
+          item.japanese
+      };
+
+    });
+
+
+  testWords =
+    shuffle(retryWords);
+
+
+  retryMode = true;
+
+  prepareTest();
+
+}
+
+
+/* -----------------------
+   テスト準備
+----------------------- */
+
+function prepareTest() {
+
+  current = 0;
+  correctCount = 0;
+  answered = false;
+
+  /*
+    重要：
+    再テスト開始前に
+    前回の間違い一覧をリセット
+  */
+  wrongAnswers = [];
+
+
+  document
+    .getElementById("correctCount")
+    .textContent = "0";
+
+
+  document
+    .getElementById("setupScreen")
+    .style.display = "none";
+
+
+  document
+    .getElementById("testScreen")
+    .style.display = "block";
+
+
+  rebuildTestArea();
+
+
+  document
+    .getElementById("modeName")
+    .textContent =
+      retryMode
+        ? "🔁 間違えた問題だけ再テスト"
+        : selectedMode === "weak"
+          ? "★ 苦手単語テスト"
+          : "全単語テスト";
+
 
   showQuestion();
+
+}
+
+
+/* -----------------------
+   結果画面の後、
+   問題画面を作り直す
+----------------------- */
+
+function rebuildTestArea() {
+
+  document
+    .getElementById("testArea")
+    .innerHTML = `
+
+      <div class="question-label">
+        この日本語を英語で入力してください
+      </div>
+
+      <div
+        class="japanese"
+        id="japanese">
+      </div>
+
+      <input
+        id="answer"
+        type="text"
+        lang="en"
+        inputmode="text"
+        autocapitalize="none"
+        autocorrect="off"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="英単語を入力"
+      >
+
+      <button
+        class="check"
+        id="checkButton"
+        onclick="checkAnswer()">
+        答え合わせ
+      </button>
+
+      <div
+        class="result"
+        id="result">
+      </div>
+
+      <button
+        class="next"
+        id="nextButton"
+        onclick="nextQuestion()">
+        次の問題 →
+      </button>
+
+    `;
+
+
+  document
+    .getElementById("answer")
+    .addEventListener(
+      "keydown",
+      handleEnter
+    );
 
 }
 
@@ -354,10 +866,11 @@ function showQuestion() {
 
   answered = false;
 
+
   document
     .getElementById("japanese")
     .textContent =
-      shuffledWords[current].japanese;
+      testWords[current].japanese;
 
 
   document
@@ -365,17 +878,14 @@ function showQuestion() {
     .textContent =
       (current + 1)
       + " / "
-      + shuffledWords.length;
+      + testWords.length;
 
 
-  document
-    .getElementById("answer")
-    .value = "";
+  const answer =
+    document.getElementById("answer");
 
-
-  document
-    .getElementById("answer")
-    .disabled = false;
+  answer.value = "";
+  answer.disabled = false;
 
 
   document
@@ -385,21 +895,17 @@ function showQuestion() {
 
   document
     .getElementById("checkButton")
-    .style.display =
-      "block";
+    .style.display = "block";
 
 
   document
     .getElementById("nextButton")
-    .style.display =
-      "none";
+    .style.display = "none";
 
 
   setTimeout(function() {
 
-    document
-      .getElementById("answer")
-      .focus();
+    answer.focus();
 
   }, 100);
 
@@ -435,7 +941,7 @@ function checkAnswer() {
 
 
   const currentWord =
-    shuffledWords[current];
+    testWords[current];
 
 
   const correctAnswer =
@@ -448,9 +954,7 @@ function checkAnswer() {
 
 
   const result =
-    document.getElementById(
-      "result"
-    );
+    document.getElementById("result");
 
 
   if (input === correctAnswer) {
@@ -469,6 +973,21 @@ function checkAnswer() {
       currentWord.english
     );
 
+
+    wrongAnswers.push({
+
+      japanese:
+        currentWord.japanese,
+
+      userAnswer:
+        input,
+
+      correctAnswer:
+        currentWord.english
+
+    });
+
+
     result.innerHTML = `
       <div class="wrong">
         ❌ ざんねん
@@ -477,7 +996,7 @@ function checkAnswer() {
       <div class="answer-text">
         正解は
         <strong>
-          ${currentWord.english}
+          ${escapeHTML(currentWord.english)}
         </strong>
       </div>
 
@@ -497,20 +1016,17 @@ function checkAnswer() {
 
   document
     .getElementById("answer")
-    .disabled =
-      true;
+    .disabled = true;
 
 
   document
     .getElementById("checkButton")
-    .style.display =
-      "none";
+    .style.display = "none";
 
 
   document
     .getElementById("nextButton")
-    .style.display =
-      "block";
+    .style.display = "block";
 
 }
 
@@ -523,9 +1039,10 @@ function nextQuestion() {
 
   current++;
 
+
   if (
     current >=
-    shuffledWords.length
+    testWords.length
   ) {
 
     showResult();
@@ -534,13 +1051,14 @@ function nextQuestion() {
 
   }
 
+
   showQuestion();
 
 }
 
 
 /* -----------------------
-   最終結果
+   結果表示
 ----------------------- */
 
 function showResult() {
@@ -548,7 +1066,7 @@ function showResult() {
   const percent =
     Math.round(
       correctCount /
-      shuffledWords.length *
+      testWords.length *
       100
     );
 
@@ -579,6 +1097,90 @@ function showResult() {
   }
 
 
+  let wrongListHTML = "";
+
+
+  if (wrongAnswers.length === 0) {
+
+    wrongListHTML = `
+      <div class="perfect-message">
+        🎉 間違えた単語はありません！
+      </div>
+    `;
+
+  } else {
+
+    wrongListHTML = `
+      <div class="wrong-list-title">
+        📝 間違えた単語
+      </div>
+
+      <div class="wrong-list">
+    `;
+
+
+    wrongAnswers.forEach(
+      function(item) {
+
+        wrongListHTML += `
+
+          <div class="wrong-item">
+
+            <div class="wrong-japanese">
+              ${escapeHTML(item.japanese)}
+            </div>
+
+            <div class="wrong-detail">
+
+              あなたの答え：
+              <span class="user-answer">
+                ${escapeHTML(item.userAnswer)}
+              </span>
+
+              <br>
+
+              正解：
+              <span class="correct-answer">
+                ${escapeHTML(item.correctAnswer)}
+              </span>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    );
+
+
+    wrongListHTML += `
+      </div>
+    `;
+
+  }
+
+
+  let retryWrongButton = "";
+
+
+  if (wrongAnswers.length > 0) {
+
+    retryWrongButton = `
+
+      <button
+        class="retry-wrong"
+        onclick="retryWrongOnly()">
+        🔁 間違えた
+        ${wrongAnswers.length}
+        問だけもう一度
+      </button>
+
+    `;
+
+  }
+
+
   document
     .getElementById("testArea")
     .innerHTML = `
@@ -594,30 +1196,54 @@ function showResult() {
         ">
         ${correctCount}
         /
-        ${shuffledWords.length}
+        ${testWords.length}
       </div>
 
       <div
         style="
           font-size:24px;
-          margin-bottom:25px;
+          margin-bottom:20px;
         ">
         ${message}
       </div>
 
-      <button
-        class="check"
-        onclick="location.reload()">
-        もう一度テストする
-      </button>
+
+      ${wrongListHTML}
+
+
+      ${retryWrongButton}
+
 
       <button
-        class="next"
-        style="display:block;"
-        onclick="location.href='index.html'">
-        苦手単語を練習する
+        class="retry"
+        onclick="location.reload()">
+        テストを選び直す
       </button>
+
+
+      <button
+        class="back"
+        onclick="location.href='index.html'">
+        学習画面へ
+      </button>
+
     `;
+
+}
+
+
+/* -----------------------
+   HTML安全処理
+----------------------- */
+
+function escapeHTML(text) {
+
+  const div =
+    document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
 
 }
 
@@ -626,31 +1252,39 @@ function showResult() {
    Enterキー
 ----------------------- */
 
+function handleEnter(event) {
+
+  if (event.key === "Enter") {
+
+    if (!answered) {
+
+      checkAnswer();
+
+    } else {
+
+      nextQuestion();
+
+    }
+
+  }
+
+}
+
+
+/* 最初の入力欄にもEnter対応 */
 document
   .getElementById("answer")
   .addEventListener(
     "keydown",
-    function(event) {
-
-      if (event.key === "Enter") {
-
-        if (!answered) {
-
-          checkAnswer();
-
-        } else {
-
-          nextQuestion();
-
-        }
-
-      }
-
-    }
+    handleEnter
   );
 
 
-startTest();
+/* -----------------------
+   初期表示
+----------------------- */
+
+updateSetupNote();
 
 </script>
 
