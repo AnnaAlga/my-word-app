@@ -19,8 +19,19 @@
       margin: auto;
     }
 
-    h1 {
-      margin-bottom: 5px;
+    .nav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      background: #333;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
     }
 
     .card {
@@ -31,13 +42,16 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
-    input {
-      width: 90%;
-      padding: 12px;
-      margin: 6px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
+    .word {
+      font-size: 34px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .meaning {
+      font-size: 24px;
+      min-height: 35px;
+      margin-bottom: 20px;
     }
 
     button {
@@ -49,11 +63,6 @@
       cursor: pointer;
     }
 
-    .add {
-      background: #333;
-      color: white;
-    }
-
     .answer {
       background: #e7e7ff;
     }
@@ -62,15 +71,8 @@
       background: #ddd;
     }
 
-    .word {
-      font-size: 32px;
-      font-weight: bold;
-    }
-
-    .meaning {
-      font-size: 22px;
-      margin-top: 15px;
-      min-height: 30px;
+    .empty {
+      color: #777;
     }
   </style>
 </head>
@@ -82,25 +84,14 @@
   <h1>MY WORDS</h1>
   <p>わたしの英単語帳</p>
 
-  <div class="card">
-
-    <h2>単語を追加</h2>
-
-    <input id="english" placeholder="英単語">
-    <input id="japanese" placeholder="日本語">
-
-    <br>
-
-    <button class="add" onclick="addWord()">
-      登録する
-    </button>
-
+  <div class="nav">
+    <a href="index.html">学習画面</a>
+    <a href="admin.html">管理画面</a>
   </div>
 
-  <div class="card">
+  <div class="card" id="studyCard">
 
     <div class="word" id="word"></div>
-
     <div class="meaning" id="meaning"></div>
 
     <button class="answer" onclick="showAnswer()">
@@ -119,10 +110,7 @@
 
 <script>
 
-let words =
-JSON.parse(localStorage.getItem("words"))
-||
-[
+let words = JSON.parse(localStorage.getItem("words")) || [
   {english:"apple", japanese:"りんご"},
   {english:"dog", japanese:"犬"},
   {english:"beautiful", japanese:"美しい"}
@@ -130,71 +118,40 @@ JSON.parse(localStorage.getItem("words"))
 
 let current = 0;
 
+function showWord() {
 
-function showWord(){
+  const word = document.getElementById("word");
+  const meaning = document.getElementById("meaning");
 
-  document.getElementById("word").textContent =
-    words[current].english;
+  if (words.length === 0) {
+    word.textContent = "単語がありません";
+    meaning.textContent = "管理画面から登録してください";
+    return;
+  }
 
-  // 日本語は最初は隠す
-  document.getElementById("meaning").textContent = "？？？";
-
+  word.textContent = words[current].english;
+  meaning.textContent = "？？？";
 }
 
+function showAnswer() {
 
-function showAnswer(){
+  if (words.length === 0) return;
 
   document.getElementById("meaning").textContent =
     words[current].japanese;
-
 }
 
+function nextWord() {
 
-function nextWord(){
+  if (words.length === 0) return;
 
   current++;
 
-  if(current >= words.length){
+  if (current >= words.length) {
     current = 0;
   }
 
   showWord();
-
-}
-
-
-function addWord(){
-
-  const english =
-    document.getElementById("english").value;
-
-  const japanese =
-    document.getElementById("japanese").value;
-
-
-  if(!english || !japanese){
-    alert("英単語と日本語を入力してください");
-    return;
-  }
-
-
-  words.push({
-    english: english,
-    japanese: japanese
-  });
-
-
-  localStorage.setItem(
-    "words",
-    JSON.stringify(words)
-  );
-
-
-  document.getElementById("english").value = "";
-  document.getElementById("japanese").value = "";
-
-  alert("登録しました！");
-
 }
 
 showWord();
