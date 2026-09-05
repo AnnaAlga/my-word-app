@@ -5,10 +5,8 @@
     独自選定リスト（2026-09-06確認）
     小学校英語: 文部科学省「小学校外国語活動・外国語 研修ガイドブック」の
     カテゴリー別語彙を参考に、基本訳を独自作成。
-    英検4級: 日本英語検定協会が公開する直近3回分
-    （2026年度第1回、2025年度第3回、2025年度第2回）の
-    問題冊子・選択肢・リスニング原稿を参考に独自選定。
-    市販教材のリストや例文は使用していません。
+    中学初級程度の日常的な英単語から独自選定。
+    市販教材や検定問題のリスト・例文は使用していません。
   */
 
   const irregularVerbs = {
@@ -151,7 +149,7 @@
     "country|国|noun;city|都市|noun;world|世界|noun;japan|日本|noun|Japan;america|アメリカ|noun|America;canada|カナダ|noun|Canada;australia|オーストラリア|noun|Australia;india|インド|noun|India;china|中国|noun|China;bus|バス|noun;train|電車|noun;car|車|noun;bicycle|自転車|noun;airport|空港|noun;road|道路|noun;map|地図|noun;left|左|noun;right|右|noun;near|近くに|other;far|遠くに|other"
   ];
 
-  const eikenRows = [
+  const juniorLevelRows = [
     "arrive|到着する|verb;ask|尋ねる|verb;become|〜になる|verb;begin|始める|verb;bring|持ってくる|verb;buy|買う|verb;call|電話する|verb;carry|運ぶ|verb;catch|捕まえる|verb;change|変える|verb;clean|掃除する|verb;finish|終える|verb;forget|忘れる|verb;give|与える|verb;keep|保つ|verb;leave|去る|verb;meet|会う|verb;remember|覚えている|verb;send|送る|verb;show|見せる|verb",
     "answer|答え|noun;birthday|誕生日|noun;club|部活動|noun;computer|コンピューター|noun;dream|夢|noun;email|メール|noun;exam|試験|noun;holiday|休日|noun;idea|考え|noun;letter|手紙|noun;money|お金|noun;party|パーティー|noun;question|質問|noun;report|報告書|noun;weekend|週末|noun;work|仕事|noun;teach|教える|verb;understand|理解する|verb;wait|待つ|verb;workout|運動|noun",
     "aunt|おば|noun;uncle|おじ|noun;cousin|いとこ|noun;neighbor|隣人|noun;member|一員|noun;library|図書館|noun;museum|博物館|noun;office|事務所|noun;post|郵便|noun;bank|銀行|noun;hotel|ホテル|noun;market|市場|noun;ticket|切符|noun;travel|旅行する|verb;stay|滞在する|verb;move|引っ越す|verb;turn|曲がる|verb;cross|渡る|verb;inside|内側に|other;outside|外側に|other",
@@ -160,10 +158,10 @@
   ];
 
   const elementaryNames = ["あいさつ", "数と時刻", "曜日と月", "家族と人", "学校", "家と町", "食べ物", "動物と自然", "体と健康", "色・形・服", "スポーツと趣味", "基本動作1", "基本動作2", "様子と気持ち", "国・交通・道案内"];
-  const eikenNames = ["よく使う動詞", "学校・生活", "人・場所・移動", "形容詞と頻度", "副詞・つなぎ語"];
+  const juniorLevelNames = ["よく使う動詞", "学校・生活", "人・場所・移動", "形容詞と頻度", "副詞・つなぎ語"];
 
   window.MY_WORD_PRESETS = [
     makePreset("elementary-300", "小学校英語 基礎300語（文科省教材を参考に独自選定）", "小学校英語300語", "文部科学省の小学校外国語教材・研修ガイドブックを参考に、アプリ用に独自選定しています。", elementaryNames, elementaryRows),
-    makePreset("eiken4-100", "英検4級対策 基礎100語（公式過去問を参考に独自選定）", "英検4級100語", "英検4級の公式過去問を参考に、日常的に重要な語をアプリ用に独自選定しています。", eikenNames, eikenRows)
+    makePreset("eiken4-100", "中学初級・4級レベル 基礎100語", "中学初級・4級レベル 基礎100語", "中学初級程度の日常的な英単語から、アプリ用に独自選定しています。", juniorLevelNames, juniorLevelRows)
   ];
 })();
