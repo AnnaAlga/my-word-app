@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY WORDS 管理画面</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f7fb;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      background: #333;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin: 7px 0;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .add {
+      width: 100%;
+      margin-top: 10px;
+      background: #333;
+      color: white;
+    }
+
+    .word-item {
+      padding: 15px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .word-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .word-buttons {
+      margin-top: 10px;
+    }
+
+    .edit {
+      background: #e7e7ff;
+      margin-right: 5px;
+    }
+
+    .delete {
+      background: #ffdede;
+    }
+
+    .cancel {
+      background: #ddd;
+      margin-top: 8px;
+      width: 100%;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>単語管理</h1>
+
+  <div class="nav">
+    <a href="index.html">学習画面</a>
+    <a href="admin.html">管理画面</a>
+  </div>
+
+  <div class="card">
+
+    <h2 id="formTitle">単語を追加</h2>
+
+    <input id="english" placeholder="英単語">
+    <input id="japanese" placeholder="日本語">
+
+    <button class="add" id="saveButton" onclick="saveWord()">
+      登録する
+    </button>
+
+    <button class="cancel" id="cancelButton" onclick="cancelEdit()">
+      編集をキャンセル
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <h2>登録済み単語</h2>
+
+    <div id="wordList"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+let words = JSON.parse(localStorage.getItem("words")) || [
+  {english:"apple", japanese:"りんご"},
+  {english:"dog", japanese:"犬"},
+  {english:"beautiful", japanese:"美しい"}
+];
+
+let editingIndex = null;
+
+function saveData() {
+  localStorage.setItem("words", JSON.stringify(words));
+}
+
+function saveWord() {
+
+  const english =
+    document.getElementById("english").value.trim();
+
+  const japanese =
+    document.getElementById("japanese").value.trim();
+
+  if (!english || !japanese) {
+    alert("英単語と日本語を入力してください");
+    return;
+  }
+
+  if (editingIndex === null) {
+
+    words.push({
+      english: english,
+      japanese: japanese
+    });
+
+  } else {
+
+    words[editingIndex] = {
+      english: english,
+      japanese: japanese
+    };
+
+  }
+
+  saveData();
+  clearForm();
+  showWords();
+}
+
+function showWords() {
+
+  const list =
+    document.getElementById("wordList");
+
+  list.innerHTML = "";
+
+  if (words.length === 0) {
+    list.innerHTML =
+      "<p>まだ単語が登録されていません。</p>";
+    return;
+  }
+
+  words.forEach((word, index) => {
+
+    const item =
+      document.createElement("div");
+
+    item.className = "word-item";
+
+    item.innerHTML = `
+      <div class="word-title">
+        ${word.english}
+      </div>
+
+      <div>
+        ${word.japanese}
+      </div>
+
+      <div class="word-buttons">
+
+        <button
+          class="edit"
+          onclick="editWord(${index})">
+          編集
+        </button>
+
+        <button
+          class="delete"
+          onclick="deleteWord(${index})">
+          削除
+        </button>
+
+      </div>
+    `;
+
+    list.appendChild(item);
+
+  });
+}
+
+function editWord(index) {
+
+  editingIndex = index;
+
+  document.getElementById("english").value =
+    words[index].english;
+
+  document.getElementById("japanese").value =
+    words[index].japanese;
+
+  document.getElementById("formTitle").textContent =
+    "単語を編集";
+
+  document.getElementById("saveButton").textContent =
+    "変更を保存";
+
+  document.getElementById("cancelButton").style.display =
+    "block";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function deleteWord(index) {
+
+  const ok =
+    confirm(
+      words[index].english +
+      " を削除しますか？"
+    );
+
+  if (!ok) return;
+
+  words.splice(index, 1);
+
+  saveData();
+  cancelEdit();
+  showWords();
+}
+
+function cancelEdit() {
+
+  editingIndex = null;
+
+  clearForm();
+}
+
+function clearForm() {
+
+  document.getElementById("english").value = "";
+  document.getElementById("japanese").value = "";
+
+  document.getElementById("formTitle").textContent =
+    "単語を追加";
+
+  document.getElementById("saveButton").textContent =
+    "登録する";
+
+  document.getElementById("cancelButton").style.display =
+    "none";
+
+  editingIndex = null;
+}
+
+showWords();
+
+</script>
+
+</body>
+</html>
