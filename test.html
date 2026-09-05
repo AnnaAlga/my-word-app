@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>MY WORDS テスト</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f7f7fb;
+      margin: 0;
+      padding: 20px;
+      color: #222;
+      text-align: center;
+    }
+
+    .app {
+      max-width: 520px;
+      margin: auto;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #777;
+      margin-top: 0;
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      text-decoration: none;
+      background: #333;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .score {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .card {
+      background: white;
+      padding: 30px 22px;
+      border-radius: 22px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .question-label {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .japanese {
+      font-size: 34px;
+      font-weight: bold;
+      margin: 20px 0 28px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      font-size: 22px;
+      text-align: center;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 14px;
+      border: none;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .check {
+      background: #333;
+      color: white;
+    }
+
+    .next {
+      background: #e7e7ff;
+      display: none;
+    }
+
+    .result {
+      min-height: 65px;
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .correct {
+      color: #1b8a4b;
+    }
+
+    .wrong {
+      color: #d33;
+    }
+
+    .answer-text {
+      font-size: 16px;
+      font-weight: normal;
+      margin-top: 8px;
+      color: #555;
+    }
+
+    .weak-message {
+      font-size: 14px;
+      margin-top: 8px;
+      color: #d86b00;
+    }
+
+    .empty {
+      color: #777;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>MY WORDS</h1>
+  <p class="subtitle">テストモード</p>
+
+  <div class="nav">
+    <a href="index.html">📖 学習</a>
+    <a href="test.html">✏️ テスト</a>
+    <a href="admin.html">⚙️ 管理</a>
+  </div>
+
+  <div class="score">
+
+    <div>
+      問題
+      <span id="questionNumber">1</span>
+    </div>
+
+    <div>
+      正解
+      <span id="correctCount">0</span>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div id="testArea">
+
+      <div class="question-label">
+        この日本語を英語で入力してください
+      </div>
+
+      <div
+        class="japanese"
+        id="japanese">
+      </div>
+
+      <input
+        id="answer"
+        type="text"
+        lang="en"
+        inputmode="text"
+        autocapitalize="none"
+        autocorrect="off"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="英単語を入力"
+      >
+
+      <button
+        class="check"
+        id="checkButton"
+        onclick="checkAnswer()">
+        答え合わせ
+      </button>
+
+      <div
+        class="result"
+        id="result">
+      </div>
+
+      <button
+        class="next"
+        id="nextButton"
+        onclick="nextQuestion()">
+        次の問題 →
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let words =
+  JSON.parse(localStorage.getItem("words")) || [];
+
+let weakWords =
+  JSON.parse(localStorage.getItem("weakWords")) || [];
+
+let shuffledWords = [];
+
+let current = 0;
+
+let correctCount = 0;
+
+let answered = false;
+
+
+/* -----------------------
+   英語を整える
+----------------------- */
+
+function normalizeEnglish(text) {
+
+  return text
+    .replace(
+      /[Ａ-Ｚａ-ｚ０-９]/g,
+      function(character) {
+
+        return String.fromCharCode(
+          character.charCodeAt(0)
+          - 0xFEE0
+        );
+
+      }
+    )
+    .replace(/　/g, " ")
+    .trim()
+    .toLowerCase();
+
+}
+
+
+/* -----------------------
+   ランダム並び替え
+----------------------- */
+
+function shuffle(array) {
+
+  const copied = [...array];
+
+  for (
+    let i = copied.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [
+      copied[i],
+      copied[j]
+    ] = [
+      copied[j],
+      copied[i]
+    ];
+
+  }
+
+  return copied;
+
+}
+
+
+/* -----------------------
+   苦手登録
+----------------------- */
+
+function addWeakWord(english) {
+
+  if (!weakWords.includes(english)) {
+
+    weakWords.push(english);
+
+    localStorage.setItem(
+      "weakWords",
+      JSON.stringify(weakWords)
+    );
+
+  }
+
+}
+
+
+/* -----------------------
+   テスト開始
+----------------------- */
+
+function startTest() {
+
+  if (words.length === 0) {
+
+    document
+      .getElementById("testArea")
+      .innerHTML = `
+        <div class="empty">
+          まだ単語が登録されていません。<br>
+          管理画面から単語を登録してください。
+        </div>
+      `;
+
+    return;
+
+  }
+
+  shuffledWords =
+    shuffle(words);
+
+  showQuestion();
+
+}
+
+
+/* -----------------------
+   問題表示
+----------------------- */
+
+function showQuestion() {
+
+  answered = false;
+
+  document
+    .getElementById("japanese")
+    .textContent =
+      shuffledWords[current].japanese;
+
+
+  document
+    .getElementById("questionNumber")
+    .textContent =
+      (current + 1)
+      + " / "
+      + shuffledWords.length;
+
+
+  document
+    .getElementById("answer")
+    .value = "";
+
+
+  document
+    .getElementById("answer")
+    .disabled = false;
+
+
+  document
+    .getElementById("result")
+    .innerHTML = "";
+
+
+  document
+    .getElementById("checkButton")
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById("nextButton")
+    .style.display =
+      "none";
+
+
+  setTimeout(function() {
+
+    document
+      .getElementById("answer")
+      .focus();
+
+  }, 100);
+
+}
+
+
+/* -----------------------
+   答え合わせ
+----------------------- */
+
+function checkAnswer() {
+
+  if (answered) return;
+
+
+  const input =
+    normalizeEnglish(
+      document
+        .getElementById("answer")
+        .value
+    );
+
+
+  if (!input) {
+
+    alert(
+      "英単語を入力してください"
+    );
+
+    return;
+
+  }
+
+
+  const currentWord =
+    shuffledWords[current];
+
+
+  const correctAnswer =
+    normalizeEnglish(
+      currentWord.english
+    );
+
+
+  answered = true;
+
+
+  const result =
+    document.getElementById(
+      "result"
+    );
+
+
+  if (input === correctAnswer) {
+
+    correctCount++;
+
+    result.innerHTML = `
+      <div class="correct">
+        🎉 正解！
+      </div>
+    `;
+
+  } else {
+
+    addWeakWord(
+      currentWord.english
+    );
+
+    result.innerHTML = `
+      <div class="wrong">
+        ❌ ざんねん
+      </div>
+
+      <div class="answer-text">
+        正解は
+        <strong>
+          ${currentWord.english}
+        </strong>
+      </div>
+
+      <div class="weak-message">
+        ★ 苦手単語に追加しました
+      </div>
+    `;
+
+  }
+
+
+  document
+    .getElementById("correctCount")
+    .textContent =
+      correctCount;
+
+
+  document
+    .getElementById("answer")
+    .disabled =
+      true;
+
+
+  document
+    .getElementById("checkButton")
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById("nextButton")
+    .style.display =
+      "block";
+
+}
+
+
+/* -----------------------
+   次の問題
+----------------------- */
+
+function nextQuestion() {
+
+  current++;
+
+  if (
+    current >=
+    shuffledWords.length
+  ) {
+
+    showResult();
+
+    return;
+
+  }
+
+  showQuestion();
+
+}
+
+
+/* -----------------------
+   最終結果
+----------------------- */
+
+function showResult() {
+
+  const percent =
+    Math.round(
+      correctCount /
+      shuffledWords.length *
+      100
+    );
+
+
+  let message = "";
+
+
+  if (percent === 100) {
+
+    message =
+      "🏆 パーフェクト！";
+
+  } else if (percent >= 80) {
+
+    message =
+      "🎉 すごい！";
+
+  } else if (percent >= 60) {
+
+    message =
+      "👍 いい感じ！";
+
+  } else {
+
+    message =
+      "もう一度挑戦してみよう！";
+
+  }
+
+
+  document
+    .getElementById("testArea")
+    .innerHTML = `
+
+      <h2>
+        テスト終了！
+      </h2>
+
+      <div
+        style="
+          font-size:50px;
+          margin:25px 0;
+        ">
+        ${correctCount}
+        /
+        ${shuffledWords.length}
+      </div>
+
+      <div
+        style="
+          font-size:24px;
+          margin-bottom:25px;
+        ">
+        ${message}
+      </div>
+
+      <button
+        class="check"
+        onclick="location.reload()">
+        もう一度テストする
+      </button>
+
+      <button
+        class="next"
+        style="display:block;"
+        onclick="location.href='index.html'">
+        苦手単語を練習する
+      </button>
+    `;
+
+}
+
+
+/* -----------------------
+   Enterキー
+----------------------- */
+
+document
+  .getElementById("answer")
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (event.key === "Enter") {
+
+        if (!answered) {
+
+          checkAnswer();
+
+        } else {
+
+          nextQuestion();
+
+        }
+
+      }
+
+    }
+  );
+
+
+startTest();
+
+</script>
+
+</body>
+</html>
