@@ -1958,6 +1958,82 @@ function saveWord() {
 
 
 
+  const duplicateIndex =
+    words.findIndex(
+      function(word, index) {
+
+        return (
+          index !== editingIndex
+          &&
+          normalizeEnglish(
+            word.english
+          ) === english
+        );
+
+      }
+    );
+
+
+  if (
+    duplicateIndex !== -1
+  ) {
+
+    const duplicateWord =
+      words[
+        duplicateIndex
+      ];
+
+
+    alert(
+      "「"
+      +
+      (
+        duplicateWord.displayEnglish
+        ||
+        duplicateWord.english
+      )
+      +
+      "」はすでに登録されています。\n\n"
+      +
+      "二重登録はできません。登録済みの単語を編集してください。"
+    );
+
+
+    const inputId =
+      part === "verb"
+      ?
+      "verbBase"
+      :
+      part === "adjective"
+      ?
+      "adjectiveBase"
+      :
+      "normalBase";
+
+
+    const input =
+      document.getElementById(
+        inputId
+      );
+
+
+    if (
+      input
+    ) {
+
+      input.focus();
+
+      input.select();
+
+    }
+
+
+    return;
+
+  }
+
+
+
   const newWord = {
 
     english:
