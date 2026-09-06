@@ -850,6 +850,16 @@ button {
       252,
       .99
     );
+
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  overscroll-behavior: none;
+}
+
+body.handwriting-open {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .handwriting-fullscreen {
@@ -943,12 +953,39 @@ button {
   overflow: hidden;
 
   border:
-    2px solid
-    #d2deed;
+    3px solid
+    #3986e8;
 
   border-radius: 24px;
 
-  background: white;
+  background: #f8fbff;
+
+  box-shadow:
+    0 0 0 5px rgba(57, 134, 232, .09),
+    inset 0 0 24px rgba(57, 134, 232, .06);
+
+  touch-action: none;
+}
+
+.handwriting-canvas-guide {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  z-index: 1;
+
+  transform: translateX(-50%);
+
+  padding: 7px 13px;
+  border-radius: 999px;
+
+  background: rgba(232, 241, 255, .94);
+  color: #2f67b7;
+
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+
+  pointer-events: none;
 }
 
 .full-write-canvas {
@@ -960,6 +997,9 @@ button {
   min-height: 55vh;
 
   touch-action: none;
+
+  -webkit-user-select: none;
+  user-select: none;
 
   background:
 
@@ -1800,10 +1840,15 @@ button {
 
     <div class="handwriting-canvas-wrap">
 
+      <div class="handwriting-canvas-guide">
+        この青い枠の中に大きく書いてください
+      </div>
+
 
       <canvas
         id="fullWriteCanvas"
-        class="full-write-canvas">
+        class="full-write-canvas"
+        aria-label="手書きエリア">
       </canvas>
 
 
@@ -3219,24 +3264,17 @@ function openHandwritingPractice() {
       "block";
 
 
+  document.body.classList.add(
+    "handwriting-open"
+  );
+
+
   updateHandwritingStepUI();
 
 
-  /*
-    overlay描画後でないと
-    canvasの実サイズが取れない
-  */
+  resizeFullCanvas(false);
 
-  setTimeout(
-    function() {
-
-      resizeFullCanvas();
-
-      clearFullCanvas();
-
-    },
-    40
-  );
+  clearFullCanvas();
 
 }
 
@@ -3252,6 +3290,11 @@ function closeHandwritingPractice() {
     )
     .style.display =
       "none";
+
+
+  document.body.classList.remove(
+    "handwriting-open"
+  );
 
 }
 
@@ -3301,6 +3344,11 @@ function completeOneWriting() {
       )
       .style.display =
         "none";
+
+
+    document.body.classList.remove(
+      "handwriting-open"
+    );
 
 
     document
@@ -3437,8 +3485,8 @@ function setupFullCanvas(
   canvas
 ) {
 
-  let drawing =
-    false;
+  let activePointerId =
+    null;
 
 
   function getPointerPosition(
@@ -3475,8 +3523,15 @@ function setupFullCanvas(
       event.preventDefault();
 
 
-      drawing =
-        true;
+      if (
+        activePointerId !== null
+      ) {
+        return;
+      }
+
+
+      activePointerId =
+        event.pointerId;
 
 
       fullCanvasHasStroke =
@@ -3526,7 +3581,7 @@ function setupFullCanvas(
     function(event) {
 
       if (
-        !drawing
+        event.pointerId !== activePointerId
       ) {
         return;
       }
@@ -3577,10 +3632,17 @@ function setupFullCanvas(
 
 
 
-  function stopDrawing() {
+  function stopDrawing(event) {
 
-    drawing =
-      false;
+    if (
+      event.pointerId !== activePointerId
+    ) {
+      return;
+    }
+
+
+    activePointerId =
+      null;
 
   }
 
@@ -3599,14 +3661,20 @@ function setupFullCanvas(
 
   canvas.addEventListener(
     "pointerleave",
-    function() {
+    function(event) {
 
       if (
-        drawing
+        event.pointerId === activePointerId
+        &&
+        (
+          !canvas.hasPointerCapture
+          ||
+          !canvas.hasPointerCapture(event.pointerId)
+        )
       ) {
 
-        drawing =
-          false;
+        activePointerId =
+          null;
 
       }
 
@@ -3619,7 +3687,9 @@ function setupFullCanvas(
 
 /* サイズ */
 
-function resizeFullCanvas() {
+function resizeFullCanvas(
+  preserveDrawing
+) {
 
   const canvas =
     fullWriteCanvas;
@@ -3645,7 +3715,7 @@ function resizeFullCanvas() {
     || 1;
 
 
-  canvas.width =
+  const nextWidth =
     Math.floor(
       rect.width
       *
@@ -3653,12 +3723,70 @@ function resizeFullCanvas() {
     );
 
 
-  canvas.height =
+  const nextHeight =
     Math.floor(
       rect.height
       *
       ratio
     );
+
+
+  if (
+    canvas.width === nextWidth
+    &&
+    canvas.height === nextHeight
+  ) {
+    return;
+  }
+
+
+  let snapshot =
+    null;
+
+
+  if (
+    preserveDrawing
+    &&
+    fullCanvasHasStroke
+    &&
+    canvas.width > 0
+    &&
+    canvas.height > 0
+  ) {
+
+    snapshot =
+      document.createElement(
+        "canvas"
+      );
+
+
+    snapshot.width =
+      canvas.width;
+
+
+    snapshot.height =
+      canvas.height;
+
+
+    snapshot
+      .getContext(
+        "2d"
+      )
+      .drawImage(
+        canvas,
+        0,
+        0
+      );
+
+  }
+
+
+  canvas.width =
+    nextWidth;
+
+
+  canvas.height =
+    nextHeight;
 
 
   const ctx =
@@ -3678,8 +3806,43 @@ function resizeFullCanvas() {
   );
 
 
-  fullCanvasHasStroke =
-    false;
+  if (
+    snapshot
+  ) {
+
+    ctx.save();
+
+    ctx.setTransform(
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    );
+
+    ctx.drawImage(
+      snapshot,
+      0,
+      0,
+      snapshot.width,
+      snapshot.height,
+      0,
+      0,
+      nextWidth,
+      nextHeight
+    );
+
+    ctx.restore();
+
+  }
+
+  else {
+
+    fullCanvasHasStroke =
+      false;
+
+  }
 
 }
 
@@ -4966,7 +5129,7 @@ window
 
       ) {
 
-        resizeFullCanvas();
+        resizeFullCanvas(true);
 
       }
 
