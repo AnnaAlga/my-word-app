@@ -494,6 +494,52 @@ textarea:focus {
   margin-top: 18px;
 }
 
+.bulk-delete-panel {
+  margin-top: 22px;
+  padding: 16px;
+  border: 1px solid #f1d7dc;
+  border-radius: 14px;
+  background: #fffafb;
+}
+
+.bulk-delete-title {
+  color: #7f3344;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.bulk-delete-note {
+  margin-top: 5px;
+  color: #7b6970;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.bulk-delete-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.bulk-delete-actions button {
+  padding: 10px 13px;
+  border: 0;
+  border-radius: 11px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.keep-memo-button {
+  background: #fff0dc;
+  color: #9a5a14;
+}
+
+.delete-all-button {
+  background: #ffe4e9;
+  color: #aa304a;
+}
+
 .word-pager button {
   min-width: 96px;
   padding: 10px 14px;
@@ -1243,6 +1289,15 @@ textarea:focus {
     <button id="previousPageButton" onclick="changeWordPage(-1)">← 前へ</button>
     <div id="pageStatus" class="page-status">1 / 1ページ</div>
     <button id="nextPageButton" onclick="changeWordPage(1)">次へ →</button>
+  </div>
+
+  <div class="bulk-delete-panel">
+    <div class="bulk-delete-title">登録単語の一括削除</div>
+    <div class="bulk-delete-note">自分メモは削除しません。削除前にバックアップを保存しておくと安心です。</div>
+    <div class="bulk-delete-actions">
+      <button class="keep-memo-button" onclick="deleteWordsWithoutMemos()">自分メモ入り単語だけ残す</button>
+      <button class="delete-all-button" onclick="deleteAllWords()">すべての登録単語を削除</button>
+    </div>
   </div>
 
 
@@ -3009,6 +3064,101 @@ function getPreset(presetId) {
   return availablePresets.find(function(preset) {
     return preset.id === presetId;
   });
+}
+
+
+function saveWeakWords() {
+
+  localStorage
+    .setItem(
+
+      "weakWords",
+
+      JSON.stringify(
+        weakWords
+      )
+
+    );
+
+}
+
+
+function resetListAfterBulkDelete() {
+
+  editingIndex = null;
+  currentWordPage = 1;
+
+  saveWords();
+  saveWeakWords();
+  clearForm();
+  showWords();
+  updateBackupStats();
+  renderPresets();
+
+}
+
+
+function deleteAllWords() {
+
+  const deleteCount = words.length;
+
+  if (deleteCount === 0) {
+    showToast("削除する登録単語がありません");
+    return;
+  }
+
+  const message =
+    "登録済みの単語 " + deleteCount + "語をすべて削除します。\n\n" +
+    "自分メモは保存されます。苦手登録は解除されます。\n" +
+    "元に戻すにはバックアップが必要です。\n\n" +
+    "削除しますか？";
+
+  if (!confirm(message)) return;
+
+  words = [];
+  weakWords = [];
+
+  resetListAfterBulkDelete();
+  showToast(deleteCount + "語を削除しました（自分メモは保存されています）");
+
+}
+
+
+function deleteWordsWithoutMemos() {
+
+  const keptWords = words.filter(function(word) {
+    const key = normalizeEnglish(word.english);
+    return String(memos[key] || "").trim() !== "";
+  });
+
+  const deleteCount = words.length - keptWords.length;
+
+  if (deleteCount === 0) {
+    showToast("削除する登録単語がありません");
+    return;
+  }
+
+  const message =
+    "自分メモ入りの単語 " + keptWords.length + "語を残し、" +
+    deleteCount + "語を削除します。\n\n" +
+    "自分メモと、残す単語の苦手登録は維持されます。\n" +
+    "元に戻すにはバックアップが必要です。\n\n" +
+    "削除しますか？";
+
+  if (!confirm(message)) return;
+
+  const keptKeys = new Set(keptWords.map(function(word) {
+    return normalizeEnglish(word.english);
+  }));
+
+  words = keptWords;
+  weakWords = weakWords.filter(function(item) {
+    return keptKeys.has(normalizeEnglish(item));
+  });
+
+  resetListAfterBulkDelete();
+  showToast(deleteCount + "語を削除し、自分メモ入り " + keptWords.length + "語を残しました");
+
 }
 
 function getPresetImportSummary(preset) {
